@@ -41,10 +41,6 @@
 <!-- [![Product Name Screen Shot][product-screenshot]](https://kalla.co.id/id/bisnis/bumi-karsa) -->
 
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 ### Built With
 
 * [![springboot][spring.io]][springboot-url]
