@@ -14,10 +14,10 @@
 [![Forks][forks-shield]][forks-url] -->
 <!-- [![Issues][issues-shield]][issues-url]
 [![Issues][issues-shield]][issues-url] -->
-[![forthebadge](https://forthebadge.com/images/featured/featured-built-with-love.svg)](https://forthebadge.com)
+
 
 <!-- PROJECT LOGO -->
-<br />
+<hr><br />
 <div align="center">
   <a href="https://gitlab.cs.ui.ac.id/propensi-2023-2024-genap/kelas-c/c06-prororo">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
