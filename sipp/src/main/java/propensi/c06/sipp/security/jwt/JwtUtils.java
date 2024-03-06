@@ -12,10 +12,10 @@ import java.util.Date;
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${bacabaca.app.jwtSecret}")
+    @Value("${sipp.app.jwtSecret}")
     private String jwtSecret;
 
-    @Value("${bacabaca.app.jwtExpirationMs}")
+    @Value("${sipp.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
     public String generateJwtToken(String username){
