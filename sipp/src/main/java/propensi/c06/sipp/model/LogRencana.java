@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -23,10 +23,6 @@ public class LogRencana {
     @JoinColumn(name = "rencana", referencedColumnName = "idRencana")
     private Rencana rencana;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "barang", referencedColumnName = "idBarang")
-    private Barang barang;
-
     // Pake faker
     @NotNull
     @Column(name = "user", nullable = false)
@@ -35,10 +31,9 @@ public class LogRencana {
 
     @NotNull
     @Column(name = "status", nullable =false)
-    private String status;
-    // approved, canceled, created, procured, deleted
+    private String status; // approved, canceled, created, procured, deleted
 
     @NotNull
-    @Column(name = "tanggal", nullable = false)
-    private Date tanggal;
+    @Column(name = "tanggalWaktu", nullable = false)
+    private LocalDateTime tanggalWaktu;
 }

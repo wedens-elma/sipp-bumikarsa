@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -23,27 +23,27 @@ public class Rencana {
     @NotNull
     @Column(name = "vendor", nullable = false)
     // private Vendor vendor;
-    private String Vendor;
+    private String vendor; // INI
 
     // // Pake faker
-    // @NotNull
-    // @Column(name = "user", nullable = false)
+    @NotNull
+    @Column(name = "user", nullable = false)
     // // private User user;
-    // private String User;
+    private String user = "User1"; // INI
 
     @NotNull
     @Column(name="namaRencana", nullable=false)
-    private String namaRencana;
+    private String namaRencana; // INI
 
     @NotNull
     @Column(name="tanggalRencana", nullable=false)
-    private Date expectedDate;
+    private LocalDate expectedDate; // INI
 
     @Column(name="feedback")
     private String feedback;
 
     @OneToMany(mappedBy = "rencana", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<BarangRencana> listBarangRencana;
+    private List<BarangRencana> listBarangRencana; // INI
 
     @OneToMany(mappedBy = "rencana", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<LogRencana> logRencana;

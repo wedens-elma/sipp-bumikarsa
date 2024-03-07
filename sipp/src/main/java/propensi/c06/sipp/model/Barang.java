@@ -25,5 +25,5 @@ public class Barang {
     private String namaBarang;
 
     @OneToMany(mappedBy = "barang", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<LogRencana> logRencana;
+    private List<BarangRencana> listBarangRencana;
 }

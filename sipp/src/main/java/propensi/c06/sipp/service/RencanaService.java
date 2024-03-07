@@ -7,4 +7,6 @@ public interface RencanaService {
     List<Rencana> getAllRencana();
 
     Rencana getRencanaById(Long id);
+
+    void saveRencana(Rencana rencana);
 }
