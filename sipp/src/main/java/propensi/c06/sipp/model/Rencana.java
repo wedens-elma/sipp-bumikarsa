@@ -21,46 +21,33 @@ public class Rencana {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRencana;
 
-    // Log Rencana? (rencana 1 : N log rencana)
     @NotNull
-    @Column(name="logRencana", nullable=false)
-    private LogRencana logRencana;
+    @Column(name = "vendor", nullable = false)
+    // private Vendor vendor;
+    private String Vendor;
 
-    // Vendor? -> vendor
-
-    // Created By? -> user
+    // // Pake faker
+    // @NotNull
+    // @Column(name = "user", nullable = false)
+    // // private User user;
+    // private String User;
 
     @NotNull
     @Column(name="namaRencana", nullable=false)
     private String namaRencana;
 
     @NotNull
-    @Column(name="namaPembuat", nullable=false)
-    private String namaPembuat;
-
-    // @NotNull
-    // @Column(name="status", nullable=false)
-    // private String status;
-
-    // @NotNull
-    // @Column(name="tanggalDibuat", nullable=false)
-    // private String tanggalDibuat;
-
-    @NotNull
     @Column(name="tanggalRencana", nullable=false)
-    private Date tanggalRencana;
+    private Date expectedDate;
 
-    // @Column(name="tanggalRealisasi")
-    // private Date tanggalRealisasi; 
-
-    // @Column(name="tanggalUbahStatus")
-    // private Date tanggalUbahStatus;
+    @Column(name="feedback")
+    private String feedback;
 
     @OneToMany(mappedBy = "rencana", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BarangRencana> listBarangRencana;
 
-    @Column(name="feedback")
-    private String feedback;
+    @OneToMany(mappedBy = "rencana", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<LogRencana> logRencana;
 
     @NotNull
     @Column(name="isDeleted", nullable=false)

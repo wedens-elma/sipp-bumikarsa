@@ -20,30 +20,26 @@ public class LogRencana {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idLogRencana;
 
-    /* nama procurement, -> rencana
-    vendor, -> rencana
-    items (jlh barang), -> rencana
-    status, v 
-    expected date, -> rencana
-    last updated (nama, tanggal, jam) 
-        -> approved v, canceled v, created v, procured v, deleted v */
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "rencana", referencedColumnName = "idRencana")
+    private Rencana rencana;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "barang", referencedColumnName = "idBarang")
+    private Barang barang;
+
+    // Pake faker
+    @NotNull
+    @Column(name = "user", nullable = false)
+    // private User user;
+    private String User;
 
     @NotNull
-    @Column(name="status", nullable=false)
+    @Column(name = "status", nullable =false)
     private String status;
-
-    // Pengubah? / Created By?
+    // approved, canceled, created, procured, deleted
 
     @NotNull
-    @Column(name="tanggalDibuat", nullable=false)
-    private String tanggalDibuat; // tanggal created
-
-    @Column(name="tanggalUbahStatus")
-    private Date tanggalUbahStatus; // tanggal canceled/approved
-
-    @Column(name="tanggalRealisasi")
-    private Date tanggalRealisasi; // tanggal procured
-
-    @Column(name="tanggalDeleted")
-    private Date tanggalDihapus; // tanggal deleted
+    @Column(name = "tanggal", nullable = false)
+    private Date tanggal;
 }

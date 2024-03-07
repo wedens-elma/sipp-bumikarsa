@@ -6,24 +6,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="barang")
-public class Barang {
-    // Sesuaikan sama Rangga
+@Table(name="vendor")
+public class Vendor {
+    // Sesuaikan sama Kinah
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idBarang;
+    private Long idVendor;
 
     @NotNull
-    @Column(name="namaBarang", nullable=false)
-    private String namaBarang;
-
-    @OneToMany(mappedBy = "barang", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<LogRencana> logRencana;
+    @Column(name="namaVendor", nullable=false)
+    private String namaVendor;
 }
