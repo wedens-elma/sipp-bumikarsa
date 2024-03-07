@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import propensi.c06.sipp.model.Rencana;
+import propensi.c06.sipp.service.LogRencanaService;
 import propensi.c06.sipp.service.RencanaService;
 import java.util.List;
 
@@ -12,6 +13,9 @@ import java.util.List;
 public class RencanaController {
     @Autowired
     private RencanaService rencanaService;
+
+    @Autowired
+    private LogRencanaService logRencanaService;
     
     @GetMapping("/rencana")
     public String daftarRencana(Model model) {
