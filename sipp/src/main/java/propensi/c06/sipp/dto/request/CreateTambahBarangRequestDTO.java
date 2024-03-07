@@ -22,5 +22,4 @@ public class CreateTambahBarangRequestDTO {
     private String fotoBarang;
     private Integer stokAwalBarang;
     private Integer standarStokBarang;
-
 }

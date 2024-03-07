@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  <title>Form Add Barang</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="card m-4 p-4">
+      <div class="card-body">
+        <div class="justify-content-center">
+          <h2>Tambah Barang </h2>
+          <br>
+          <form th:action="@{/barang/tambah}" th:object="${barangDTO}" method="POST">
+
+            Nama Barang: <br>
+            <input class="form-control" type="text" th:field="*{namaBarang}" />
+            <br><br>
+
+            Deskripsi Barang: <br>
+            <input class="form-control" type="text" th:field="*{deskripsiBarang}" />
+            <br><br>
+
+            Tipe Barang: <br>
+            <table class="table">
+              <tbody>
+                <tr>
+                    <select class="form-control" name="tipeBarang" id="tipeBarang" th:field="*{tipeBarang}">
+                        <option value="1" >Alat</option>
+                        <option value="2" >Material</option>
+                    </select>
+                    
+                </tr>
+              </tbody>
+            </table>
+
+            Dimensi Barang: <br>
+            <input class="form-control" type="text" th:field="*{dimensiBarang}" />
+            <br><br>
+
+            Berat Barang: <br>
+            <input class="form-control" type="text" th:field="*{beratBarang}" />
+            <br><br>
+
+            Foto Barang: <br>
+            <input class="form-control" type="text" th:field="*{fotoBarang}" />
+            <br><br>
+
+            Stok Awal: <br>
+            <input required class="form-control" type="number" th:field="*{stokAwalBarang}" />
+            <br><br>
+
+            Standar Stok Barang: <br>
+            <input required class="form-control" type="number" th:field="*{standarStokBarang}" />
+            <br><br>
+
+            
+            <a class="btn btn-danger" href="/">Batal</a>
+            <button class="btn btn-primary" type="submit">Simpan</button>
+            
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html><!DOCTYPE html>

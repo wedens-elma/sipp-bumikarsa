@@ -14,7 +14,7 @@ import propensi.c06.sipp.dto.request.CreateTambahBarangRequestDTO;
 import propensi.c06.sipp.repository.BarangDb;
 import propensi.c06.sipp.service.BarangService;
 
-@RestController
+@Controller
 public class BarangController {
     @Autowired
     BarangDb barangDb;
@@ -37,9 +37,7 @@ public class BarangController {
 
     @PostMapping("/barang/tambah")
     public String addTambahBarang(CreateTambahBarangRequestDTO barangDTO, Model model){
-        System.out.println("MASUK SINI 2");
         var barang = barangMapper.createTambahBarangRequestDTO(barangDTO);
-        System.out.println(barang.toString());
 
         barangService.addBarang(barang);
 

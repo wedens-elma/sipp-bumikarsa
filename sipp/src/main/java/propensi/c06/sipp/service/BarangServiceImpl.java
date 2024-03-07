@@ -18,27 +18,27 @@ public class BarangServiceImpl implements BarangService {
     @Override
     public void addBarang(Barang barang) {
         String kodeBarang = "ALAT001";
-        // System.out.println(barang.getNamaBarang());
-        // if (barang.getTipeBarang() == 1) {
-        //     kodeBarang = "ALAT";
-        // } else if (barang.getTipeBarang() == 2) {
-        //     kodeBarang = "MTRL";
-        // }
+        System.out.println(barang.getNamaBarang());
+        if (barang.getTipeBarang() == 1) {
+            kodeBarang = "ALAT";
+        } else if (barang.getTipeBarang() == 2) {
+            kodeBarang = "MTRL";
+        }
 
-        // String nextNumericId = barangDb.findNextNumericIdByType(kodeBarang);
+        String nextNumericId = barangDb.findNextNumericIdByType(kodeBarang);
 
-        // if (nextNumericId == null) {
-        //     kodeBarang += "001";
-        // } else {
-        //     int numericId = Integer.parseInt(nextNumericId.substring(4, 7)) + 1;
-        //     if (numericId < 10) {
-        //         kodeBarang = kodeBarang + "00" + numericId;
-        //     } else if (numericId < 100) {
-        //         kodeBarang = kodeBarang + "0" + numericId;
-        //     } else {
-        //         kodeBarang += numericId;
-        //     }
-        // }
+        if (nextNumericId == null) {
+            kodeBarang += "001";
+        } else {
+            int numericId = Integer.parseInt(nextNumericId.substring(4, 7)) + 1;
+            if (numericId < 10) {
+                kodeBarang = kodeBarang + "00" + numericId;
+            } else if (numericId < 100) {
+                kodeBarang = kodeBarang + "0" + numericId;
+            } else {
+                kodeBarang += numericId;
+            }
+        }
 
         barang.setKodeBarang(kodeBarang);
         barangDb.save(barang);
