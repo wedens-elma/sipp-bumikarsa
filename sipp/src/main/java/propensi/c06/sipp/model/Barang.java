@@ -34,22 +34,24 @@ public class Barang {
     @Column(name = "tipe_barang", nullable = false)
     private Integer tipeBarang;
 
-    @NotNull
     @Column(name = "dimensi_barang")
     private String dimensiBarang;
 
-    @NotNull
     @Column(name = "berat_barang")
     private String beratBarang;
 
     //Belum tau caranya
-    @NotNull
-    @Column(name = "foto_barang")
-    private String fotoBarang;
+    @Lob
+    @Basic(fetch = FetchType.EAGER)
+    @Column(name = "image")
+    private byte[] image;
+
+    @Column(name = "image64")
+    private String imageBase64;
 
     @NotNull
-    @Column(name = "stok_awal", nullable = false)
-    private Integer stokAwalBarang;
+    @Column(name = "stok_barang", nullable = false)
+    private Integer stokBarang;
 
     @NotNull
     @Column(name = "stok_standar", nullable = false)

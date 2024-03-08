@@ -1,19 +1,23 @@
 package propensi.c06.sipp.service;
+
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.repository.BarangDb;
-
 
 @Service
 public class BarangServiceImpl implements BarangService {
 
     @Autowired
     BarangDb barangDb;
-
 
     @Override
     public void addBarang(Barang barang) {
@@ -40,6 +44,7 @@ public class BarangServiceImpl implements BarangService {
             }
         }
 
+
         barang.setKodeBarang(kodeBarang);
         barangDb.save(barang);
     }
@@ -59,4 +64,25 @@ public class BarangServiceImpl implements BarangService {
         return null;
     }
 
+    @Override
+    public byte[] processFile(MultipartFile file) throws IOException{
+    // check if the file is not empty
+    if (file.isEmpty()) {
+    throw new IllegalArgumentException("File is empty");
+    }
+    // check if the file is an image (you can customize this check based on your requirements)
+    if (!isImage(file)) {
+    throw new IllegalArgumentException("File is not an image");
+    }
+    // convert MultipartFile to byte[]
+    return file.getBytes();
+    }
+
+    private boolean isImage(MultipartFile file) {
+    // Implement the Logic to check if the file is an image
+    // You can use Libraries Like Apache Tika or simply check the file extension
+    // For simplicity, let's assume any file with ".jpg", "jpeg", or ".png" extension is considered an image
+    String fileName = file.getOriginalFilename();
+    return fileName !=null && (fileName.endsWith(".jpg")|| fileName.endsWith(".jpeg") || fileName.endsWith(".png"));
+    }
 }

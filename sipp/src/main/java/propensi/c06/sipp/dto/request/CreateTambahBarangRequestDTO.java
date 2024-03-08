@@ -19,7 +19,7 @@ public class CreateTambahBarangRequestDTO {
     private Integer tipeBarang;
     private String dimensiBarang;
     private String beratBarang;
-    private String fotoBarang;
-    private Integer stokAwalBarang;
+    private byte[] image;
+    private Integer stokBarang;
     private Integer standarStokBarang;
 }
