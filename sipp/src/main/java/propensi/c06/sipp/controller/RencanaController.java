@@ -19,8 +19,8 @@ import propensi.c06.sipp.service.BarangService;
 import propensi.c06.sipp.service.LogRencanaService;
 import propensi.c06.sipp.service.RencanaService;
 import propensi.c06.sipp.service.VendorService;
-
 import java.util.List;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/rencana")
@@ -58,17 +58,28 @@ public class RencanaController {
 
     @GetMapping("/create")
     public String formAddRencana(Model model) {
-        var rencanaDTO = new CreateRencanaRequestDTO();
-        var listVendor = vendorService.getAllVendor();
-        var listBarang = barangService.getAllBarang();
+        model.addAttribute("rencanaDTO", new CreateRencanaRequestDTO());
+        model.addAttribute("listVendorExisted", vendorService.getAllVendor());
+        model.addAttribute("listBarangExisted", barangService.getAllBarang());
+        return "form-create-rencana";
+    }
+
+    @PostMapping(value = "/create", params = {"addRow"})
+    public String addRowRencana(@ModelAttribute CreateRencanaRequestDTO rencanaDTO, Model model) {
+        if (rencanaDTO.getListBarangRencana() == null || rencanaDTO.getListBarangRencana().size() == 0) {
+            rencanaDTO.setListBarangRencana(new ArrayList<>());        
+        }
+        rencanaDTO.getListBarangRencana().add(new CreateRencanaRequestDTO.BarangRencanaDTO());
         model.addAttribute("rencanaDTO", rencanaDTO);
-        model.addAttribute("listVendorExisted", listVendor);
-        model.addAttribute("listBarangExisted", listBarang);
+        model.addAttribute("listVendorExisted", vendorService.getAllVendor());
+        model.addAttribute("listBarangExisted", barangService.getAllBarang());
         return "form-create-rencana";
     }
 
     @PostMapping("/create")
-    public String addRencana(@Valid @ModelAttribute CreateRencanaRequestDTO rencanaDTO, BindingResult bindingResult, Model model) {
+    public String addRencana(
+        @Valid @ModelAttribute CreateRencanaRequestDTO rencanaDTO, 
+        BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errors = bindingResult.getAllErrors();
             StringBuilder errorMessage = new StringBuilder();
@@ -78,8 +89,8 @@ public class RencanaController {
             model.addAttribute("errorMessage", errorMessage.toString());
             return "error-view";
         }
-        var rencana = rencanaMapper.createRencanaRequestDTOToRencana(rencanaDTO);
-        rencanaService.saveRencana(rencana);
+        // var rencana = rencanaMapper.createRencanaRequestDTOToRencana(rencanaDTO);
+        Rencana rencana = rencanaService.saveRencana(rencanaDTO);
         model.addAttribute("id", rencana.getIdRencana());
         model.addAttribute("nama", rencana.getNamaRencana());
         return "success-create-rencana";

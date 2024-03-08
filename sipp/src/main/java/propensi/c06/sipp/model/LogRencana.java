@@ -19,15 +19,15 @@ public class LogRencana {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idLogRencana;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rencana", referencedColumnName = "idRencana")
     private Rencana rencana;
 
     // Pake faker
     @NotNull
-    @Column(name = "user", nullable = false)
-    // private User user;
-    private String User;
+    @Column(name = "changedBy", nullable = false)
+    // private User changedBy;
+    private String changedBy;
 
     @NotNull
     @Column(name = "status", nullable =false)

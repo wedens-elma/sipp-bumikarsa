@@ -20,16 +20,15 @@ public class Rencana {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRencana;
 
-    @NotNull
-    @Column(name = "vendor", nullable = false)
-    // private Vendor vendor;
-    private String vendor; // INI
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_vendor", referencedColumnName = "idVendor")
+    private Vendor vendor;
 
     // // Pake faker
     @NotNull
-    @Column(name = "user", nullable = false)
+    @Column(name = "createdBy", nullable = false)
     // // private User user;
-    private String user = "User1"; // INI
+    private String createdBy; // INI
 
     @NotNull
     @Column(name="namaRencana", nullable=false)

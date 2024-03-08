@@ -14,7 +14,6 @@ import lombok.Setter;
 @Entity
 @Table(name="vendor")
 public class Vendor {
-    // Sesuaikan sama Kinah
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idVendor;

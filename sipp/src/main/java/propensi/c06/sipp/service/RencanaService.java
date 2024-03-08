@@ -1,6 +1,7 @@
 package propensi.c06.sipp.service;
 
 import java.util.List;
+import propensi.c06.sipp.dto.request.CreateRencanaRequestDTO;
 import propensi.c06.sipp.model.Rencana;
 
 public interface RencanaService {
@@ -8,5 +9,5 @@ public interface RencanaService {
 
     Rencana getRencanaById(Long id);
 
-    void saveRencana(Rencana rencana);
+    Rencana saveRencana(CreateRencanaRequestDTO rencanaDTO);
 }

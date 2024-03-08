@@ -15,7 +15,6 @@ import java.util.List;
 @Entity
 @Table(name="barang")
 public class Barang {
-    // Sesuaikan sama Rangga
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idBarang;
