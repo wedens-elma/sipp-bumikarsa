@@ -10,13 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.validation.Valid;
-import propensi.c06.sipp.dto.RencanaMapper;
 import propensi.c06.sipp.dto.request.CreateRencanaRequestDTO;
-import propensi.c06.sipp.model.LogRencana;
 import propensi.c06.sipp.model.Rencana;
 import propensi.c06.sipp.service.BarangService;
-import propensi.c06.sipp.service.LogRencanaService;
 import propensi.c06.sipp.service.RencanaService;
 import propensi.c06.sipp.service.VendorService;
 import java.util.List;
@@ -29,25 +27,10 @@ public class RencanaController {
     private RencanaService rencanaService;
 
     @Autowired
-    private LogRencanaService logRencanaService;
-
-    @Autowired
     private BarangService barangService;
 
     @Autowired
     private VendorService vendorService;
-
-    @Autowired
-    private RencanaMapper rencanaMapper;
-    
-    // @GetMapping("/")
-    // public String daftarRencana(Model model) {
-    //     List<Rencana> listRencana = rencanaService.getAllRencana();
-    //     List<LogRencana> listLogRencana = logRencanaService.getAllLogRencana();
-    //     model.addAttribute("listLogRencana", listLogRencana);
-    //     model.addAttribute("listRencana", listRencana);
-    //     return "daftar-rencana";
-    // }
 
     @GetMapping("/")
     public String daftarRencana(Model model) {
@@ -58,7 +41,7 @@ public class RencanaController {
     public String detailRencana(@PathVariable(value = "id") Long id, Model model) {
         Rencana rencana = rencanaService.getRencanaById(id);
         model.addAttribute("rencana", rencana);
-        return "view-detail-rencana";
+        return "view-detail-rencana-operasional";
     }
 
     @GetMapping("/create")
@@ -81,6 +64,16 @@ public class RencanaController {
         return "form-create-rencana";
     }
 
+    @PostMapping(value = "/create", params = {"deleteRow"})
+    public String deleteRowRencana(
+        @ModelAttribute CreateRencanaRequestDTO rencanaDTO, @RequestParam("deleteRow") int row, Model model) {
+        rencanaDTO.getListBarangRencana().remove(row);
+        model.addAttribute("rencanaDTO", rencanaDTO);
+        model.addAttribute("listVendorExisted", vendorService.getAllVendor());
+        model.addAttribute("listBarangExisted", barangService.getAllBarang());
+        return "form-create-rencana";
+    }
+
     @PostMapping("/create")
     public String addRencana(
         @Valid @ModelAttribute CreateRencanaRequestDTO rencanaDTO, 
@@ -94,10 +87,9 @@ public class RencanaController {
             model.addAttribute("errorMessage", errorMessage.toString());
             return "error-view";
         }
-        // var rencana = rencanaMapper.createRencanaRequestDTOToRencana(rencanaDTO);
         Rencana rencana = rencanaService.saveRencana(rencanaDTO);
         model.addAttribute("id", rencana.getIdRencana());
         model.addAttribute("nama", rencana.getNamaRencana());
-        return "success-create-rencana";
+        return "view-daftar-rencana";
     }
 }

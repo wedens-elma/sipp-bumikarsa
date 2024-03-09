@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import propensi.c06.sipp.model.Vendor;
 
 @Repository
-public interface VendorDb extends JpaRepository<Vendor, Long> {
+public interface VendorDb extends JpaRepository<Vendor, String> {
     
 }

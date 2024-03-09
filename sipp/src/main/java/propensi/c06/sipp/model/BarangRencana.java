@@ -26,7 +26,7 @@ public class BarangRencana {
     @Column(name="kuantitas", nullable=false)
     private Integer kuantitas;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "barang")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "barang", referencedColumnName = "kodeBarang")
     private Barang barang;
 }

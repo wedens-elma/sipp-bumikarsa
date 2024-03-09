@@ -23,10 +23,9 @@ public class LogRencana {
     @JoinColumn(name = "rencana", referencedColumnName = "idRencana")
     private Rencana rencana;
 
-    // Pake faker
+    // Sesuaikan sama Wedens
     @NotNull
     @Column(name = "changedBy", nullable = false)
-    // private User changedBy;
     private String changedBy;
 
     @NotNull

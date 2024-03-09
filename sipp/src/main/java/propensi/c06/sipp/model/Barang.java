@@ -2,6 +2,7 @@ package propensi.c06.sipp.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,11 +17,12 @@ import java.util.List;
 @Table(name="barang")
 public class Barang {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idBarang;
+    @NotNull
+    @Size(max = 20)
+    private String kodeBarang;
 
     @NotNull
-    @Column(name="namaBarang", nullable=false)
+    @Column(name = "nama_barang", nullable = false)
     private String namaBarang;
 
     @OneToMany(mappedBy = "barang", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

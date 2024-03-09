@@ -23,28 +23,27 @@ public class Rencana {
     private Long idRencana;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_vendor", referencedColumnName = "idVendor")
+    @JoinColumn(name = "id_vendor", referencedColumnName = "kodeVendor")
     private Vendor vendor;
 
-    // // Pake faker
+    // Sesuaikan sama Wedens
     @NotNull
     @Column(name = "createdBy", nullable = false)
-    // // private User user;
-    private String createdBy; // INI
+    private String createdBy; 
 
     @NotNull
     @Column(name="namaRencana", nullable=false)
-    private String namaRencana; // INI
+    private String namaRencana; 
 
     @NotNull
     @Column(name="tanggalRencana", nullable=false)
-    private LocalDate expectedDate; // INI
+    private LocalDate expectedDate; 
 
     @Column(name="feedback")
     private String feedback;
 
     @OneToMany(mappedBy = "rencana", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<BarangRencana> listBarangRencana; // INI
+    private List<BarangRencana> listBarangRencana; 
 
     @OneToMany(mappedBy = "rencana", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<LogRencana> logRencana;
