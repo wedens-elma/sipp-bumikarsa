@@ -47,23 +47,24 @@ public class WebSecurityConfig {
     @Bean
     @Order(2)
     public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception{
-        http
-                .csrf(Customizer.withDefaults())
-                .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/buku/create")).hasAuthority("Pustakawan")
-                        .requestMatchers(new AntPathRequestMatcher("/buku/{id}/update")).hasAuthority("Pustakawan")
-                        .requestMatchers(new AntPathRequestMatcher("/penerbit/create")).hasAuthority("Pustakawan")
-                        .anyRequest().authenticated()
-                )
-                .formLogin((form) -> form
-                        .loginPage("/login")
-                        .permitAll()
-                        .defaultSuccessUrl("/")
-                )
-                .logout((logout) -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessUrl("/login"))
+    http
+        .csrf(Customizer.withDefaults())
+        .authorizeHttpRequests(requests -> requests
+            .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/buku/create")).hasAuthority("Pustakawan")
+            .requestMatchers(new AntPathRequestMatcher("/buku/{id}/update")).hasAuthority("Pustakawan")
+            .requestMatchers(new AntPathRequestMatcher("/penerbit/create")).hasAuthority("Pustakawan")
+            // .antMatchers("/api/rencana/view-all").permitAll()  // Menambahkan izin untuk endpoint kalender
+            .anyRequest().authenticated()
+        )
+        .formLogin((form) -> form
+            .loginPage("/login")
+            .permitAll()
+            .defaultSuccessUrl("/")
+        )
+        .logout((logout) -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+            .logoutSuccessUrl("/login"))
         ;
         return http.build();
     }

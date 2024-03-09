@@ -7,7 +7,6 @@ import propensi.c06.sipp.model.UserModel;
 public interface UserService {
     UserModel addUser(UserModel user, CreateUserRequestDTO createUserRequestDTO);
     
-    
     String encrypt(String password);
 
     String loginJwtAdmin(LoginJwtRequestDTO loginJwtRequestDTO);

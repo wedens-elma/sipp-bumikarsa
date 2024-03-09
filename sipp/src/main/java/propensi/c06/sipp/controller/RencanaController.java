@@ -1,6 +1,7 @@
 package propensi.c06.sipp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,11 +12,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+
+import org.springframework.security.core.Authentication;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import propensi.c06.sipp.dto.request.CreateRencanaRequestDTO;
+import propensi.c06.sipp.dto.response.LoginJwtResponseDTO;
 import propensi.c06.sipp.model.Rencana;
 import propensi.c06.sipp.service.BarangService;
 import propensi.c06.sipp.service.RencanaService;
+import propensi.c06.sipp.service.UserService;
 import propensi.c06.sipp.service.VendorService;
 import java.util.List;
 import java.util.ArrayList;
@@ -32,8 +43,29 @@ public class RencanaController {
     @Autowired
     private VendorService vendorService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/")
     public String daftarRencana(Model model) {
+        // HttpSession session = request.getSession(false);
+        // String jwtToken = (String) session.getAttribute("token");
+        // LoginJwtResponseDTO loginJwtResponseDTO = userService.retrieveUser(jwtToken);
+        HttpServletRequest request
+        HttpSession session = request.getSession(false);
+        String jwtToken = (String) session.getAttribute("token");
+        System.out.println(role);
+        Claims claims = Jwts.parser()
+                .setSigningKey("yourSecretKey")
+                .parseClaimsJws(role)
+                .getBody();
+        String roleName = (String) claims.get("role");
+        System.out.println(roleName);
+        // if () {
+        //     return "view-daftar-rencana-keuangan";
+        // } else {
+        //     return "view-daftar-rencana";
+        // }
         return "view-daftar-rencana";
     }
 
@@ -41,7 +73,15 @@ public class RencanaController {
     public String detailRencana(@PathVariable(value = "id") Long id, Model model) {
         Rencana rencana = rencanaService.getRencanaById(id);
         model.addAttribute("rencana", rencana);
-        return "view-detail-rencana-manajer";
+
+        // if () {
+        //     return "view-detail-rencana-manajer";
+        // } else if () {
+        //     return "view-detail-rencana-keuangan";
+        // } else {
+        //     return "view-detail-rencana-operasional";
+        // }
+        return null;
     }
 
     @GetMapping("/create")
