@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <title>View All Barang</title>
+
+</head>
+
+
+<body>
+
+    <div class="container">
+        <div class="card m-4 p-4">
+            <div class="card-body">
+                <div class="text-center">
+                    <h2> Daftar Barang</h2>
+                    <div class="text-center m-3">
+                        <a type="button" class="btn btn-md btn-primary" href="/barang/tambah">+ Tambah Barang</a>
+                    </div>
+                </div>
+
+                <br>
+                
+                <table id="table" class="table table-bordered text-center">
+                  <thead class="table-dark">
+                      <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Code Barang</th>
+                          <th scope="col">Nama</th>
+                          <th scope="col">Tipe Barang</th>
+                          <th scope="col">Stok</th>
+                          <th scope="col">Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <!-- Gunakan Thymeleaf untuk mengulang melalui daftar barang -->
+                      <tr th:each="barang, iterStat : ${listBarang}">
+                          <td th:text="${iterStat.index + 1}"></td>
+                          <td th:text="${barang.kodeBarang}"></td>
+                          <td th:text="${barang.namaBarang}"></td>
+
+                          <!-- Disini saya ingin menampilkan tipe barang -->
+                          <td th:text="${barang.tipeBarang == 1 ? 'Alat' : 'Material'}"></td>
+
+                          <td th:text="${barang.stokBarang}"></td>
+                          
+
+
+                          <td>
+                              <a type="button" class="btn btn-sm btn-secondary" th:href="@{/barang/{idBarang}(idBarang=${barang.kodeBarang})}">Detail</a>
+                          </td>
+
+                      </tr>
+                  </tbody>
+              </table>
+                
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    $(document).ready(function () {
+        $('#table').DataTable();
+    });
+</script>
+
+
+</html>

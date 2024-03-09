@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import propensi.c06.sipp.dto.request.CreateVendorRequestDTO;
-import propensi.c06.sipp.dto.response.VendorMapper;
+import propensi.c06.sipp.dto.VendorMapper;
 import propensi.c06.sipp.model.Vendor;
 import propensi.c06.sipp.repository.VendorDb;
 

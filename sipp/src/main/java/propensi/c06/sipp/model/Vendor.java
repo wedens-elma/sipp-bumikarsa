@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.mapping.Set;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -39,5 +42,15 @@ public class Vendor {
     @Column(name = "nomor_handphone_vendor", nullable = false)
     private String nomorHandphoneVendor;
 
+    @ManyToMany
+    @JoinTable(
+            name = "vendor_barang",
+            joinColumns = @JoinColumn(name = "kode_vendor", referencedColumnName = "kodeVendor"),
+            inverseJoinColumns = @JoinColumn(name = "kode_barang", referencedColumnName = "kodeBarang") // Perbarui ini sesuai dengan kunci primer dari Barang
+    )
+    private List<Barang> barangYangDimiliki;
+
+    @Column(name = "is_deleted")
+    private boolean is_deleted = Boolean.FALSE;
 }
 

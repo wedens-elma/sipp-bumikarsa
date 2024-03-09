@@ -19,8 +19,7 @@ public class CreateVendorRequestDTO {
     @NotBlank(message = "Alamat vendor tidak boleh kosong")
     private String alamatVendor;
 
-    // Asumsikan BarangDTO merupakan DTO yang menyimpan informasi barang
-//    private List<BarangDTO> barangYangDimiliki;
+    private List<CreateTambahBarangRequestDTO> barangYangAkanDijual;
 
     @NotBlank(message = "Email tidak boleh kosong")
     @Email(message = "Email harus valid")

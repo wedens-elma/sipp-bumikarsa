@@ -1,4 +1,4 @@
-package propensi.c06.sipp.dto.response;
+package propensi.c06.sipp.dto;
 
 import org.mapstruct.Mapper;
 

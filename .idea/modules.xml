@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/c06-prororo.iml" filepath="$PROJECT_DIR$/.idea/c06-prororo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/propensi.c06.sipp.main.iml" filepath="$PROJECT_DIR$/.idea/modules/propensi.c06.sipp.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sipp.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sipp.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sipp.test.iml" filepath="$PROJECT_DIR$/.idea/modules/sipp.test.iml" />
     </modules>
   </component>
 </project>

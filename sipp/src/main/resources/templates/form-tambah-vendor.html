@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tambah Vendor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"></head>
+<body>
+
+<div class="container">
+    <h2>Tambah Vendor</h2>
+    <form th:action="@{/vendor/tambah}" th:object="${vendorDTO}" method="post">
+        <div class="form-group">
+            <label for="namaVendor">Nama Vendor:</label>
+            <input type="text" class="form-control" id="namaVendor" th:field="*{namaVendor}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="alamatVendor">Alamat Vendor:</label>
+            <input type="text" class="form-control" id="alamatVendor" th:field="*{alamatVendor}" required>
+        </div>
+
+        <!-- Here you should add a list of Barang, but since the DTO doesn't include it, it's omitted. -->
+
+        <div class="form-group">
+            <label for="emailVendor">Email Vendor:</label>
+            <input type="email" class="form-control" id="emailVendor" th:field="*{emailVendor}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="nomorTelepon">Nomor Telepon:</label>
+            <input type="tel" class="form-control" id="nomorTelepon" th:field="*{noTelp}" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Tambah Vendor</button>
+    </form>
+</div>
+
+<!-- Include your Bootstrap JS here -->
+
+</body>
+</html>
