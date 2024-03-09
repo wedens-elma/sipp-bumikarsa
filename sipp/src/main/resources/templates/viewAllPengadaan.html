@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <object th:include="~{fragments/fragment :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/fragment :: css}" th:remove="tag"></object>
+    <title>View All Vendor</title>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="card m-4 p-4">
+        <div class="card-body">
+            <div class="text-center">
+                <h2> Daftar Pengadaan</h2>
+                <div class="text-center m-3">
+                    <a type="button" class="btn btn-md btn-primary" href="/pengadaan/tambah">+ Tambah Pengadaan</a>
+                </div>
+            </div>
+
+            <br>
+
+            <table id="pengadaanTable" class="table table-bordered text-center">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Code Pengadaan</th>
+                    <th scope="col">Nama Pengadaan</th>
+                    <th scope="col">Vendor</th>
+                    <th scope="col">Shipment Status</th>
+                    <th scope="col">Payment Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Thymeleaf untuk iterasi daftar pengadaan -->
+                <tr th:each="pengadaan, iterStat : ${listPengadaan}">
+                    <td th:text="${iterStat.index + 1}"></td>
+                    <td th:text="${pengadaan.idPengadaan}"></td>-->
+                    <td th:text="${pengadaan.namaPengadaan}"></td>
+                    <td th:text="${pengadaan.vendor.namaVendor}"></td>
+                    <td th:text="${pengadaan.shipmentStatus}"></td>
+                    <td th:text="${pengadaan.paymentStatus}"></td>
+                    <td>
+                        <a type="button" class="btn btn-sm btn-secondary" th:href="@{/pengadaan/{idPengadaan}(idPengadaan=${pengadaan.idPengadaan})}">Detail</a>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#pengadaanTable').DataTable();
+    });
+</script>
+
+</html>
