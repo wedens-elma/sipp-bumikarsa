@@ -2,21 +2,81 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Schedule</title>
+    <meta charset="UTF-8">
+    <title>Schedule</title>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/rencana/view-all')
+                .then(response => response.json())
+                .then(data => {
+                    // Map each object in the array to match FullCalendar's event structure
+                    const events = data.map(item => ({
+                        title: item.namaRencana,
+                        start: item.expectedDate
+                    }));
+
+                    var calendarEl = document.getElementById('calendar');
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        initialView: 'dayGridMonth',
+                        events: events // Use the mapped events
+                    });
+                    calendar.render();
+                })
+                .catch(error => {
+                    console.error('Error fetching event data:', error);
+                });
+        });
+  
+    </script>
+    <style>
+        .card-title {
+            text-align: center;
+        }
+
+        .button-container {
+            text-align: center;
+            padding: 10px;
+        }
+
+        #calendar {
+            margin-top: 20px;
+        }
+
+        .card {
+            width: 80%;
+            margin: auto;
+        }
+
+        .button-container a:link,
+        .button-container a:visited {
+            background-color: #ecb913;
+            color: white;
+            padding: 14px 25px;
+            text-decoration: none;
+            display: inline-block;
+        }
+    </style>
 </head>
 
 <body>
-    <div style="text-align: center;">
-    <img src="https://gitlab.cs.ui.ac.id/propensi-2023-2024-genap/kelas-c/c06-prororo/-/raw/main/images/logo.png?ref_type=heads" 
-    alt="prororo"
-    style="width:100px;height:100px;">
-
-    <br><br>
-    
-    <p>Hello World!</p>
-
-    </div>    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title">Schedule</h1>
+                        <div class="button-container">
+                            <a href="/rencana/create" class="btn btn-primary">+ Add Schedule</a>
+                        </div>
+                        <div id='calendar'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
 </body>
 
 </html>

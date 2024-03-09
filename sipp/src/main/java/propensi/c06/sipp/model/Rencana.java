@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDate;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Getter
 @Setter
@@ -15,12 +16,13 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name="rencana")
+@JsonIgnoreProperties(value={"id_vendor", "vendor", "createdBy", "feedback", "listBarangRencana", "logRencana", "isDeleted"}, allowSetters = true)
 public class Rencana {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRencana;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_vendor", referencedColumnName = "idVendor")
     private Vendor vendor;
 
@@ -41,10 +43,10 @@ public class Rencana {
     @Column(name="feedback")
     private String feedback;
 
-    @OneToMany(mappedBy = "rencana", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "rencana", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<BarangRencana> listBarangRencana; // INI
 
-    @OneToMany(mappedBy = "rencana", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "rencana", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<LogRencana> logRencana;
 
     @NotNull

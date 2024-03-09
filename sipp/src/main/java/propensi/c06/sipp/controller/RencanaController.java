@@ -40,12 +40,17 @@ public class RencanaController {
     @Autowired
     private RencanaMapper rencanaMapper;
     
+    // @GetMapping("/")
+    // public String daftarRencana(Model model) {
+    //     List<Rencana> listRencana = rencanaService.getAllRencana();
+    //     List<LogRencana> listLogRencana = logRencanaService.getAllLogRencana();
+    //     model.addAttribute("listLogRencana", listLogRencana);
+    //     model.addAttribute("listRencana", listRencana);
+    //     return "daftar-rencana";
+    // }
+
     @GetMapping("/")
     public String daftarRencana(Model model) {
-        List<Rencana> listRencana = rencanaService.getAllRencana();
-        List<LogRencana> listLogRencana = logRencanaService.getAllLogRencana();
-        model.addAttribute("listLogRencana", listLogRencana);
-        model.addAttribute("listRencana", listRencana);
         return "daftar-rencana";
     }
 
