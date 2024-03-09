@@ -3,12 +3,17 @@ package propensi.c06.sipp.dto.response;
 import java.util.Base64;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Getter
+@Setter
 public class ReadBarangResponseDTO {
+    private String kodeBarang;
     private String namaBarang;
     private String deskripsiBarang;
     private Integer tipeBarang;

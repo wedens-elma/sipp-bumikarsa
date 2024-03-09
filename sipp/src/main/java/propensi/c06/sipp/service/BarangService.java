@@ -15,4 +15,6 @@ public interface BarangService {
     Barang getBarangById(String sku);
 
     public byte[] processFile(MultipartFile file) throws IOException;
+
+    public boolean isBarangExists(String namaBarang);
 }

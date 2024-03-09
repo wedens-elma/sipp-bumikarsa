@@ -27,7 +27,7 @@ public class Barang {
     private String namaBarang;
 
     @NotNull
-    @Column(name = "deskripsi", nullable = false)
+    @Column(name = "deskripsi", nullable = false, length = 1000)
     private String deskripsiBarang;
 
     @NotNull
@@ -46,9 +46,6 @@ public class Barang {
     @Column(name = "image")
     private byte[] image;
 
-    @Column(name = "image64")
-    private String imageBase64;
-
     @NotNull
     @Column(name = "stok_barang", nullable = false)
     private Integer stokBarang;
@@ -56,5 +53,8 @@ public class Barang {
     @NotNull
     @Column(name = "stok_standar", nullable = false)
     private Integer standarStokBarang;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
 
 }
