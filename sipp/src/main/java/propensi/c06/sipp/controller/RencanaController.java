@@ -51,14 +51,14 @@ public class RencanaController {
 
     @GetMapping("/")
     public String daftarRencana(Model model) {
-        return "daftar-rencana";
+        return "view-daftar-rencana";
     }
 
     @GetMapping(value = "/{id}")
     public String detailRencana(@PathVariable(value = "id") Long id, Model model) {
         Rencana rencana = rencanaService.getRencanaById(id);
         model.addAttribute("rencana", rencana);
-        return "detail-rencana";
+        return "view-detail-rencana";
     }
 
     @GetMapping("/create")

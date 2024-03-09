@@ -51,14 +51,14 @@ public class RencanaServiceImpl implements RencanaService {
         for (CreateRencanaRequestDTO.BarangRencanaDTO barangRencanaDTO : rencanaDTO.getListBarangRencana()) {
             BarangRencana barangRencana = new BarangRencana();
             barangRencana.setKuantitas(barangRencanaDTO.getKuantitas());
-            barangRencana.setBarang(barangRencana.getBarang());
+            barangRencana.setBarang(barangRencanaDTO.getBarang());
             barangRencana.setRencana(rencana);
             barangRencanaDb.save(barangRencana);
         }
 
         LogRencana logRencana = new LogRencana();
         logRencana.setRencana(rencana);
-        logRencana.setStatus("created");
+        logRencana.setStatus("Created");
         logRencana.setTanggalWaktu(LocalDateTime.now());
         logRencana.setChangedBy(rencana.getCreatedBy());
         rencana.setLogRencana(new ArrayList<LogRencana>());

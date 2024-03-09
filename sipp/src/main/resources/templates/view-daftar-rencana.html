@@ -8,20 +8,26 @@
 
     <script>
 
-        document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
             fetch('/api/rencana/view-all')
                 .then(response => response.json())
                 .then(data => {
                     // Map each object in the array to match FullCalendar's event structure
                     const events = data.map(item => ({
                         title: item.namaRencana,
-                        start: item.expectedDate
+                        start: item.expectedDate,
+                        url: '/rencana/' + item.idRencana // Specify the URL for event detail page
                     }));
 
                     var calendarEl = document.getElementById('calendar');
                     var calendar = new FullCalendar.Calendar(calendarEl, {
                         initialView: 'dayGridMonth',
-                        events: events // Use the mapped events
+                        events: events, // Use the mapped events
+                        eventClick: function(info) {
+                            if (info.event.url) {
+                                window.location.href = info.event.url; // Open event detail page
+                            }
+                        }
                     });
                     calendar.render();
                 })

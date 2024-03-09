@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <title>View Detail Schedule</title>
+</head>
+
+
+<body>
+
+    <div class="container">
+        <div class="card m-4 p-4">
+            <div class="card-body text-center">
+                <div class="justify-content-center">
+                    <h2> Detail Schedule </h2>
+                </div>
+
+                <h3 th:text="${rencana.logRencana[rencana.logRencana.size() - 1].status}"></h3>
+                <h4 th:text="'Created By ' + ${rencana.createdBy}"></h4>
+
+                <br><br>
+                <p th:text="'Expected Date ' + ${rencana.expectedDate}"></p>
+
+                <br><br>
+                <p th:text="'Vendor Name ' + ${rencana.vendor.namaVendor}"></p>
+
+                <h3> Procurement Items </h3>
+                
+                <table id="table" class="table table-bordered text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="barangRencana, iterStat : ${rencana.listBarangRencana}">
+                            <td th:text="${iterStat.index + 1}"></td>
+                            <td th:text="${barangRencana.barang.namaBarang}"></td>
+                            <td th:text="${barangRencana.kuantitas}"></td>
+                        </tr>
+                    </tbody>
+                </table>  
+            </div>
+        </div>
+
+        <div class="text-center m-3">
+            <a type="button" class="btn btn-md btn-primary"
+                href="/rencana/">Make Procurement</a>
+        </div>
+
+        <div class="text-center m-3">
+            <a type="button" class="btn btn-md btn-primary"
+                href="/rencana/">Delete Schedule</a>
+        </div>
+
+        <div class="text-center">
+            <a type="button" class="btn btn-sm btn-secondary" href="/rencana/">Kembali</a>
+        </div>
+
+    </div>
+    </div>
+    </div>
+</body>
+
+<script>
+    $(document).ready(function () {
+        $('#table').DataTable();
+    });
+</script>
+
+</html>
