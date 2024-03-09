@@ -74,7 +74,7 @@
 
 <div class="container mt-5">
     <div class="page-title">Vendors</div>
-    <button class="btn add-vendor-btn">Add Vendor</button>
+    <button class="btn add-vendor-btn" id="addVendorBtn">Add Vendor</button>
 
     <table id="vendorTable" class="table table-custom">
         <thead>
@@ -83,23 +83,20 @@
             <th>Vendor Name</th>
             <th>Email</th>
             <th>Phone Number</th>
-            <th>Units</th>
             <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="vendor : ${vendors}">
-            <td th:text="${vendor.code}">V001</td>
-            <td th:text="${vendor.name}">Vendor Name</td>
-            <td th:text="${vendor.email}">vendor@example.com</td>
-            <td th:text="${vendor.phoneNumber}">123-456-7890</td>
-            <td>Units information</td>
+            <td th:text="${vendor.kodeVendor}"></td>
+            <td th:text="${vendor.namaVendor}"></td>
+            <td th:text="${vendor.emailVendor}"></td>
+            <td th:text="${vendor.nomorHandphoneVendor}"></td>
             <td class="action-buttons">
-                <button class="btn btn-info" th:onclick="'window.location.href=\'' + @{/vendor/details(vendor.id)} + '\''">Details</button>
-                <button class="btn btn-info" th:onclick="'window.location.href=\'' + @{/vendor/edit(vendor.id)} + '\''">Edit</button>
-                <button class="btn btn-danger" th:onclick="'if(confirm(\'Are you sure you want to delete this vendor?\')){window.location.href=\'' + @{/vendor/delete(vendor.id)} + '\''}">Delete</button>
+                <a th:href="@{'/vendor/' + ${vendor.kodeVendor}}" class="btn btn-info">Details</a>
             </td>
-        </tr>        </tbody>
+        </tr>
+        </tbody>
     </table>
 </div>
 
@@ -127,6 +124,9 @@
                 }
             }
         });
+    });
+    document.getElementById("addVendorBtn").addEventListener("click", function() {
+        window.location.href = "/vendor/tambah";
     });
 </script>
 

@@ -21,8 +21,8 @@ public class BarangServiceImpl implements BarangService {
 
     @Override
     public void addBarang(Barang barang) {
+
         String kodeBarang = "ALAT001";
-        System.out.println(barang.getNamaBarang());
         if (barang.getTipeBarang() == 1) {
             kodeBarang = "ALAT";
         } else if (barang.getTipeBarang() == 2) {
@@ -44,7 +44,6 @@ public class BarangServiceImpl implements BarangService {
             }
         }
 
-
         barang.setKodeBarang(kodeBarang);
         barangDb.save(barang);
     }
@@ -65,24 +64,34 @@ public class BarangServiceImpl implements BarangService {
     }
 
     @Override
-    public byte[] processFile(MultipartFile file) throws IOException{
-    // check if the file is not empty
-    if (file.isEmpty()) {
-    throw new IllegalArgumentException("File is empty");
-    }
-    // check if the file is an image (you can customize this check based on your requirements)
-    if (!isImage(file)) {
-    throw new IllegalArgumentException("File is not an image");
-    }
-    // convert MultipartFile to byte[]
-    return file.getBytes();
+    public byte[] processFile(MultipartFile file) throws IOException {
+        // check if the file is not empty
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("File is empty");
+        }
+        // check if the file is an image (you can customize this check based on your
+        // requirements)
+        if (!isImage(file)) {
+            throw new IllegalArgumentException("File is not an image");
+        }
+        // convert MultipartFile to byte[]
+        return file.getBytes();
     }
 
     private boolean isImage(MultipartFile file) {
-    // Implement the Logic to check if the file is an image
-    // You can use Libraries Like Apache Tika or simply check the file extension
-    // For simplicity, let's assume any file with ".jpg", "jpeg", or ".png" extension is considered an image
-    String fileName = file.getOriginalFilename();
-    return fileName !=null && (fileName.endsWith(".jpg")|| fileName.endsWith(".jpeg") || fileName.endsWith(".png"));
+        // Implement the Logic to check if the file is an image
+        // You can use Libraries Like Apache Tika or simply check the file extension
+        // For simplicity, let's assume any file with ".jpg", "jpeg", or ".png"
+        // extension is considered an image
+        String fileName = file.getOriginalFilename();
+        return fileName != null
+                && (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png"));
     }
+
+    @Override
+    public boolean isBarangExists(String namaBarang) {
+        // Cek apakah barang dengan nama tersebut sudah terdaftar dalam database
+        return barangDb.existsByNamaBarang(namaBarang);
+    }
+
 }

@@ -12,3 +12,4 @@ import org.mapstruct.Mapper;
 public interface VendorMapper {
     Vendor createVendorRequestDTOToVendor(CreateVendorRequestDTO createVendorRequestDTO);
 }
+

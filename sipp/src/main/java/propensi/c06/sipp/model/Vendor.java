@@ -21,10 +21,8 @@ import java.util.List;
 @Entity
 @Table(name = "vendor")
 public class Vendor {
-
     @Id
     @NotNull
-    @Size(max = 20)
     private String kodeVendor;
 
     @NotNull
@@ -38,17 +36,9 @@ public class Vendor {
     private String emailVendor;
 
     @NotNull
-    @Size(min = 10, max = 15)
     @Column(name = "nomor_handphone_vendor", nullable = false)
     private String nomorHandphoneVendor;
 
-    @ManyToMany
-    @JoinTable(
-            name = "vendor_barang",
-            joinColumns = @JoinColumn(name = "kode_vendor", referencedColumnName = "kodeVendor"),
-            inverseJoinColumns = @JoinColumn(name = "kode_barang", referencedColumnName = "kodeBarang") // Perbarui ini sesuai dengan kunci primer dari Barang
-    )
-    private List<Barang> barangYangDimiliki;
 
     @Column(name = "is_deleted")
     private boolean is_deleted = Boolean.FALSE;

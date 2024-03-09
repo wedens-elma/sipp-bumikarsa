@@ -10,6 +10,6 @@ import propensi.c06.sipp.model.Barang;
 public interface BarangMapper {
     Barang createTambahBarangRequestDTO(CreateTambahBarangRequestDTO createTambahBarangRequestDTO);
 
-    ReadBarangResponseDTO barangToReadBarangResponseDTO(Barang barang);
+    // ReadBarangResponseDTO barangToReadBarangResponseDTO(Barang barang);
 
 }

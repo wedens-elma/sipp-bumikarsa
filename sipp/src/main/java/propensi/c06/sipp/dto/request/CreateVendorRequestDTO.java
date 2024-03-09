@@ -12,21 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateVendorRequestDTO {
-
-    @NotBlank(message = "Nama vendor tidak boleh kosong")
     private String namaVendor;
-
-    @NotBlank(message = "Alamat vendor tidak boleh kosong")
     private String alamatVendor;
-
-    private List<CreateTambahBarangRequestDTO> barangYangAkanDijual;
-
-    @NotBlank(message = "Email tidak boleh kosong")
-    @Email(message = "Email harus valid")
-    @Size(max = 50, message = "Email tidak boleh lebih dari 50 karakter")
-    private String email;
-
-    @NotBlank(message = "Nomor telepon tidak boleh kosong")
-    @Size(min = 10, max = 15, message = "Nomor telepon harus antara 10 sampai 15 karakter")
-    private String noTelp;
+//    private List<CreateTambahBarangRequestDTO> barangYangAkanDijual;
+    private String emailVendor;
+    private String nomorHandphoneVendor;
 }

@@ -15,17 +15,21 @@
                 <div class="justify-content-center">
                     <h2>Tambah Barang </h2>
                     <br>
-                    <form th:action="@{/barang/tambah}" th:object="${barangDTO}" method="POST" enctype="multipart/form-data">
+                    <form th:action="@{/barang/tambah}" th:object="${barangDTO}" method="POST"
+                        enctype="multipart/form-data" onsubmit="return validateForm()">
 
-                        Nama Barang: <br>
-                        <input class="form-control" type="text" th:field="*{namaBarang}" />
+                        <label for="namaBarang">Nama Barang<span style="color: red;">*</span></label> <br>
+                        
+                        
+                        <input required class="form-control" type="text" th:field="*{namaBarang}" placeholder="Semen" />
                         <br><br>
 
-                        Deskripsi Barang: <br>
-                        <input class="form-control" type="text" th:field="*{deskripsiBarang}" />
+                        <label for="deskripsiBarang">Deskripsi Barang<span style="color: red;">*</span></label>
+                        <input required class="form-control" type="text" th:field="*{deskripsiBarang}"
+                            placeholder="Semen adalah ..." />
                         <br><br>
 
-                        Tipe Barang: <br>
+                        <label for="tipeBarang">Tipe Barang<span style="color: red;">*</span></label> <br>
                         <table class="table">
                             <tbody>
                                 <tr>
@@ -38,30 +42,43 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <br>
+
+                        Dimensi Barang <br>
+                        <input class="form-control" type="text" th:field="*{dimensiBarang}"
+                            placeholder="P x L x T. Contoh: 10 x 12 x 30" />
                         <br><br>
 
-                        Dimensi Barang: <br>
-                        <input class="form-control" type="text" th:field="*{dimensiBarang}" />
+                        Berat Barang <br>
+                        <input class="form-control" type="text" th:field="*{beratBarang}" placeholder="30kg / 5ons" />
                         <br><br>
 
-                        Berat Barang: <br>
-                        <input class="form-control" type="text" th:field="*{beratBarang}" />
-                        <br><br>
-
-                        Foto Barang: <br>
-
-                        <input type="file" name="file" class="form-contol-file" id="customFile"/>
+                        <label for="fotoBarang">Foto Barang<span style="color: red;">*</span></label> <br>
+                        <input type="file" name="file" class="form-contol-file" id="customFile" />
 
                         <br><br>
+                        <br>
 
-                        Stok Awal: <br>
-                        <input required class="form-control" type="number" th:field="*{stokBarang}" />
+                        <label for="stokBarang">Stok Awal<span style="color: red;">*</span></label> <br>
+                        <input required class="form-control" type="number" th:field="*{stokBarang}" id="stokAwal"
+                            placeholder="30" />
                         <br><br>
 
-                        Standar Stok Barang: <br>
-                        <input required class="form-control" type="number" th:field="*{standarStokBarang}" />
-                        <br><br>
+                        <label for="standarStokBarang">Standar Stok Barang<span style="color: red;">*</span></label>
+                        <br>
+                        <input required class="form-control" type="number" th:field="*{standarStokBarang}"
+                            id="standarStok" placeholder="5" />
+                        <br>
 
+                        <p> Notes: </p>
+                        <p> Stok Awal adalah stok yang dimilki sekarang saat menambah kuantitas barang. Jika belum
+                            memiliki barang, isi dengan 0.
+                            Standar Stok Barang adalah jumlah standar stok yang harus dimiliki oleh barang tersebut.
+                        </p>
+                        <p> Jika jumlah stok barang berkurang sampai kurang dari jumlah standar stok minimal, maka
+                            sistem akan mengirimkan notifikasi peringatan.</p>
+
+                        <br>
 
                         <a class="btn btn-danger" href="/">Batal</a>
                         <button class="btn btn-primary" type="submit">Simpan</button>
@@ -71,7 +88,21 @@
             </div>
         </div>
     </div>
+    <script>
+        function validateForm() {
+            var stokAwal = document.getElementById("stokAwal").value;
+            var standarStok = document.getElementById("standarStok").value;
+
+            if (stokAwal < 0 || standarStok < 0) {
+                alert("Jumlah stok tidak boleh negatif!");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
+
+
 
 </html>
 <!DOCTYPE html>
