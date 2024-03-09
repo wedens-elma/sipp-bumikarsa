@@ -65,9 +65,9 @@
                         <tr th:each="barang, iterationStatus : *{listBarang}">
                             <td th:text="${iterationStatus.count}"></td>
                             <td>
-                                <select th:field="*{listBarang[__${iterationStatus.index}__].barang2}" class="form-control">
+                                <select th:field="*{listBarang[__${iterationStatus.index}__].barang.idBarang}" class="form-control">
                                     <option value="">Pilih Barang</option>
-                                    <th:block th:each="barangExisting : ${listBarang}">
+                                    <th:block th:each="barangExisting : ${listBarang}" th:remove="tag">
                                         <option th:value="${barangExisting.idBarang}" th:text="${barangExisting.namaBarang}"></option>
                                     </th:block>
                                 </select>

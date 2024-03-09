@@ -31,18 +31,33 @@
                     <td>Kode Pengadaan</td>
                     <td th:text="': '+${pengadaan.idPengadaan}"></td>
                 </tr>
-<!--                <tr>-->
-<!--                    <td>Vendor</td>-->
-<!--                    <td th:text="': '+${pengadaan.vendor.namaVendor}"> </td>-->
-<!--                </tr>-->
+
                 <tr>
-                    <td>Tanggal Pengiriman</td>
+                    <td>Tanggal Peengadaan</td>
                     <td th:text="': '+${pengadaan.tanggalPengadaan}"></td>
                 </tr>
-<!--                <tr>-->
-<!--                    <td>Nama Penerima</td>-->
-<!--                    <td th:text="': '+${permintaanPengiriman.namaPenerima}"></td>-->
-<!--                </tr>-->
+
+                <tr>
+                    <td>Vendor</td>
+                    <td th:text="': '+${pengadaan.vendor.namaVendor}"></td>
+                </tr>
+
+                <tr>
+                    <td>Shipment Status</td>
+                    <td th:text="': '+${pengadaan.shipmentStatus}"></td>
+                </tr>
+
+                <tr>
+                    <td>Payment Status</td>
+                    <td th:text="': '+${pengadaan.paymentStatus}"></td>
+                </tr>
+
+                <tr>
+                    <td>Diskon Keseluruhan (%)</td>
+                    <td th:text="': '+${pengadaan.diskonKeseluruhan}"></td>
+                </tr>
+
+
                 <tr>
                 </tbody>
             </table>
@@ -61,22 +76,34 @@
                     <tbody>
 
                     <tr
-                            th:each="pengadaanBarang, iterationStatus : ${pengadaanBarang}">
+                            th:each="pengadaanBarang, iterationStatus : ${pengadaan.listPengadaanBarang}">
                         <td th:text="${iterationStatus.count}"></td>
                         <td>
-                            <a th:href="@{/pengadaan/{id}(id=${pengadaan.idPengadaan})}"
-                               th:text="${pengadaanBarang.barang.namaBarang}"></a>
+<!--                            <a th:href="@{/pengadaan/{id}(id=${pengadaanBarang.barang2.idBarang})}"-->
+                               <a th:text="${pengadaanBarang.barang.namaBarang}"></a>
                         </td>
-                        <td th:text="${pengadaanBarang.jumalahBarang}"></td>
-<!--                        <td th:text="${ppbarang.kuantitasPermintaan}"></td>-->
-<!--                        <td-->
-<!--                                th:text="'Rp'+${#numbers.formatDecimal(ppbarang.barang2.hargaBarang * ppbarang.kuantitasPermintaan, 0, 'COMMA', 2, 'POINT')}">-->
-<!--                        </td>-->
-                    </tr>
+                        <td th:text="${pengadaanBarang.jumlahBarang}"></td>
+                        <td th:text="${pengadaanBarang.hargaBarang}"></td>
+                        <td th:text="${pengadaanBarang.diskonSatuan}"></td>
 
+                    </tr>
 
                     </tbody>
                 </table>
+                <tbody>
+                    <tr>
+                        <td>Total Harga Awal</td>
+                        <td th:text="': '+${totalHargaAwal}"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Total Harga Setelah Diskon</td>
+                        <td th:text="': '+${totalSetelahDiskonAkhir}"></td>
+                    </tr>
+
+                </tbody>
+
+
             </div>
             <div class="text-center">
                 <a class="btn btn-secondary my-3" th:href="@{/pengadaan}">Kembali</a>

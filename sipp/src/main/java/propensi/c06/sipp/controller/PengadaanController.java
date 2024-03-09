@@ -87,21 +87,18 @@ public class PengadaanController {
     @PostMapping("/pengadaan/tambah")
     public String addPengadaan(@Valid @ModelAttribute PengadaanRequestDTO dto, Model model){
 
-        int totalHargaAwal = 0;
-        int totalHargaAKhirDiskonSatuan = 0;
-        for (PengadaanBarang x: dto.getListBarang()){
-            totalHargaAwal+=x.getHargaBarang();
-            int hargaAKhirDiskonSatuan = x.getHargaBarang() - (x.getDiskonSatuan()*x.getHargaBarang());
-            totalHargaAKhirDiskonSatuan+=hargaAKhirDiskonSatuan;
+        Map<String, Integer> totalHargaMap = pengadaanService.hitungTotalHarga(dto);
 
-        }
-        //int totalHargaSetelahDiskon=totalHargaAwal -(totalHargaAwal*(dto. getPengadaan().getDiskonKeseluruhan())) ;
+        int totalHargaAwal = totalHargaMap.get("totalHargaAwal");
+        int totalHargaSetelahDiskon = totalHargaMap.get("totalHargaSetelahDiskon");
+
         dto.setPaymentStatus(0);
         dto.setShipmentStatus(0);
+        String id = dto.getIdPengadaan();
         Pengadaan pengadaan = pengadaanService.addPengadaan(dto);
-        //model.addAttribute("kodePengadaan", kode);
+        model.addAttribute("idPengadaan", id);
         model.addAttribute("totalHargaAwal", totalHargaAwal);
-        //model.addAttribute("totalHargaAkhir", totalHargaSetelahDiskon);
+        model.addAttribute("totalHargaSetelahDiskon", totalHargaSetelahDiskon);
         return "successAddPengadaan";
     }
 

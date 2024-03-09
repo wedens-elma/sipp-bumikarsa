@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,7 +17,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Table(name = "pengadaanBarang")
-public class PengadaanBarang implements Serializable {
+public class PengadaanBarang {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,10 +37,12 @@ public class PengadaanBarang implements Serializable {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "barang")
-    private Barang barang2;
+    private Barang barang;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pengadaan", referencedColumnName = "idPengadaan")
     private Pengadaan pengadaan;
+
+
 }

@@ -59,6 +59,10 @@ public class Pengadaan {
     @OneToMany(mappedBy = "pengadaan", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PengadaanBarang> listPengadaanBarang;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "pengadaan", referencedColumnName = "idPengadaan")
+//    private List<PengadaanBarang> listPengadaanBarang;
+
     @NotNull
     @Column(name="isDeleted", nullable=false)
     private Boolean isDeleted = false;

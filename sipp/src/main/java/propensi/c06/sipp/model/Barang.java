@@ -28,7 +28,7 @@ public class Barang {
     @Column(name = "nama_barang", nullable = false)
     private String namaBarang;
 
-    @OneToMany(mappedBy = "barang2", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "barang", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<PengadaanBarang> pengadaanBarang;
 
 }

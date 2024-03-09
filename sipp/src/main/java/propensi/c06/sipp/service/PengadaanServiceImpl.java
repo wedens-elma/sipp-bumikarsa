@@ -11,7 +11,9 @@ import propensi.c06.sipp.repository.PengadaanBarangDb;
 import propensi.c06.sipp.repository.PengadaanDb;
 import propensi.c06.sipp.model.Barang;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -61,7 +63,7 @@ public class PengadaanServiceImpl implements PengadaanService {
             pengadaanBarang.setJumlahBarang(pengadaanBarangDTO.getJumlahBarang());
             pengadaanBarang.setHargaBarang(pengadaanBarangDTO.getHargaBarang());
             pengadaanBarang.setDiskonSatuan(pengadaanBarangDTO.getDiskonSatuan());
-            pengadaanBarang.setBarang2 (pengadaanBarangDTO.getBarang2());
+            pengadaanBarang.setBarang (pengadaanBarangDTO.getBarang());
             pengadaanBarang.setPengadaan(pengadaan);
             pengadaanBarangDb.save(pengadaanBarang);
         }
@@ -79,4 +81,25 @@ public class PengadaanServiceImpl implements PengadaanService {
         return null;
 
     }
+
+    @Override
+    public Map<String, Integer> hitungTotalHarga(PengadaanRequestDTO dto) {
+        int totalHargaAwal = 0;
+        int totalHargaSetelahDiskon = 0;
+
+        for (PengadaanBarang x : dto.getListBarang()) {
+            int totalHargaBarangAwal = x.getJumlahBarang() * x.getHargaBarang();
+            totalHargaAwal += totalHargaBarangAwal;
+
+            int totalHargaBarangSetelahDiskon = totalHargaBarangAwal - (totalHargaBarangAwal * (x.getDiskonSatuan() / 100));
+            totalHargaSetelahDiskon += totalHargaBarangSetelahDiskon;
+        }
+
+        Map<String, Integer> result = new HashMap<>();
+        result.put("totalHargaAwal", totalHargaAwal);
+        result.put("totalHargaSetelahDiskon", totalHargaSetelahDiskon);
+
+        return result;
+    }
+
 }
