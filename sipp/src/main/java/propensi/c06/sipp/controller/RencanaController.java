@@ -41,7 +41,7 @@ public class RencanaController {
     public String detailRencana(@PathVariable(value = "id") Long id, Model model) {
         Rencana rencana = rencanaService.getRencanaById(id);
         model.addAttribute("rencana", rencana);
-        return "view-detail-rencana-operasional";
+        return "view-detail-rencana-manajer";
     }
 
     @GetMapping("/create")
