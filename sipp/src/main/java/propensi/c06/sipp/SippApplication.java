@@ -8,11 +8,14 @@ import org.springframework.context.annotation.Bean;
 import jakarta.transaction.Transactional;
 import propensi.c06.sipp.dto.BarangMapper;
 import propensi.c06.sipp.dto.UserMapper;
+import propensi.c06.sipp.dto.VendorMapper;
 import propensi.c06.sipp.dto.request.CreateTambahBarangRequestDTO;
 import propensi.c06.sipp.dto.request.CreateUserRequestDTO;
+import propensi.c06.sipp.dto.request.CreateVendorRequestDTO;
 import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.model.Role;
 import propensi.c06.sipp.model.UserModel;
+import propensi.c06.sipp.model.Vendor;
 import propensi.c06.sipp.repository.RoleDb;
 import propensi.c06.sipp.service.BarangService;
 import propensi.c06.sipp.service.PengadaanService;
@@ -31,7 +34,7 @@ public class SippApplication {
 	// CommandLineRunner digunakan untuk execute code saat spring pertama kali start up
 	@Bean
 	@Transactional
-	CommandLineRunner run(UserService userService, RoleService roleService, RoleDb roleDb, UserMapper userMapper, RencanaService rencanaService, BarangService barangService, VendorService vendorService, PengadaanService pengadaanService, BarangMapper barangMapper){
+	CommandLineRunner run(UserService userService, RoleService roleService, RoleDb roleDb, UserMapper userMapper, RencanaService rencanaService, BarangService barangService, VendorService vendorService, PengadaanService pengadaanService, BarangMapper barangMapper, VendorMapper vendorMapper){
 		return args -> {
 			
 			if (roleService.getAllList().isEmpty()){
@@ -100,7 +103,14 @@ public class SippApplication {
 				barangService.addBarang(barangSave);
 			}
 
-			
+			if (vendorService.getAllVendors().isEmpty()) {
+				var vendor = new CreateVendorRequestDTO();
+				vendor.setAlamatVendor("Jl. Alamat Vendor 1 no. 123");
+				vendor.setEmailVendor("vendor1@gmail.com");
+				vendor.setNamaVendor("Vendor Pertama");
+				vendor.setNomorHandphoneVendor("081234567890");
+				vendorService.addVendor(vendor);				
+			}			
 
 		};
 
