@@ -1,5 +1,6 @@
 package propensi.c06.sipp.service;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,9 @@ public class PengadaanServiceImpl implements PengadaanService {
 
     @Autowired
     private PengadaanBarangDb pengadaanBarangDb;
+    
+    @Autowired
+    private BarangService barangService;
 
     @Override
     public List<Pengadaan> getAllPengadaan(){
@@ -32,6 +36,7 @@ public class PengadaanServiceImpl implements PengadaanService {
     @Override
     public Pengadaan addPengadaan(PengadaanRequestDTO pengadaanDto){
         Pengadaan pengadaan = new Pengadaan();
+
 
         String idPengadaan = "PR-";
         String nextNumericId = pengadaanDb.findCodePengadaan(idPengadaan);
@@ -50,7 +55,7 @@ public class PengadaanServiceImpl implements PengadaanService {
         pengadaan.setIdPengadaan(idPengadaan);
 
         pengadaan.setNamaPengadaan(pengadaanDto.getNamaPengadaan());
-        pengadaan.setTanggalPengadaan(pengadaanDto.getTanggalPengadaan());
+        pengadaan.setTanggalPengadaan(LocalDate.parse(pengadaanDto.getTanggalPengadaan()));
         pengadaan.setVendor(pengadaanDto.getVendor());
         pengadaan.setPaymentStatus(pengadaanDto.getPaymentStatus());
         pengadaan.setShipmentStatus(pengadaanDto.getShipmentStatus());
@@ -59,13 +64,15 @@ public class PengadaanServiceImpl implements PengadaanService {
 
         for (PengadaanBarang pengadaanBarangDTO : pengadaanDto.getListBarang()){
             PengadaanBarang pengadaanBarang = new PengadaanBarang();
+            var barang = barangService.getBarangById(pengadaanBarangDTO.getBarang().getKodeBarang());
+
             pengadaanBarang.setJumlahBarang(pengadaanBarangDTO.getJumlahBarang());
             pengadaanBarang.setHargaBarang(pengadaanBarangDTO.getHargaBarang());
             pengadaanBarang.setDiskonSatuan(pengadaanBarangDTO.getDiskonSatuan());
             pengadaanBarang.setBarang (pengadaanBarangDTO.getBarang());
             pengadaanBarang.setPengadaan(pengadaan);
-            pengadaanBarang.setNamaBarang(pengadaanBarangDTO.getBarang().getNamaBarang());
-            System.out.println(pengadaanBarang.getNamaBarang());
+            pengadaanBarang.setNamaBarang(barang.getNamaBarang());
+
             pengadaanBarangDb.save(pengadaanBarang);
         }
 
