@@ -26,7 +26,6 @@ public class Rencana {
     @JoinColumn(name = "id_vendor", referencedColumnName = "kodeVendor")
     private Vendor vendor;
 
-    // Sesuaikan sama Wedens
     @NotNull
     @Column(name = "createdBy", nullable = false)
     private String createdBy; 

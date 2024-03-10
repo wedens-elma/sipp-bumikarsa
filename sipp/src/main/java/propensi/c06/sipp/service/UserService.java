@@ -12,4 +12,6 @@ public interface UserService {
     String loginJwtAdmin(LoginJwtRequestDTO loginJwtRequestDTO);
     
     String getCurrentUserRole();
+
+    String getCurrentUserName();
 }

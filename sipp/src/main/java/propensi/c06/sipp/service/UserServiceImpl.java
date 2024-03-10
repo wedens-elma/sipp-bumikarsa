@@ -72,6 +72,18 @@ public class UserServiceImpl implements UserService{
         return null;
     }
 
+    @Override
+    public String getCurrentUserName(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            UserDetails user = (UserDetails) principal;
+            UserModel userModel = getUserByEmail(user.getUsername());
+            String name = userModel.getName();
+            return name;
+        }
+        return null;
+    }
+
     private UserModel getUserByEmail(String username) {
         return userDb.findByEmail(username);
     }

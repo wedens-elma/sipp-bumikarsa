@@ -2,7 +2,6 @@ package propensi.c06.sipp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import propensi.c06.sipp.dto.request.CreateRencanaRequestDTO;
 import propensi.c06.sipp.model.BarangRencana;
 import propensi.c06.sipp.model.LogRencana;
@@ -26,6 +25,9 @@ public class RencanaServiceImpl implements RencanaService {
     @Autowired
     LogRencanaDb logRencanaDb;
 
+    @Autowired
+    UserService userService;
+
     @Override
     public List<Rencana> getAllRencana() { return rencanaDb.findAll(); }
 
@@ -43,7 +45,7 @@ public class RencanaServiceImpl implements RencanaService {
     public Rencana saveRencana(CreateRencanaRequestDTO rencanaDTO) { 
         Rencana rencana = new Rencana();
         rencana.setVendor(rencanaDTO.getVendor());
-        rencana.setCreatedBy(rencanaDTO.getCreatedBy());
+        rencana.setCreatedBy(userService.getCurrentUserName());
         rencana.setNamaRencana(rencanaDTO.getNamaRencana());
         rencana.setExpectedDate(LocalDate.parse(rencanaDTO.getExpectedDate()));
         rencanaDb.save(rencana); 
@@ -66,7 +68,7 @@ public class RencanaServiceImpl implements RencanaService {
         logRencana.setRencana(rencana);
         logRencana.setStatus("created");
         logRencana.setTanggalWaktu(LocalDateTime.now());
-        logRencana.setChangedBy(rencana.getCreatedBy());
+        logRencana.setChangedBy(userService.getCurrentUserName());
         rencana.setLogRencana(new ArrayList<LogRencana>());
         rencana.getLogRencana().add(logRencana);
 

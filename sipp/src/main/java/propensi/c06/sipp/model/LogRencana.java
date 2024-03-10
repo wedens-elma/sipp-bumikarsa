@@ -23,7 +23,6 @@ public class LogRencana {
     @JoinColumn(name = "rencana", referencedColumnName = "idRencana")
     private Rencana rencana;
 
-    // Sesuaikan sama Wedens
     @NotNull
     @Column(name = "changedBy", nullable = false)
     private String changedBy;

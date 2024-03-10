@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 public class CreateRencanaRequestDTO {
     private Vendor vendor;
-    private String createdBy = "User1";
+    private String createdBy;
     private String namaRencana;
     private String expectedDate;
     private List<BarangRencanaDTO> listBarangRencana;
