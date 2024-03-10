@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://thymeleaf.org"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Daftar Pengguna</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <div class="container p-1 justify-content-center">
+      <div class="row p-2">
+        <div class="col">
+          <h2 class="m-2">Daftar Pengguna</h2>
+        </div>
+        <div class="col">
+          <a
+            href="/user/add"
+            class="btn btn-primary"
+            style="align-self: self-end"
+            >+ Add User</a
+          >
+        </div>
+      </div>
+      <!-- ... Bagian HTML sebelumnya ... -->
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">No.</th>
+            <th scope="col">Nama</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+            <th scope="col">Aksi</th>
+            <!-- Kolom Aksi ditambahkan -->
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Iterasi untuk setiap user -->
+          <tr th:each="user, iterStat : ${users}">
+            <td th:text="${iterStat.index + 1}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.role.role}"></td>
+            <td>
+              <a
+                class="btn btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteConfirmationModal"
+                th:href="'/user/soft-delete/' + ${user.email}"
+              >
+                Hapus Akun
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

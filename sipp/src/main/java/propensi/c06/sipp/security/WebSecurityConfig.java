@@ -1,6 +1,5 @@
 package propensi.c06.sipp.security;
 
-import propensi.c06.sipp.security.jwt.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import propensi.c06.sipp.security.jwt.JwtTokenFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -52,9 +53,10 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/buku/create")).hasAuthority("Pustakawan")
-                        .requestMatchers(new AntPathRequestMatcher("/buku/{id}/update")).hasAuthority("Pustakawan")
-                        .requestMatchers(new AntPathRequestMatcher("/penerbit/create")).hasAuthority("Pustakawan")
+                        .requestMatchers(new AntPathRequestMatcher("/user")).hasAuthority("Admin")
+                        .requestMatchers(new AntPathRequestMatcher("/user/**")).hasAuthority("Admin")
+                        .requestMatchers(new AntPathRequestMatcher("/dashboard")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")
+                        .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
@@ -63,7 +65,10 @@ public class WebSecurityConfig {
                         .defaultSuccessUrl("/")
                 )
                 .logout((logout) -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessUrl("/login"))
+                        .logoutSuccessUrl("/login")
+                )
+                // .exceptionHandling((error) -> error.accessDeniedPage("/error"))
+                
         ;
         return http.build();
     }

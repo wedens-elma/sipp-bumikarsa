@@ -12,4 +12,5 @@ public class CreateUserRequestDTO {
     private String name;
     private String password;
     private String role;
+    private byte[] file;
 }
