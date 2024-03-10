@@ -20,7 +20,7 @@ import java.util.List;
 public class PengadaanRequestDTO {
     private String idPengadaan;
     private String namaPengadaan;
-    private LocalDate tanggalPengadaan;
+    private String tanggalPengadaan;
     private Vendor vendor;
     private int diskonKeseluruhan;
     private int shipmentStatus = 0;
