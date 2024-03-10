@@ -29,4 +29,6 @@ public interface UserService {
     void softDeleteUser(String email);
 
     UserModel getLoggedInUser();
+    
+    String getCurrentUserName();
 }

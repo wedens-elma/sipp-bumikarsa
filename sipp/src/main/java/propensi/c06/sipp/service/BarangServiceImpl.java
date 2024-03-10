@@ -13,9 +13,14 @@ import org.springframework.web.multipart.MultipartFile;
 import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.repository.BarangDb;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import propensi.c06.sipp.model.Barang;
+import propensi.c06.sipp.repository.BarangDb;
+import java.util.List;
+
 @Service
 public class BarangServiceImpl implements BarangService {
-
     @Autowired
     BarangDb barangDb;
 
@@ -95,3 +100,4 @@ public class BarangServiceImpl implements BarangService {
     }
 
 }
+

@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.List;
 
 @Getter
 @Setter
@@ -57,4 +58,6 @@ public class Barang {
     @Column(name = "is_deleted")
     private Boolean isDeleted = false;
 
+    @OneToMany(mappedBy = "barang", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<BarangRencana> listBarangRencana;
 }

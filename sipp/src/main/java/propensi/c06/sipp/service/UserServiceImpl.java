@@ -19,6 +19,11 @@ import propensi.c06.sipp.repository.UserDb;
 import propensi.c06.sipp.security.jwt.JwtUtils;
 
 // import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -155,5 +160,17 @@ public class UserServiceImpl implements UserService{
     //         return null;
     //     }
     // }
+
+    @Override
+    public String getCurrentUserName(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            UserDetails user = (UserDetails) principal;
+            UserModel userModel = getUserByEmail(user.getUsername());
+            String name = userModel.getName();
+            return name;
+        }
+        return null;
+    }
 
 }
