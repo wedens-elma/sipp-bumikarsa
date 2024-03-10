@@ -38,7 +38,7 @@ public class PengadaanRequestDTO {
 
         private int diskonSatuan;
 
-        private Barang barang2;
+        private Barang barang;
     }
 
 }

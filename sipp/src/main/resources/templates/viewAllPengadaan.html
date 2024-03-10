@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <object th:include="~{fragments/fragment :: js}" th:remove="tag"></object>
     <object th:include="~{fragments/fragment :: css}" th:remove="tag"></object>
-    <title>View All Vendor</title>
+    <title>View All Pengadaan</title>
 </head>
 
 <body>
@@ -42,8 +42,15 @@
                     <td th:text="${pengadaan.idPengadaan}"></td>-->
                     <td th:text="${pengadaan.namaPengadaan}"></td>
                     <td th:text="${pengadaan.vendor.namaVendor}"></td>
-                    <td th:text="${pengadaan.shipmentStatus}"></td>
-                    <td th:text="${pengadaan.paymentStatus}"></td>
+                    <td>
+                        <span th:if="${pengadaan.shipmentStatus == 0}">In Progress</span>
+                        <span th:if="${pengadaan.shipmentStatus == 1}">Arrived</span>
+                    </td>
+                    <td>
+                        <span th:if="${pengadaan.paymentStatus == 0}">Not Paid</span>
+                        <span th:if="${pengadaan.paymentStatus == 1}">In Progress</span>
+                        <span th:if="${pengadaan.paymentStatus == 2}">Paid</span>
+                    </td>
                     <td>
                         <a type="button" class="btn btn-sm btn-secondary" th:href="@{/pengadaan/{idPengadaan}(idPengadaan=${pengadaan.idPengadaan})}">Detail</a>
 

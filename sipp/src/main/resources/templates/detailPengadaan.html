@@ -44,12 +44,19 @@
 
                 <tr>
                     <td>Shipment Status</td>
-                    <td th:text="': '+${pengadaan.shipmentStatus}"></td>
+                    <td>
+                    <span th:if="${pengadaan.shipmentStatus == 0}">: In Progress</span>
+                    <span th:if="${pengadaan.shipmentStatus == 1}">: Arrived</span>
+                    </td>
                 </tr>
 
                 <tr>
                     <td>Payment Status</td>
-                    <td th:text="': '+${pengadaan.paymentStatus}"></td>
+                    <td>
+                        <span th:if="${pengadaan.paymentStatus == 0}">: Not Paid</span>
+                        <span th:if="${pengadaan.paymentStatus == 1}">: In Progress</span>
+                        <span th:if="${pengadaan.paymentStatus == 2}">: Paid</span>
+                    </td>
                 </tr>
 
                 <tr>

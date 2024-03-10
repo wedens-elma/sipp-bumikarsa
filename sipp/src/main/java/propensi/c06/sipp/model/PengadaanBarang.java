@@ -35,8 +35,8 @@ public class PengadaanBarang {
     @Column(name = "diskon_satuan")
     private int diskonSatuan;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "barang")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "barang", referencedColumnName = "kodeBarang")
     private Barang barang;
 
 

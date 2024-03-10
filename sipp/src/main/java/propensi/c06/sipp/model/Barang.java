@@ -22,7 +22,7 @@ public class Barang {
     @Id
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
-    private String idBarang;
+    private String kodeBarang;
 
     @NotNull
     @Column(name = "nama_barang", nullable = false)

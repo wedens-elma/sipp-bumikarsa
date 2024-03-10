@@ -95,12 +95,14 @@ public class PengadaanController {
         dto.setPaymentStatus(0);
         dto.setShipmentStatus(0);
         String id = dto.getIdPengadaan();
+
         Pengadaan pengadaan = pengadaanService.addPengadaan(dto);
         model.addAttribute("idPengadaan", id);
         model.addAttribute("totalHargaAwal", totalHargaAwal);
         model.addAttribute("totalHargaSetelahDiskon", totalHargaSetelahDiskon);
         return "successAddPengadaan";
     }
+
 
 
 
