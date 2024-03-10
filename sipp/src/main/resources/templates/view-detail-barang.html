@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <title>View Detail Barang</title>
+</head>
+
+
+<body>
+    <br><br>
+    <div class="text-center">
+        <h2 style="font-size:50px; "> Detail Barang </h2>
+    </div>
+    <div class="container">
+        <div class="card m-4 p-4">
+            <div class="card-body text-center">
+                
+
+                <br>
+
+                <!-- Aku ingin menampilkkan foto barang disini -->
+                <img th:src="'data:image/jpeg;base64,' + ${base64Image}" alt="Foto Barang" style="max-width: 300px;" />
+
+                <p style="font-size:60px; font-weight:600;" th:text="${barang.namaBarang}"></p>
+                <p style="text-align: justify;" th:text="${barang.deskripsiBarang}"></p>
+
+                <br><br>
+                <br><br>
+
+                <h3> Spesifikasi </h3>
+                
+                <p th:text="'Dimension:' + ${barang.dimensiBarang}"></p>
+                <p th:text="'Berat barang:' + ${barang.beratBarang}"></p>
+                <p th:text="'Tipe Barang: ' + ${barang.tipeBarang == 1 ? 'Alat' : 'Material'}"></p>
+                <p th:text="'Stok barang:' + ${barang.stokBarang}"></p>
+
+
+
+            </div>
+        </div>
+
+        <div class="text-center m-3">
+            <a type="button" class="btn btn-md btn-primary"
+                th:href="@{/barang/{idBarang}/ubah(idBarang=${barang.kodeBarang})}">Edit</a>
+        </div>
+
+        <div class="text-center">
+            <a type="button" class="btn btn-sm btn-secondary" href="/barang">Kembali</a>
+        </div>
+
+    </div>
+    </div>
+    </div>
+</body>
+
+<script>
+    $(document).ready(function () {
+        $('#table').DataTable();
+    });
+</script>
+
+</html>

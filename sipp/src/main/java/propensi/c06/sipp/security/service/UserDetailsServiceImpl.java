@@ -1,6 +1,5 @@
 package propensi.c06.sipp.security.service;
 
-
 import propensi.c06.sipp.model.UserModel;
 import propensi.c06.sipp.repository.UserDb;
 import org.springframework.beans.factory.annotation.Autowired;
