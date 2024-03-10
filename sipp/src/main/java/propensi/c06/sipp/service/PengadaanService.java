@@ -10,7 +10,7 @@ public interface PengadaanService {
     List<Pengadaan> getAllPengadaan();
     Pengadaan addPengadaan(PengadaanRequestDTO pengadaanDto);
     Pengadaan getPengadaanDetail(String id);
-    Map<String, Integer> hitungTotalHarga(PengadaanRequestDTO dto);
+    Map<String, Float> hitungTotalHarga(Pengadaan dto);
 }
 
 

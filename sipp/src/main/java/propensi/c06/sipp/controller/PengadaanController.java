@@ -43,7 +43,15 @@ public class PengadaanController {
     @GetMapping("/pengadaan/{id}")
     public String detailPengadaan(@PathVariable String id, Model model){
         Pengadaan pengadaan = pengadaanService.getPengadaanDetail(id);
+        Map<String, Float> totalHargaMap = pengadaanService.hitungTotalHarga(pengadaan);
+
+        float totalHargaAwal = totalHargaMap.get("totalHargaAwal");
+        float totalHargaDiskonSatuan = totalHargaMap.get("totalHargaDiskonSatuan");
+        float totalHargaAkhir = totalHargaMap.get("totalHargaAkhir");
         model.addAttribute("pengadaan", pengadaan);
+        model.addAttribute("totalHargaAwal", totalHargaAwal);
+        model.addAttribute("totalHargaDiskonSatuan", totalHargaDiskonSatuan);
+        model.addAttribute("totalHargaAkhir", totalHargaAkhir);
         return "detailPengadaan";
     }
 
@@ -87,10 +95,10 @@ public class PengadaanController {
     @PostMapping("/pengadaan/tambah")
     public String addPengadaan(@Valid @ModelAttribute PengadaanRequestDTO dto, Model model){
 
-        Map<String, Integer> totalHargaMap = pengadaanService.hitungTotalHarga(dto);
-
-        int totalHargaAwal = totalHargaMap.get("totalHargaAwal");
-        int totalHargaSetelahDiskon = totalHargaMap.get("totalHargaSetelahDiskon");
+//        Map<String, Integer> totalHargaMap = pengadaanService.hitungTotalHarga(dto);
+//
+//        int totalHargaAwal = totalHargaMap.get("totalHargaAwal");
+//        int totalHargaSetelahDiskon = totalHargaMap.get("totalHargaSetelahDiskon");
 
         dto.setPaymentStatus(0);
         dto.setShipmentStatus(0);
@@ -98,8 +106,8 @@ public class PengadaanController {
 
         Pengadaan pengadaan = pengadaanService.addPengadaan(dto);
         model.addAttribute("idPengadaan", id);
-        model.addAttribute("totalHargaAwal", totalHargaAwal);
-        model.addAttribute("totalHargaSetelahDiskon", totalHargaSetelahDiskon);
+//        model.addAttribute("totalHargaAwal", totalHargaAwal);
+//        model.addAttribute("totalHargaSetelahDiskon", totalHargaSetelahDiskon);
         return "successAddPengadaan";
     }
 

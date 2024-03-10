@@ -83,21 +83,29 @@ public class PengadaanServiceImpl implements PengadaanService {
     }
 
     @Override
-    public Map<String, Integer> hitungTotalHarga(PengadaanRequestDTO dto) {
-        int totalHargaAwal = 0;
-        int totalHargaSetelahDiskon = 0;
+    public Map<String, Float> hitungTotalHarga(Pengadaan dto) {
+        float totalHargaAwal = 0.0f;
+        float totalHargaDiskonSatuan = 0.0f;
 
-        for (PengadaanBarang x : dto.getListBarang()) {
-            int totalHargaBarangAwal = x.getJumlahBarang() * x.getHargaBarang();
+        for (PengadaanBarang x : dto.getListPengadaanBarang()) {
+            // Hitung totalHargaAwal
+            float totalHargaBarangAwal = x.getJumlahBarang() * x.getHargaBarang();
             totalHargaAwal += totalHargaBarangAwal;
 
-            int totalHargaBarangSetelahDiskon = totalHargaBarangAwal - (totalHargaBarangAwal * (x.getDiskonSatuan() / 100));
-            totalHargaSetelahDiskon += totalHargaBarangSetelahDiskon;
+            // Hitung totalHargaDiskonSatuan
+            float disSatuan = x.getDiskonSatuan();
+            float totalHargaBarangDiskonSatuan = totalHargaBarangAwal - (totalHargaBarangAwal * (disSatuan / 100));
+
+            totalHargaDiskonSatuan += totalHargaBarangDiskonSatuan;
         }
 
-        Map<String, Integer> result = new HashMap<>();
+        float disKeseluruhan = dto.getDiskonKeseluruhan();
+        float totalHargaAkhir = totalHargaDiskonSatuan - (totalHargaDiskonSatuan * (disKeseluruhan / 100));
+
+        Map<String, Float> result = new HashMap<>();
         result.put("totalHargaAwal", totalHargaAwal);
-        result.put("totalHargaSetelahDiskon", totalHargaSetelahDiskon);
+        result.put("totalHargaDiskonSatuan", totalHargaDiskonSatuan);
+        result.put("totalHargaAkhir", totalHargaAkhir);
 
         return result;
     }

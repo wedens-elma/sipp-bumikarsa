@@ -97,21 +97,25 @@
 
                     </tbody>
                 </table>
-                <tbody>
+                <table class="table table-borderless">
+                    <tbody>
                     <tr>
-                        <td>Total Harga Awal</td>
+                        <td style="font-size: 16px;">Total Harga Awal</td>
                         <td th:text="': '+${totalHargaAwal}"></td>
                     </tr>
 
                     <tr>
-                        <td>Total Harga Setelah Diskon</td>
-                        <td th:text="': '+${totalSetelahDiskonAkhir}"></td>
+                        <td style="font-size: 16px;">Total Harga Setelah Diskon</td>
+                        <td th:text="': '+${totalHargaDiskonSatuan}"></td>
                     </tr>
 
-                </tbody>
+                    <tr>
+                        <td style="font-size: 16px;">Total Harga Akhir</td>
+                        <td th:text="': '+${totalHargaAkhir}"></td>
+                    </tr>
+                    </tbody>
+                </table>
 
-
-            </div>
             <div class="text-center">
                 <a class="btn btn-secondary my-3" th:href="@{/pengadaan}">Kembali</a>
             </div>
