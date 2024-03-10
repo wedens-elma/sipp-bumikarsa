@@ -37,6 +37,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers("/api/user/add").hasAuthority("Admin")
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/rencana/view-all").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -56,6 +57,19 @@ public class WebSecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/user")).hasAuthority("Admin")
                         .requestMatchers(new AntPathRequestMatcher("/user/**")).hasAuthority("Admin")
                         .requestMatchers(new AntPathRequestMatcher("/dashboard")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")
+                        .requestMatchers(new AntPathRequestMatcher("/api/rencana/view-all")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")  // Menambahkan izin untuk endpoint kalender
+                        .requestMatchers(new AntPathRequestMatcher("/rencana/detail/**")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")  // Menambahkan izin untuk endpoint kalender
+                        .requestMatchers(new AntPathRequestMatcher("/rencana/")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")
+                        .requestMatchers(new AntPathRequestMatcher("/rencana/create")).hasAnyAuthority("Manajer", "Operasional")
+                        .requestMatchers(new AntPathRequestMatcher("/barang/detail/**")).hasAnyAuthority("Manajer", "Operasional")
+                        .requestMatchers(new AntPathRequestMatcher("/barang/tambah")).hasAnyAuthority("Manajer", "Operasional")
+                        .requestMatchers(new AntPathRequestMatcher("/barang")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")
+                        .requestMatchers(new AntPathRequestMatcher("/vendor")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")
+                        .requestMatchers(new AntPathRequestMatcher("/vendor/tambah")).hasAnyAuthority("Manajer", "Operasional")
+                        .requestMatchers(new AntPathRequestMatcher("/vendor/detail/**")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")
+                        .requestMatchers(new AntPathRequestMatcher("/pengadaan")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")
+                        .requestMatchers(new AntPathRequestMatcher("/pengadaan/tambah")).hasAnyAuthority("Manajer", "Keuangan")
+                        .requestMatchers(new AntPathRequestMatcher("/pengadaan/detail/**")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")
                         .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                         .anyRequest().authenticated()
                 )

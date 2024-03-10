@@ -1,19 +1,18 @@
 package propensi.c06.sipp.service;
 
-import jakarta.transaction.Transactional;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import propensi.c06.sipp.dto.PengadaanRequestDTO;
 import propensi.c06.sipp.model.Pengadaan;
 import propensi.c06.sipp.model.PengadaanBarang;
 import propensi.c06.sipp.repository.PengadaanBarangDb;
 import propensi.c06.sipp.repository.PengadaanDb;
-import propensi.c06.sipp.model.Barang;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @Transactional
@@ -65,6 +64,8 @@ public class PengadaanServiceImpl implements PengadaanService {
             pengadaanBarang.setDiskonSatuan(pengadaanBarangDTO.getDiskonSatuan());
             pengadaanBarang.setBarang (pengadaanBarangDTO.getBarang());
             pengadaanBarang.setPengadaan(pengadaan);
+            pengadaanBarang.setNamaBarang(pengadaanBarangDTO.getBarang().getNamaBarang());
+            System.out.println(pengadaanBarang.getNamaBarang());
             pengadaanBarangDb.save(pengadaanBarang);
         }
 

@@ -1,5 +1,8 @@
 package propensi.c06.sipp.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import jakarta.validation.Valid;
 import propensi.c06.sipp.dto.request.CreateRencanaRequestDTO;
 import propensi.c06.sipp.model.Rencana;
@@ -18,8 +22,6 @@ import propensi.c06.sipp.service.BarangService;
 import propensi.c06.sipp.service.RencanaService;
 import propensi.c06.sipp.service.UserService;
 import propensi.c06.sipp.service.VendorService;
-import java.util.List;
-import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/rencana")
@@ -39,6 +41,8 @@ public class RencanaController {
     @GetMapping("/")
     public String daftarRencana(Model model) {
         if (userService.getCurrentUserRole().equalsIgnoreCase("keuangan")) {
+            System.out.println("AAAAAAAAAAAAAAAA");
+            System.out.println(userService.getCurrentUserName());
             return "view-daftar-rencana-keuangan";
         } else {
             return "view-daftar-rencana";
@@ -48,6 +52,7 @@ public class RencanaController {
     @GetMapping(value = "/{id}")
     public String detailRencana(@PathVariable(value = "id") Long id, Model model) {
         Rencana rencana = rencanaService.getRencanaById(id);
+        System.out.println(rencana.getListBarangRencana());
         model.addAttribute("rencana", rencana);
 
         if (userService.getCurrentUserRole().equalsIgnoreCase("manajer")) {

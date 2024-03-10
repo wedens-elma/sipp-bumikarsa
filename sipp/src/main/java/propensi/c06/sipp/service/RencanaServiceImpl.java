@@ -1,7 +1,13 @@
 package propensi.c06.sipp.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import propensi.c06.sipp.dto.request.CreateRencanaRequestDTO;
 import propensi.c06.sipp.model.BarangRencana;
 import propensi.c06.sipp.model.LogRencana;
@@ -9,10 +15,6 @@ import propensi.c06.sipp.model.Rencana;
 import propensi.c06.sipp.repository.BarangRencanaDb;
 import propensi.c06.sipp.repository.LogRencanaDb;
 import propensi.c06.sipp.repository.RencanaDb;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class RencanaServiceImpl implements RencanaService {
@@ -60,6 +62,7 @@ public class RencanaServiceImpl implements RencanaService {
                 newBarangRencana.setKuantitas(barangRencanaDTO.getKuantitas());
                 newBarangRencana.setBarang(barangRencanaDTO.getBarang());
                 newBarangRencana.setRencana(rencana);
+                newBarangRencana.setNamaBarang(barangRencanaDTO.getBarang().getNamaBarang());
                 barangRencanaDb.save(newBarangRencana);
             }
         }
