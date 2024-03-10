@@ -27,55 +27,55 @@ public class SippApplication {
 	CommandLineRunner run(UserService userService, RoleService roleService, RoleDb roleDb, UserMapper userMapper){
 		return args -> {
 			
-
-			Role roleAdmin = new Role();
-			roleAdmin.setRole("Admin");
-			roleDb.save(roleAdmin);
-
-			Role roleManajer = new Role();
-			roleManajer.setRole("Manajer");
-			roleDb.save(roleManajer);
-
-			Role roleOperasional = new Role();
-			roleOperasional.setRole("Operasional");
-			roleDb.save(roleOperasional);
-
-			Role roleKeuangan = new Role();
-			roleKeuangan.setRole("Keuangan");
-			roleDb.save(roleKeuangan);
-
-
-			var admin = new CreateUserRequestDTO();
-			admin.setEmail("admin1@gmail.com");
-			admin.setName("Admin 1");
-			admin.setPassword("AdminPropensi");
-			admin.setRole("Admin");
-			UserModel userAdmin = userMapper.createUserRequestDTOToUserModel(admin);
-			userService.addUser(userAdmin, admin);
-
-			var manajer = new CreateUserRequestDTO();
-			manajer.setEmail("manajer1@gmail.com");
-			manajer.setName("Manajer 1");
-			manajer.setPassword("ManajerPropensi");
-			manajer.setRole("Manajer");
-			UserModel userManajer = userMapper.createUserRequestDTOToUserModel(manajer);
-			userService.addUser(userManajer, manajer);
-
-			var operasional = new CreateUserRequestDTO();
-			operasional.setEmail("operasional1@gmail.com");
-			operasional.setName("Operasional 1");
-			operasional.setPassword("OperasionalPropensi");
-			operasional.setRole("Operasional");
-			UserModel userOperasional = userMapper.createUserRequestDTOToUserModel(operasional);
-			userService.addUser(userOperasional, operasional);
-
-			var keuangan = new CreateUserRequestDTO();
-			keuangan.setEmail("keuangan1@gmail.com");
-			keuangan.setName("Keuangan 1");
-			keuangan.setPassword("KeuanganPropensi");
-			keuangan.setRole("Keuangan");
-			UserModel userKeuangan = userMapper.createUserRequestDTOToUserModel(keuangan);
-			userService.addUser(userKeuangan, keuangan);
+//
+//			Role roleAdmin = new Role();
+//			roleAdmin.setRole("Admin");
+//			roleDb.save(roleAdmin);
+//
+//			Role roleManajer = new Role();
+//			roleManajer.setRole("Manajer");
+//			roleDb.save(roleManajer);
+//
+//			Role roleOperasional = new Role();
+//			roleOperasional.setRole("Operasional");
+//			roleDb.save(roleOperasional);
+//
+//			Role roleKeuangan = new Role();
+//			roleKeuangan.setRole("Keuangan");
+//			roleDb.save(roleKeuangan);
+//
+//
+//			var admin = new CreateUserRequestDTO();
+//			admin.setEmail("admin1@gmail.com");
+//			admin.setName("Admin 1");
+//			admin.setPassword("AdminPropensi");
+//			admin.setRole("Admin");
+//			UserModel userAdmin = userMapper.createUserRequestDTOToUserModel(admin);
+//			userService.addUser(userAdmin, admin);
+//
+//			var manajer = new CreateUserRequestDTO();
+//			manajer.setEmail("manajer1@gmail.com");
+//			manajer.setName("Manajer 1");
+//			manajer.setPassword("ManajerPropensi");
+//			manajer.setRole("Manajer");
+//			UserModel userManajer = userMapper.createUserRequestDTOToUserModel(manajer);
+//			userService.addUser(userManajer, manajer);
+//
+//			var operasional = new CreateUserRequestDTO();
+//			operasional.setEmail("operasional1@gmail.com");
+//			operasional.setName("Operasional 1");
+//			operasional.setPassword("OperasionalPropensi");
+//			operasional.setRole("Operasional");
+//			UserModel userOperasional = userMapper.createUserRequestDTOToUserModel(operasional);
+//			userService.addUser(userOperasional, operasional);
+//
+//			var keuangan = new CreateUserRequestDTO();
+//			keuangan.setEmail("keuangan1@gmail.com");
+//			keuangan.setName("Keuangan 1");
+//			keuangan.setPassword("KeuanganPropensi");
+//			keuangan.setRole("Keuangan");
+//			UserModel userKeuangan = userMapper.createUserRequestDTOToUserModel(keuangan);
+//			userService.addUser(userKeuangan, keuangan);
 		};
 
 	}
