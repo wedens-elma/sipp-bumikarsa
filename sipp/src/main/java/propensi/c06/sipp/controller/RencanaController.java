@@ -48,25 +48,11 @@ public class RencanaController {
 
     @GetMapping("/")
     public String daftarRencana(Model model) {
-        // HttpSession session = request.getSession(false);
-        // String jwtToken = (String) session.getAttribute("token");
-        // LoginJwtResponseDTO loginJwtResponseDTO = userService.retrieveUser(jwtToken);
-        HttpServletRequest request
-        HttpSession session = request.getSession(false);
-        String jwtToken = (String) session.getAttribute("token");
-        System.out.println(role);
-        Claims claims = Jwts.parser()
-                .setSigningKey("yourSecretKey")
-                .parseClaimsJws(role)
-                .getBody();
-        String roleName = (String) claims.get("role");
-        System.out.println(roleName);
-        // if () {
-        //     return "view-daftar-rencana-keuangan";
-        // } else {
-        //     return "view-daftar-rencana";
-        // }
-        return "view-daftar-rencana";
+        if (userService.getCurrentUserRole().equalsIgnoreCase("keuangan")) {
+            return "view-daftar-rencana-keuangan";
+        } else {
+            return "view-daftar-rencana";
+        }
     }
 
     @GetMapping(value = "/{id}")
@@ -74,14 +60,13 @@ public class RencanaController {
         Rencana rencana = rencanaService.getRencanaById(id);
         model.addAttribute("rencana", rencana);
 
-        // if () {
-        //     return "view-detail-rencana-manajer";
-        // } else if () {
-        //     return "view-detail-rencana-keuangan";
-        // } else {
-        //     return "view-detail-rencana-operasional";
-        // }
-        return null;
+        if (userService.getCurrentUserRole().equalsIgnoreCase("manajer")) {
+            return "view-detail-rencana-manajer";
+        } else if (userService.getCurrentUserRole().equalsIgnoreCase("keuangan")) {
+            return "view-detail-rencana-keuangan";
+        } else {
+            return "view-detail-rencana-operasional";
+        }
     }
 
     @GetMapping("/create")

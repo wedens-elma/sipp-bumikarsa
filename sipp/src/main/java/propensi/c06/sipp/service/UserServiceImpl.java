@@ -6,6 +6,8 @@ import propensi.c06.sipp.model.UserModel;
 import propensi.c06.sipp.repository.UserDb;
 import propensi.c06.sipp.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -52,5 +54,25 @@ public class UserServiceImpl implements UserService{
 
 
         return jwtUtils.generateJwtToken(loginJwtRequestDTO.getEmail());
+    }
+
+    @Override
+    public String getCurrentUserRole(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            UserDetails user = (UserDetails) principal;
+            UserModel userModel = getUserByEmail(user.getUsername());
+
+            System.out.println(userModel.getRole().getRole());
+
+            String role = userModel.getRole().getRole();
+
+            return role;
+        }
+        return null;
+    }
+
+    private UserModel getUserByEmail(String username) {
+        return userDb.findByEmail(username);
     }
 }

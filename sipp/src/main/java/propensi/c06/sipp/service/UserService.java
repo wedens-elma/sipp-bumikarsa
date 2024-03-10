@@ -10,4 +10,6 @@ public interface UserService {
     String encrypt(String password);
 
     String loginJwtAdmin(LoginJwtRequestDTO loginJwtRequestDTO);
+    
+    String getCurrentUserRole();
 }
