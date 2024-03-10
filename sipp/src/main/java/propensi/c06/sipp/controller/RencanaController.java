@@ -62,7 +62,7 @@ public class RencanaController {
     @GetMapping("/create")
     public String formAddRencana(Model model) {
         model.addAttribute("rencanaDTO", new CreateRencanaRequestDTO());
-        model.addAttribute("listVendorExisted", vendorService.getAllVendor());
+        model.addAttribute("listVendorExisted", vendorService.getAllVendors());
         model.addAttribute("listBarangExisted", barangService.getAllBarang());
         return "form-create-rencana";
     }
@@ -74,7 +74,7 @@ public class RencanaController {
         }
         rencanaDTO.getListBarangRencana().add(new CreateRencanaRequestDTO.BarangRencanaDTO());
         model.addAttribute("rencanaDTO", rencanaDTO);
-        model.addAttribute("listVendorExisted", vendorService.getAllVendor());
+        model.addAttribute("listVendorExisted", vendorService.getAllVendors());
         model.addAttribute("listBarangExisted", barangService.getAllBarang());
         return "form-create-rencana";
     }
@@ -84,7 +84,7 @@ public class RencanaController {
         @ModelAttribute CreateRencanaRequestDTO rencanaDTO, @RequestParam("deleteRow") int row, Model model) {
         rencanaDTO.getListBarangRencana().remove(row);
         model.addAttribute("rencanaDTO", rencanaDTO);
-        model.addAttribute("listVendorExisted", vendorService.getAllVendor());
+        model.addAttribute("listVendorExisted", vendorService.getAllVendors());
         model.addAttribute("listBarangExisted", barangService.getAllBarang());
         return "form-create-rencana";
     }

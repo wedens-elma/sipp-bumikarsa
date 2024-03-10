@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        Pengadaan berhasil dibuat
+    </title>
+    <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
+    <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+</head>
+
+<body>
+<!--<nav th:replace="~{fragments/fragment :: navbar('permintaan-pengiriman')}"></nav>-->
+<div class="container py-lg-5">
+    <div class="text-center">
+        <div class="card mx-lg-5">
+            <div class="card-body">
+                <img th:src="@{/img/success.png}" style="width: 100px">
+                <h4 class="py-3"
+                    th:text="'Pengadaan dengan berhasil ditambahkan'">
+                </h4>
+                <a class="btn btn-primary m-3" th:href="@{/pengadaan}">Lihat daftar pengadaan</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
