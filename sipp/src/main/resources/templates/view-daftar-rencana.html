@@ -14,19 +14,20 @@
             fetch('/api/rencana/view-all')
                 .then(response => response.json())
                 .then(data => {
+                    // Map each object in the array to match FullCalendar's event structure
                     const events = data.map(item => ({
                         title: item.namaRencana,
                         start: item.expectedDate,
-                        url: '/rencana/' + item.idRencana 
+                        url: '/rencana/' + item.idRencana // Specify the URL for event detail page
                     }));
 
                     var calendarEl = document.getElementById('calendar');
                     var calendar = new FullCalendar.Calendar(calendarEl, {
                         initialView: 'dayGridMonth',
-                        events: events, 
+                        events: events, // Use the mapped events
                         eventClick: function(info) {
                             if (info.event.url) {
-                                window.location.href = info.event.url; 
+                                window.location.href = info.event.url; // Open event detail page
                             }
                         }
                     });
@@ -55,12 +56,12 @@
         .card {
             width: auto; 
             margin: auto;
-            padding: 20px; 
+            padding: 20px; /* Add padding to the card */
         }
 
         #calendar {
-            max-width: 100%; 
-            height: auto; 
+            max-width: 100%; /* Ensure the calendar doesn't exceed the width of the card */
+            height: auto; /* Let the height adjust based on content */
             font-size: 14px;
         }
 
@@ -73,6 +74,7 @@
             display: inline-block;
         }
 
+        /* Exclude the dates from the previous styling */
         #calendar .fc-col-header-cell-cushion,
         #calendar .fc-daygrid-day-number {
             color: inherit;
