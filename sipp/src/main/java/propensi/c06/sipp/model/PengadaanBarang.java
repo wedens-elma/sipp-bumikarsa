@@ -44,5 +44,6 @@ public class PengadaanBarang {
     @JoinColumn(name = "pengadaan", referencedColumnName = "idPengadaan")
     private Pengadaan pengadaan;
 
+    private String namaBarang;
 
 }

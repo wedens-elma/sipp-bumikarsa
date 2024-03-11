@@ -60,7 +60,7 @@
     <div class="login-container">
       <h2>Login</h2>
       <form th:action="@{/login}" method="post">
-        <label for="username">Username:</label>
+        <label for="username">Email:</label>
         <input type="text" id="username" name="username" required="required" />
 
         <label for="password">Password:</label>
@@ -70,6 +70,11 @@
           name="password"
           required="required"
         />
+
+        <!-- Display error message if login attempt fails -->
+        <div th:if="${param.error}" class="error-message">
+          <p th:text="${'Invalid username or password. Please try again.'}"></p>
+        </div>
 
         <button type="submit">Login</button>
       </form>

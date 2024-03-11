@@ -35,7 +35,7 @@ public class Pengadaan {
     private LocalDate tanggalPengadaan;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_vendor", referencedColumnName = "idVendor")
+    @JoinColumn(name = "kode_vendor", referencedColumnName = "kodeVendor")
     private Vendor vendor;
 
     @NotNull

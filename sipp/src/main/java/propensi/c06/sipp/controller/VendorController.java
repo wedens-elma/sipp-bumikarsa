@@ -45,8 +45,8 @@ public class VendorController {
 //            return "redirect:/vendor/tambah";
 //        }
         Vendor vendor = vendorService.addVendor(vendorDTO);
-//        List<Vendor> listVendor = vendorService.getAllVendors();
-//        model.addAttribute("vendors", listVendor);
+        List<Vendor> listVendor = vendorService.getAllVendors();
+        model.addAttribute("vendors", listVendor);
         return "viewall-vendor";
 
     }

@@ -83,7 +83,7 @@
                     <tbody>
                         <tr th:each="barangRencana, iterStat : ${rencana.listBarangRencana}">
                             <td th:text="${iterStat.index + 1}"></td>
-                            <td th:text="${barangRencana.barang.namaBarang}"></td>
+                            <td th:text="${barangRencana.namaBarang}"></td>
                             <td th:text="${barangRencana.kuantitas}"></td>
                         </tr>
                     </tbody>

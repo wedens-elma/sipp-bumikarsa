@@ -87,7 +87,7 @@
                         <td th:text="${iterationStatus.count}"></td>
                         <td>
 <!--                            <a th:href="@{/pengadaan/{id}(id=${pengadaanBarang.barang2.idBarang})}"-->
-                               <a th:text="${pengadaanBarang.barang.namaBarang}"></a>
+                               <a th:text="${pengadaanBarang.namaBarang}"></a>
                         </td>
                         <td th:text="${pengadaanBarang.jumlahBarang}"></td>
                         <td th:text="${pengadaanBarang.hargaBarang}"></td>
@@ -118,6 +118,9 @@
 
             <div class="text-center">
                 <a class="btn btn-secondary my-3" th:href="@{/pengadaan}">Kembali</a>
+                <a class="btn btn-secondary my-3" >Update</a>
+                <a class="btn btn-secondary my-3" >Hapus</a>
+
             </div>
         </div>
     </div>
