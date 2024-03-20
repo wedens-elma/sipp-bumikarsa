@@ -1,13 +1,10 @@
 package propensi.c06.sipp.service;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import propensi.c06.sipp.model.Barang;
@@ -15,7 +12,6 @@ import propensi.c06.sipp.repository.BarangDb;
 
 @Service
 public class BarangServiceImpl implements BarangService {
-
     @Autowired
     BarangDb barangDb;
 
@@ -95,3 +91,4 @@ public class BarangServiceImpl implements BarangService {
     }
 
 }
+

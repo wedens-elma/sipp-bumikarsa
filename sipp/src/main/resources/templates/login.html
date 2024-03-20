@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://thymeleaf.org"
+>
   <head>
     <meta charset="UTF-8" />
     <title>Login to SIPP</title>
@@ -56,7 +60,7 @@
     <div class="login-container">
       <h2>Login</h2>
       <form th:action="@{/login}" method="post">
-        <label for="username">Username:</label>
+        <label for="username">Email:</label>
         <input type="text" id="username" name="username" required="required" />
 
         <label for="password">Password:</label>
@@ -66,6 +70,11 @@
           name="password"
           required="required"
         />
+
+        <!-- Display error message if login attempt fails -->
+        <div th:if="${param.error}" class="error-message">
+          <p th:text="${'Invalid username or password. Please try again.'}"></p>
+        </div>
 
         <button type="submit">Login</button>
       </form>
