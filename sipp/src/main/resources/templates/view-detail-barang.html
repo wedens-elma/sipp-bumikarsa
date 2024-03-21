@@ -32,8 +32,8 @@
 
                 <h3> Spesifikasi </h3>
                 
-                <p th:if="${barang.dimensiBarang == ''}" th:text="'Dimension: NaN'"></p>
-                <p th:unless="${barang.dimensiBarang == ''}" th:text="'Dimension: ' + ${barang.dimensiBarang}"></p>
+                <p th:if="${barang.dimensiBarang == ''}" th:text="'Dimensi: NaN'"></p>
+                <p th:unless="${barang.dimensiBarang == ''}" th:text="'Dimensi: ' + ${barang.dimensiBarang}"></p>
 
                 <p th:if="${barang.beratBarang == ''}" th:text="'Berat barang: NaN'"></p>
                 <p th:unless="${barang.beratBarang == ''}" th:text="'Berat barang: ' + ${barang.beratBarang}"></p>

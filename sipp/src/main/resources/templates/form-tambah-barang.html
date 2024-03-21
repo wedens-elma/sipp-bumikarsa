@@ -10,80 +10,117 @@
 
 <body>
     <div class="container">
-        <div class="card m-4 p-4">
+        <div class="card m-4 p-4 shadow-lg p-3 mb-5 bg-white rounded">
             <div class="card-body">
                 <div class="justify-content-center">
-                    <h2>Tambah Barang </h2>
+                    <h2> <b style="font-size:40px"> Tambah Barang </b> </h2>
                     <br>
-                    <form th:action="@{/barang/tambah}" th:object="${barangDTO}" method="POST"
-                        enctype="multipart/form-data" onsubmit="return validateForm()">
 
-                        <label for="namaBarang">Nama Barang<span style="color: red;">*</span></label> <br>
-                        
-                        
-                        <input required class="form-control" type="text" th:field="*{namaBarang}" placeholder="Semen" />
-                        <br><br>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-4">
+                                <form th:action="@{/barang/tambah}" th:object="${barangDTO}" method="POST"
+                                    enctype="multipart/form-data" onsubmit="return validateForm()">
 
-                        <label for="deskripsiBarang">Deskripsi Barang<span style="color: red;">*</span></label>
-                        <input required class="form-control" type="text" th:field="*{deskripsiBarang}"
-                            placeholder="Semen adalah ..." />
-                        <br><br>
+                                    <label for="namaBarang"> <b style="font-size:24px"> Nama Barang</b><span
+                                            style="color: red;">*</span></label> <br>
 
-                        <label for="tipeBarang">Tipe Barang<span style="color: red;">*</span></label> <br>
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <select class="form-control" name="tipeBarang" id="tipeBarang"
-                                        th:field="*{tipeBarang}">
-                                        <option value="1">Alat</option>
-                                        <option value="2">Material</option>
-                                    </select>
 
-                                </tr>
-                            </tbody>
-                        </table>
-                        <br>
+                                    <input required class="form-control" type="text" th:field="*{namaBarang}"
+                                        placeholder="Contoh: Semen" />
+                                    <br><br>
 
-                        Dimensi Barang <br>
-                        <input class="form-control" type="text" th:field="*{dimensiBarang}"
-                            placeholder="P x L x T. Contoh: 10 x 12 x 30" />
-                        <br><br>
+                                    <label for="deskripsiBarang"><b style="font-size:24px"> Deskripsi Barang</b><span
+                                            style="color: red;">*</span></label>
+                                    <input required class="form-control" type="text" th:field="*{deskripsiBarang}"
+                                        placeholder="Contoh: Semen adalah ..." />
+                                    <br><br>
 
-                        Berat Barang <br>
-                        <input class="form-control" type="text" th:field="*{beratBarang}" placeholder="30kg / 5ons" />
-                        <br><br>
+                                    <label for="tipeBarang"><b style="font-size:24px"> Tipe Barang</b><span
+                                            style="color: red;">*</span></label> <br>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <select class="form-control" name="tipeBarang" id="tipeBarang"
+                                                    th:field="*{tipeBarang}">
+                                                    <option value="0" disabled selected>-- Pilih tipe barang --</option>
+                                                    <option value="1">Alat</option>
+                                                    <option value="2">Material</option>
+                                                </select>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
 
-                        <label for="fotoBarang">Foto Barang<span style="color: red;">*</span></label> <br>
-                        <input type="file" name="file" class="form-contol-file" id="customFile" />
+                                    <b style="font-size:24px"> Dimensi Barang</b> <br>
+                                    <input class="form-control" type="text" th:field="*{dimensiBarang}"
+                                        placeholder="P x L x T. Contoh: 10 x 12 x 30 (opsional)" />
+                                    <br><br>
 
-                        <br><br>
-                        <br>
+                                    <b style="font-size:24px"> Berat Barang</b> <br>
+                                    <input class="form-control" type="text" th:field="*{beratBarang}"
+                                        placeholder="Contoh: 30 kg / 5 ons (opsional)" />
+                                    <br><br>
 
-                        <label for="stokBarang">Stok Awal<span style="color: red;">*</span></label> <br>
-                        <input required class="form-control" type="number" th:field="*{stokBarang}" id="stokAwal"
-                            placeholder="30" />
-                        <br><br>
+                                    <label for="fotoBarang"><b style="font-size:24px"> Foto Barang</b><span
+                                            style="color: red;">*</span></label> <br>
+                                    <input type="file" name="file" class="form-contol-file" id="customFile" />
 
-                        <label for="standarStokBarang">Standar Stok Barang<span style="color: red;">*</span></label>
-                        <br>
-                        <input required class="form-control" type="number" th:field="*{standarStokBarang}"
-                            id="standarStok" placeholder="5" />
-                        <br>
+                                    <br><br>
+                                    <br>
 
-                        <p> Notes: </p>
-                        <p> Stok Awal adalah stok yang dimilki sekarang saat menambah kuantitas barang. Jika belum
-                            memiliki barang, isi dengan 0.
-                            Standar Stok Barang adalah jumlah standar stok yang harus dimiliki oleh barang tersebut.
-                        </p>
-                        <p> Jika jumlah stok barang berkurang sampai kurang dari jumlah standar stok minimal, maka
-                            sistem akan mengirimkan notifikasi peringatan.</p>
+                                    <label for="stokBarang"><b style="font-size:24px"> Stok Awal</b><span
+                                            style="color: red;">*</span></label> <br>
+                                    <input required class="form-control" type="number" th:field="*{stokBarang}"
+                                        id="stokAwal" placeholder="Contoh: 30" />
+                                    <br><br>
 
-                        <br>
+                                    <label for="standarStokBarang"><b style="font-size:24px"> Standar Stok Barang</b><span style="color: red;">*</span></label>
+                                    <br>
+                                    <input required class="form-control" type="number" th:field="*{standarStokBarang}"
+                                        id="standarStok" placeholder="Contoh: 5" />
+                                    <br>
 
-                        <a class="btn btn-danger" href="/">Batal</a>
-                        <button class="btn btn-primary" type="submit">Simpan</button>
+                                    <p> Notes: </p>
+                                    <p> Stok Awal adalah stok yang dimilki sekarang saat menambah kuantitas barang. Jika
+                                        belum
+                                        memiliki barang, isi dengan 0.
+                                        Standar Stok Barang adalah jumlah standar stok yang harus dimiliki oleh barang
+                                        tersebut.
+                                    </p>
+                                    <p> Jika jumlah stok barang berkurang sampai kurang dari jumlah standar stok
+                                        minimal, maka
+                                        sistem akan mengirimkan notifikasi peringatan.</p>
 
-                    </form>
+                                    <br>
+
+
+                                    
+
+
+                                
+                            </div>
+                            <div class="col-8 d-flex justify-content-center align-items-center">
+
+                                <img src="https://th.bing.com/th/id/OIP.15WndzPQEtPj9eiOz5Zk4wHaFX?rs=1&pid=ImgDetMain"
+                                    alt="gambar">
+
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <a class="btn btn-danger btn-lg me-4 px-5" href="/">Batal</a>
+                                <!-- me-4 untuk memberikan margin kanan sebesar 20px -->
+                                <button class="btn btn-primary btn-lg px-5" type="submit">Simpan</button>
+                            </div>
+                        </form>
+                        </div>
+
+
+
+                    </div>
+
+
+
+
                 </div>
             </div>
         </div>
@@ -92,13 +129,29 @@
         function validateForm() {
             var stokAwal = document.getElementById("stokAwal").value;
             var standarStok = document.getElementById("standarStok").value;
+            var tipeBarang = document.getElementById("tipeBarang").value;
+            var fileInput = document.getElementById("customFile");
+            var fileSize = fileInput.files[0].size;
+
+            if (tipeBarang == 0) {
+                alert("Pilih tipe barang kamu!");
+                return false;
+            }
 
             if (stokAwal < 0 || standarStok < 0) {
                 alert("Jumlah stok tidak boleh negatif!");
                 return false;
             }
+
+            if (fileSize > 10 * 1024 * 1024) { // Maksimum 10MB
+                alert("Ukuran file foto tidak boleh lebih dari 10MB!");
+                return false;
+            }
+
             return true;
         }
+
+        document.getElementById("tipeBarang").selectedIndex = 0;
     </script>
 </body>
 
