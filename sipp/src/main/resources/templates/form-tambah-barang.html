@@ -17,10 +17,11 @@
                     <br>
 
                     <div class="container">
-                        <div class="row">
-                            <div class="col-4">
-                                <form th:action="@{/barang/tambah}" th:object="${barangDTO}" method="POST"
-                                    enctype="multipart/form-data" onsubmit="return validateForm()">
+                        <form th:action="@{/barang/tambah}" th:object="${barangDTO}" method="POST"
+                            enctype="multipart/form-data" onsubmit="return validateForm()">
+                            <div class="row">
+                                <div class="col">
+
 
                                     <label for="namaBarang"> <b style="font-size:24px"> Nama Barang</b><span
                                             style="color: red;">*</span></label> <br>
@@ -57,6 +58,16 @@
                                         placeholder="P x L x T. Contoh: 10 x 12 x 30 (opsional)" />
                                     <br><br>
 
+
+
+
+
+
+
+
+                                </div>
+                                <div class="col">
+
                                     <b style="font-size:24px"> Berat Barang</b> <br>
                                     <input class="form-control" type="text" th:field="*{beratBarang}"
                                         placeholder="Contoh: 30 kg / 5 ons (opsional)" />
@@ -64,7 +75,7 @@
 
                                     <label for="fotoBarang"><b style="font-size:24px"> Foto Barang</b><span
                                             style="color: red;">*</span></label> <br>
-                                    <input type="file" name="file" class="form-contol-file" id="customFile" />
+                                    <input type="file" name="file" class="form-contol-file" id="customFile" style="margin-bottom: 7px;" />
 
                                     <br><br>
                                     <br>
@@ -72,58 +83,49 @@
                                     <label for="stokBarang"><b style="font-size:24px"> Stok Awal</b><span
                                             style="color: red;">*</span></label> <br>
                                     <input required class="form-control" type="number" th:field="*{stokBarang}"
-                                        id="stokAwal" placeholder="Contoh: 30" />
-                                    <br><br>
+                                        id="stokAwal" placeholder="Contoh: 30" style="margin-bottom: 17px;"/>
+                                    <br>
 
-                                    <label for="standarStokBarang"><b style="font-size:24px"> Standar Stok Barang</b><span style="color: red;">*</span></label>
+                                    <label for="standarStokBarang"><b style="font-size:24px"> Standar Stok
+                                            Barang</b><span style="color: red;">*</span></label>
                                     <br>
                                     <input required class="form-control" type="number" th:field="*{standarStokBarang}"
                                         id="standarStok" placeholder="Contoh: 5" />
-                                    <br>
-
-                                    <p> Notes: </p>
-                                    <p> Stok Awal adalah stok yang dimilki sekarang saat menambah kuantitas barang. Jika
-                                        belum
-                                        memiliki barang, isi dengan 0.
-                                        Standar Stok Barang adalah jumlah standar stok yang harus dimiliki oleh barang
-                                        tersebut.
-                                    </p>
-                                    <p> Jika jumlah stok barang berkurang sampai kurang dari jumlah standar stok
-                                        minimal, maka
-                                        sistem akan mengirimkan notifikasi peringatan.</p>
-
-                                    <br>
 
 
-                                    
+                                </div>
+                                <br>
 
+                                <p> Notes: </p>
+                                <p> Stok Awal adalah stok yang dimilki sekarang saat menambah kuantitas barang. Jika
+                                    belum
+                                    memiliki barang, isi dengan 0.
+                                    Standar Stok Barang adalah jumlah standar stok yang harus dimiliki oleh barang
+                                    tersebut.
+                                </p>
+                                <p> Jika jumlah stok barang berkurang sampai kurang dari jumlah standar stok
+                                    minimal, maka
+                                    sistem akan mengirimkan notifikasi peringatan.</p>
 
-                                
-                            </div>
-                            <div class="col-8 d-flex justify-content-center align-items-center">
-
-                                <img src="https://th.bing.com/th/id/OIP.15WndzPQEtPj9eiOz5Zk4wHaFX?rs=1&pid=ImgDetMain"
-                                    alt="gambar">
-
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <a class="btn btn-danger btn-lg me-4 px-5" href="/">Batal</a>
-                                <!-- me-4 untuk memberikan margin kanan sebesar 20px -->
-                                <button class="btn btn-primary btn-lg px-5" type="submit">Simpan</button>
-                            </div>
+                                <br>
+                                <div class="d-flex justify-content-center">
+                                    <a class="btn btn-danger btn-lg me-4 px-5" href="/">Batal</a>
+                                    <!-- me-4 untuk memberikan margin kanan sebesar 20px -->
+                                    <button class="btn btn-primary btn-lg px-5" type="submit">Simpan</button>
+                                </div>
                         </form>
-                        </div>
-
-
-
                     </div>
 
 
 
-
                 </div>
+
+
+
+
             </div>
         </div>
+    </div>
     </div>
     <script>
         function validateForm() {
