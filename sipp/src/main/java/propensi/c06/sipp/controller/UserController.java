@@ -1,6 +1,5 @@
 package propensi.c06.sipp.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
 import propensi.c06.sipp.dto.UserMapper;
 import propensi.c06.sipp.dto.request.CreateUserRequestDTO;
@@ -91,8 +88,12 @@ public class UserController {
     private String softDeleteUser(@PathVariable String email, Model model) {
         UserModel userModel = userService.getUserByEmail(email);
         model.addAttribute("email", userModel.getEmail());
-        // userService.softDeleteUser(email);
-        return "confirm-delete-user";
+        if (userModel.getRole().getRole().equals("Admin")){
+            return "failed-delete-admin";
+        }
+        else{
+            return "confirm-delete-user";
+        }
     }
 
     @GetMapping("/user/soft-delete/{email}/confirm")
@@ -100,5 +101,15 @@ public class UserController {
         userService.softDeleteUser(email);
         return "redirect:/user";
     }
+
+    @GetMapping("/logout-confirm")
+    public String showLogoutConfirmation() {
+        return "logout-confirm";
+    }
+
+    // @GetMapping("/logout-successful")
+    // public String logoutSuccessful() {
+    //     return "logout-successful";
+    // }
 
 }

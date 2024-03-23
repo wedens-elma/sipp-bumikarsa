@@ -108,8 +108,10 @@ public class RencanaController {
             return "error-view";
         }
         Rencana rencana = rencanaService.saveRencana(rencanaDTO);
-        model.addAttribute("id", rencana.getIdRencana());
-        model.addAttribute("nama", rencana.getNamaRencana());
-        return "view-daftar-rencana";
+        if (rencana == null) {
+            return "create-rencana-error-view";
+        } else {
+            return "view-daftar-rencana";
+        }
     }
 }

@@ -70,7 +70,6 @@ public class WebSecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/pengadaan")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")
                         .requestMatchers(new AntPathRequestMatcher("/pengadaan/tambah")).hasAnyAuthority("Manajer", "Keuangan")
                         .requestMatchers(new AntPathRequestMatcher("/pengadaan/detail/**")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")
-                        .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
