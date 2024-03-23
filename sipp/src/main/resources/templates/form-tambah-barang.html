@@ -75,19 +75,21 @@
 
                                     <label for="fotoBarang"><b style="font-size:24px"> Foto Barang</b><span
                                             style="color: red;">*</span></label> <br>
-                                    <input type="file" name="file" class="form-contol-file" id="customFile" style="margin-bottom: 7px;" />
+                                    <input type="file" name="file" class="form-contol-file" id="customFile"
+                                        style="margin-bottom: 7px;" />
 
                                     <br><br>
                                     <br>
 
-                                    <label for="stokBarang"><b style="font-size:24px"> Stok Awal</b><span
-                                            style="color: red;">*</span></label> <br>
+                                    <a for="stokBarang" data-toggle="tooltip" data-placement="top" title="Stok Awal adalah stok yang dimilki sekarang saat menambah kuantitas barang. Jika belum memiliki barang, isi dengan 0."><b style="font-size:24px"> Stok Awal(?)</b><span
+                                            style="color: red;">*</span></a> <br>
                                     <input required class="form-control" type="number" th:field="*{stokBarang}"
-                                        id="stokAwal" placeholder="Contoh: 30" style="margin-bottom: 17px;"/>
+                                        id="stokAwal" placeholder="Contoh: 30" style="margin-bottom: 17px;" />
                                     <br>
 
-                                    <label for="standarStokBarang"><b style="font-size:24px"> Standar Stok
-                                            Barang</b><span style="color: red;">*</span></label>
+                                    <a for="standarStokBarang" data-toggle="tooltip" data-placement="top" title="Standar Stok Barang adalah jumlah standar stok yang harus dimiliki oleh barang tersebut. Jika jumlah stok barang berkurang sampai kurang dari jumlah standar stok minimal, maka sistem akan mengirimkan notifikasi peringatan."><b style="font-size:24px"> Standar
+                                            Stok
+                                            Barang(?)</b><span style="color: red;">*</span></a>
                                     <br>
                                     <input required class="form-control" type="number" th:field="*{standarStokBarang}"
                                         id="standarStok" placeholder="Contoh: 5" />
@@ -95,17 +97,6 @@
 
                                 </div>
                                 <br>
-
-                                <p> Notes: </p>
-                                <p> Stok Awal adalah stok yang dimilki sekarang saat menambah kuantitas barang. Jika
-                                    belum
-                                    memiliki barang, isi dengan 0.
-                                    Standar Stok Barang adalah jumlah standar stok yang harus dimiliki oleh barang
-                                    tersebut.
-                                </p>
-                                <p> Jika jumlah stok barang berkurang sampai kurang dari jumlah standar stok
-                                    minimal, maka
-                                    sistem akan mengirimkan notifikasi peringatan.</p>
 
                                 <br>
                                 <div class="d-flex justify-content-center">
@@ -154,6 +145,10 @@
         }
 
         document.getElementById("tipeBarang").selectedIndex = 0;
+
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
     </script>
 </body>
 
