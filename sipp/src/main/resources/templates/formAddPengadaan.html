@@ -78,7 +78,7 @@
                           <th scope="col">Barang</th>
                           <th scope="col">Jumlah Barang</th>
                           <th scope="col">Harga Satuan</th>
-                          <th scope="col">Diskon Satuan</th>
+                          <th scope="col">Diskon Satuan (%)</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
@@ -130,8 +130,9 @@
                               th:field="*{listBarang[__${iterationStatus.index}__].diskonSatuan}"
                               class="form-control"
                               min="0"
+                              max="100"
                               step="1"
-                              placeholder="Diskon Satuan"
+                              placeholder="Diskon Satuan (%)"
                             />
                           </td>
                           <td>
@@ -150,11 +151,14 @@
 
                     <div class="row">
                       <div class="col">
-                        <label>Diskon Keseluruhan:</label>
+                        <label>Diskon Keseluruhan (%) :</label>
                         <input
                           class="form-control"
                           type="number"
                           required="required"
+                          min="0"
+                          max="100"
+                          step="1"
                           th:field="*{diskonKeseluruhan}"
                         />
                         <br /><br />
@@ -209,6 +213,7 @@
                       // Hapus baris dari kontainer
                       barangRows.removeChild(rowToRemove);
                     }
+
                   </script>
                 </div>
               </div>
