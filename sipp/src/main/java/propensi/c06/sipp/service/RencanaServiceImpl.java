@@ -45,37 +45,40 @@ public class RencanaServiceImpl implements RencanaService {
 
     @Override
     public Rencana saveRencana(CreateRencanaRequestDTO rencanaDTO) { 
-        Rencana rencana = new Rencana();
-        rencana.setVendor(rencanaDTO.getVendor());
-        rencana.setCreatedBy(userService.getCurrentUserName());
-        rencana.setNamaRencana(rencanaDTO.getNamaRencana());
-        rencana.setExpectedDate(LocalDate.parse(rencanaDTO.getExpectedDate()));
-        rencanaDb.save(rencana); 
+        if (rencanaDTO.getListBarangRencana() == null) {
+            return null;
+        } else {
+            Rencana rencana = new Rencana();
+            rencana.setVendor(rencanaDTO.getVendor());
+            rencana.setCreatedBy(userService.getCurrentUserName());
+            rencana.setNamaRencana(rencanaDTO.getNamaRencana());
+            rencana.setExpectedDate(LocalDate.parse(rencanaDTO.getExpectedDate()));
+            rencanaDb.save(rencana);
 
-        for (CreateRencanaRequestDTO.BarangRencanaDTO barangRencanaDTO : rencanaDTO.getListBarangRencana()) {
-            BarangRencana existingBarangRencana = barangRencanaDb.findByRencanaAndBarang(rencana, barangRencanaDTO.getBarang());
-            if (existingBarangRencana != null) {
-                existingBarangRencana.setKuantitas(existingBarangRencana.getKuantitas() + barangRencanaDTO.getKuantitas());
-                barangRencanaDb.save(existingBarangRencana);
-            } else {
-                BarangRencana newBarangRencana = new BarangRencana();
-                newBarangRencana.setKuantitas(barangRencanaDTO.getKuantitas());
-                newBarangRencana.setBarang(barangRencanaDTO.getBarang());
-                newBarangRencana.setRencana(rencana);
-                newBarangRencana.setNamaBarang(barangRencanaDTO.getBarang().getNamaBarang());
-                barangRencanaDb.save(newBarangRencana);
+            for (CreateRencanaRequestDTO.BarangRencanaDTO barangRencanaDTO : rencanaDTO.getListBarangRencana()) {
+                BarangRencana existingBarangRencana = barangRencanaDb.findByRencanaAndBarang(rencana, barangRencanaDTO.getBarang());
+                if (existingBarangRencana != null) {
+                    existingBarangRencana.setKuantitas(existingBarangRencana.getKuantitas() + barangRencanaDTO.getKuantitas());
+                    barangRencanaDb.save(existingBarangRencana);
+                } else {
+                    BarangRencana newBarangRencana = new BarangRencana();
+                    newBarangRencana.setKuantitas(barangRencanaDTO.getKuantitas());
+                    newBarangRencana.setBarang(barangRencanaDTO.getBarang());
+                    newBarangRencana.setRencana(rencana);
+                    newBarangRencana.setNamaBarang(barangRencanaDTO.getBarang().getNamaBarang());
+                    barangRencanaDb.save(newBarangRencana);
+                }
             }
+            LogRencana logRencana = new LogRencana();
+            logRencana.setRencana(rencana);
+            logRencana.setStatus("created");
+            logRencana.setTanggalWaktu(LocalDateTime.now());
+            logRencana.setChangedBy(userService.getCurrentUserName());
+            rencana.setLogRencana(new ArrayList<LogRencana>());
+            rencana.getLogRencana().add(logRencana);
+
+            logRencanaDb.save(logRencana);
+            return rencana;
         }
-
-        LogRencana logRencana = new LogRencana();
-        logRencana.setRencana(rencana);
-        logRencana.setStatus("created");
-        logRencana.setTanggalWaktu(LocalDateTime.now());
-        logRencana.setChangedBy(userService.getCurrentUserName());
-        rencana.setLogRencana(new ArrayList<LogRencana>());
-        rencana.getLogRencana().add(logRencana);
-
-        logRencanaDb.save(logRencana);
-        return rencana;
     }
 }
