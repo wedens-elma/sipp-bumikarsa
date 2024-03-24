@@ -7,60 +7,80 @@
     <object th:include="~{fragments/fragment :: js}" th:remove="tag"></object>
     <object th:include="~{fragments/fragment :: css}" th:remove="tag"></object>
     <title>View All Pengadaan</title>
+    <style>
+        #pengadaan {
+           width: 100%;
+        max-width: 100%;
+        }
+    </style>
 </head>
 
 <body>
+<!--<nav th:replace="~{fragments/navbar :: #msb}">-->
+<!--</nav>-->
+<!--<nav th:replace="~{fragments/navbar :: mnb}"></nav>-->
+<!--<div th:replace="~{fragments/sidebar}"></div>-->
+<!--<nav th:replace="~{fragments/navbar}"></nav>-->
+<!--<div th:replace="~{fragments/sidebar :: sidebar}"></div>-->
+<div class="container-fluid">
+    <div class="row">
+<!--        <div th:replace=~{"fragments/sidebarf :: sidebar}" class="col-lg-3 col-md-4" ></div>-->
+        <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+        <div class="col">
+            <div id="pengadaan">
+                <div class="card m-4 p-4">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <h2> Daftar Pengadaan</h2>
+                            <div class="text-center m-3">
+                                <a type="button" class="btn btn-md btn-primary" href="/pengadaan/tambah">+ Tambah Pengadaan</a>
+                            </div>
+                        </div>
 
-<div class="container">
-    <div class="card m-4 p-4">
-        <div class="card-body">
-            <div class="text-center">
-                <h2> Daftar Pengadaan</h2>
-                <div class="text-center m-3">
-                    <a type="button" class="btn btn-md btn-primary" href="/pengadaan/tambah">+ Tambah Pengadaan</a>
+                        <br>
+
+                        <table id="pengadaanTable" class="table table-bordered text-center">
+                            <thead class="table-dark">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Code Pengadaan</th>
+                                <th scope="col">Nama Pengadaan</th>
+                                <th scope="col">Vendor</th>
+                                <th scope="col">Shipment Status</th>
+                                <th scope="col">Payment Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- Thymeleaf untuk iterasi daftar pengadaan -->
+                            <tr th:each="pengadaan, iterStat : ${listPengadaan}">
+                                <td th:text="${iterStat.index + 1}"></td>
+                                <td th:text="${pengadaan.idPengadaan}"></td>
+                                <td th:text="${pengadaan.namaPengadaan}"></td>
+                                <td th:text="${pengadaan.vendor.namaVendor}"></td>
+                                <td>
+                                    <span th:if="${pengadaan.shipmentStatus == 0}">In Progress</span>
+                                    <span th:if="${pengadaan.shipmentStatus == 1}">Arrived</span>
+                                </td>
+                                <td>
+                                    <span th:if="${pengadaan.paymentStatus == 0}">Not Paid</span>
+                                    <span th:if="${pengadaan.paymentStatus == 1}">In Progress</span>
+                                    <span th:if="${pengadaan.paymentStatus == 2}">Paid</span>
+                                </td>
+                                <td>
+                                    <a type="button" class="btn btn-sm btn-secondary" th:href="@{/pengadaan/{idPengadaan}(idPengadaan=${pengadaan.idPengadaan})}">Detail</a>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-
-            <br>
-
-            <table id="pengadaanTable" class="table table-bordered text-center">
-                <thead class="table-dark">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Code Pengadaan</th>
-                    <th scope="col">Nama Pengadaan</th>
-                    <th scope="col">Vendor</th>
-                    <th scope="col">Shipment Status</th>
-                    <th scope="col">Payment Status</th>
-                    <th scope="col">Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- Thymeleaf untuk iterasi daftar pengadaan -->
-                <tr th:each="pengadaan, iterStat : ${listPengadaan}">
-                    <td th:text="${iterStat.index + 1}"></td>
-                    <td th:text="${pengadaan.idPengadaan}"></td>-->
-                    <td th:text="${pengadaan.namaPengadaan}"></td>
-                    <td th:text="${pengadaan.vendor.namaVendor}"></td>
-                    <td>
-                        <span th:if="${pengadaan.shipmentStatus == 0}">In Progress</span>
-                        <span th:if="${pengadaan.shipmentStatus == 1}">Arrived</span>
-                    </td>
-                    <td>
-                        <span th:if="${pengadaan.paymentStatus == 0}">Not Paid</span>
-                        <span th:if="${pengadaan.paymentStatus == 1}">In Progress</span>
-                        <span th:if="${pengadaan.paymentStatus == 2}">Paid</span>
-                    </td>
-                    <td>
-                        <a type="button" class="btn btn-sm btn-secondary" th:href="@{/pengadaan/{idPengadaan}(idPengadaan=${pengadaan.idPengadaan})}">Detail</a>
-
-                    </td>
-                </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
+
 </body>
 
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
@@ -69,5 +89,35 @@
         $('#pengadaanTable').DataTable();
     });
 </script>
+<!--<script>-->
+<!--    // JavaScript code to handle sidebar menu clicks and load content dynamically-->
+<!--    document.addEventListener("DOMContentLoaded", function () {-->
+<!--        const sidebarLinks = document.querySelectorAll(".sidebar-link");-->
+<!--        sidebarLinks.forEach(function (link) {-->
+<!--            link.addEventListener("click", function (event) {-->
+<!--                event.preventDefault();-->
+<!--                const url = this.getAttribute("href");-->
+<!--                loadContent(url);-->
+<!--            });-->
+<!--        });-->
+
+<!--        function loadContent(url) {-->
+<!--            // Example: load content using AJAX-->
+<!--            // You can use any method to load content dynamically based on the URL-->
+<!--            // For simplicity, here's a basic example using fetch API-->
+<!--            fetch(url)-->
+<!--                .then(response => response.text())-->
+<!--                .then(data => {-->
+<!--                    document.getElementById("main").innerHTML = data;-->
+<!--                })-->
+<!--                .catch(error => console.error('Error:', error));-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+
 
 </html>
+
+
+
+

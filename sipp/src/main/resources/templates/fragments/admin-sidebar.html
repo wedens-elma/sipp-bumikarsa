@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Admin Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jakarta+Sans:wght@400;600&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+        *,
+        ::after,
+        ::before {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.875rem;
+            opacity: 1;
+            overflow-y: scroll;
+            margin: 0;
+        }
+
+        a {
+            cursor: pointer;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        h4 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.275rem;
+            color: var(--bs-emphasis-color);
+        }
+
+        /* Layout */
+
+        .wrapper {
+            align-items: stretch;
+            display: flex;
+            width: 100%;
+        }
+
+        #sidebar {
+            max-width: 264px;
+            min-width: 264px;
+            background: #191EF2;
+            transition: all 0.35s ease-in-out;
+            max-height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            min-width: 0;
+            overflow: hidden;
+            transition: all 0.35s ease-in-out;
+            width: 100%;
+            background: #EBEBEB;
+            flex: 1;
+            padding: 20px;
+        }
+
+        /* Sidebar Elements Style */
+
+        .sidebar-logo {
+            padding: 1.15rem;
+            text-align: center;
+        }
+
+        .sidebar-logo a {
+            color: #e9ecef;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .sidebar-nav {
+            flex-grow: 1;
+            list-style: none;
+            margin-bottom: 0;
+            padding-left: 0;
+            margin-left: 0;
+        }
+
+        .sidebar-header {
+            color: #e9ecef;
+            font-size: .75rem;
+            padding: 1.5rem 1.5rem .375rem;
+        }
+
+        a.sidebar-link {
+            padding: .625rem 1.625rem;
+            color: #e9ecef;
+            position: relative;
+            display: block;
+            font-size: 0.875rem;
+            text-decoration: none;
+        }
+        .sidebar-footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+
+        .sidebar-link.active,
+        .sidebar-link:hover {
+            background-color: #FFC023;
+            color: #000000;
+        }
+
+        .sidebar-link.active::after,
+        .sidebar-link:hover::after {
+            border-color: transparent transparent transparent #000000;
+        }
+
+        .active {
+            background-color: #FFC023 !important;
+            color: #000000 !important;
+        }
+
+
+        .sidebar-link[data-bs-toggle="collapse"]::after {
+            border: solid;
+            border-width: 0 .075rem .075rem 0;
+            content: "";
+            display: inline-block;
+            padding: 2px;
+            position: absolute;
+            right: 1.5rem;
+            top: 1.4rem;
+            transform: rotate(-135deg);
+            transition: all .2s ease-out;
+        }
+
+        .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+            transform: rotate(45deg);
+            transition: all .2s ease-out;
+        }
+
+        .avatar {
+            height: 40px;
+            width: 40px;
+        }
+
+        .navbar-expand .navbar-nav {
+            margin-left: auto;
+            margin-bottom: 5px;
+
+        }
+
+        .navbar-brand-text {
+            color: #000;
+        }
+
+
+        .content {
+            flex: 1;
+            max-width: 100vw;
+            width: 100vw;
+        }
+
+        @media (min-width:768px) {
+            .content {
+                max-width: auto;
+                width: auto;
+            }
+        }
+
+        .card {
+            box-shadow: 0 0 .875rem 0 rgba(34, 46, 60, .05);
+            margin-bottom: 24px;
+        }
+
+        .illustration {
+            background-color: var(--bs-primary-bg-subtle);
+            color: var(--bs-emphasis-color);
+        }
+
+        .illustration-img {
+            max-width: 150px;
+            width: 100%;
+        }
+
+        /* Sidebar Toggle */
+
+        #sidebar.collapsed {
+            margin-left: -264px;
+        }
+
+        /* Footer and Nav */
+
+
+        @media (max-width:767.98px) {
+
+            .js-sidebar {
+                margin-left: -264px;
+            }
+
+            #sidebar.collapsed {
+                margin-left: 0;
+            }
+
+            .navbar,
+            footer {
+                width: 100vw;
+            }
+            background-color: #FFC023;
+
+        }
+
+
+    </style>
+</head>
+
+<body>
+<!--<div class="wrapper" id="wrapper">-->
+
+    <aside id="sidebar" class="js-sidebar col-lg-3">
+        <!-- Content For Sidebar -->
+        <div class="h-100">
+            <div class="sidebar-logo">
+                <a href="/">SIPP</a>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a href="/" class="sidebar-link" >
+                        <i class="fa-solid fa-list pe-2"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link collapsed" data-bs-target="#user" data-bs-toggle="collapse"
+                       aria-expanded="false"><i class="fa-solid fa-file-lines pe-2"></i>
+                        user
+                    </a>
+                    <ul id="user" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" style="padding-left: 20px;">
+                        <li class="sidebar-item">
+                            <a href="/user" class="sidebar-link"> <i class="fa-solid fa-list pe-2"></i> Daftar user</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="/user/add" class="sidebar-link"> <i class="fa-regular fa-square-plus pe-2"></i>Add user</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="/logout" class="sidebar-link">
+                    <i class="fas fa-sign-out-alt pe-2"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+
+    <div class="main" id="main" >
+        <nav class="navbar navbar-expand px-3" style="border-bottom: 1px solid #ced4da;">
+            <button class="btn" id="sidebar-toggle" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-brand" style="margin-left: 30px;">
+                <a class="navbar-brand-text" >Hello, (user)</a>
+            </div>
+            <div class="navbar-collapse navbar" id="navbar-dropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0 dropdown-toggle">
+                            <i class="fas fa-user" style="font-size: 1.5em;"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a href="#" class="dropdown-item">Profile</a>
+                            <a href="#" class="dropdown-item">Setting</a>
+                            <a href="/logout" class="dropdown-item">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <nav id="breadcrumbs" aria-label="breadcrumb" class="px-3" style="padding-top: 10px; margin-top: 10px;">
+            <ol class="breadcrumb">
+
+            </ol>
+        </nav>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const sidebarToggle = document.querySelector("#sidebar-toggle");
+    sidebarToggle.addEventListener("click",function(){
+        document.querySelector("#sidebar").classList.toggle("collapsed");
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.body.addEventListener("click", function (event) {
+            const target = event.target;
+            if (target.classList.contains("dropdown-toggle")) {
+                const dropdownMenu = target.nextElementSibling;
+                dropdownMenu.classList.toggle("show");
+            }
+        });
+    });
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const sidebarLinks = document.querySelectorAll(".sidebar-link");
+
+        sidebarLinks.forEach(function (link) {
+            link.addEventListener("click", function () {
+                // Jika menu yang diklik sudah aktif, maka tidak perlu melakukan apa pun
+                if (this.classList.contains("active")) {
+                    return;
+                }
+
+                // Hapus kelas 'active' dari semua menu samping
+                sidebarLinks.forEach(function (item) {
+                    item.classList.remove("active");
+                });
+
+                // Tambahkan kelas 'active' pada menu yang diklik
+                this.classList.add("active");
+
+                // Tangkap setiap submenu yang ada
+                const submenus = document.querySelectorAll('.sidebar-dropdown');
+
+                // Tutup semua submenu
+                submenus.forEach(function (submenu) {
+                    submenu.classList.remove('show');
+                });
+
+                // Tambahkan kelas 'active' pada item induk dari submenu yang terbuka
+                const parentCollapse = this.closest('.sidebar-dropdown');
+                if (parentCollapse) {
+                    const parentLink = parentCollapse.previousElementSibling;
+                    parentLink.classList.add('active');
+                    parentCollapse.classList.add('show');
+                }
+            });
+        });
+
+        // Set kelas aktif untuk menu yang sesuai dengan URL saat halaman dimuat
+        sidebarLinks.forEach(function (link) {
+            const linkHref = link.getAttribute("href");
+
+            // Periksa apakah URL saat ini cocok dengan URL menu
+            if (window.location.pathname === linkHref) {
+                link.classList.add("active");
+
+                // Tambahkan kelas 'active' pada item induk dari submenu yang terbuka
+                const parentCollapse = link.closest('.sidebar-dropdown');
+                if (parentCollapse) {
+                    const parentLink = parentCollapse.previousElementSibling;
+                    parentLink.classList.add('active');
+                    parentCollapse.classList.add('show');
+                }
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const currentPage = window.location.pathname;
+
+        // Daftar halaman dan breadcrumbs yang sesuai
+        const pageBreadcrumbs = {
+            "/": ["Home"],
+            "/pengadaan": ["Home", "Pengadaan", "Daftar Pengadaan"],
+            "/pengadaan/tambah": ["Home","Pengadaan", "Add Pengadaan"],
+            "/pengadaan/{id}": ["Home","Pengadaan", "Daftar Pengadaan", "Detail Pengadaan"],
+            "/user": ["Home", "user", "Daftar user"],
+            "/user/add": ["Home","user", "Add user"],
+            "/vendor": ["Home", "Vendor", "Daftar Vendor"],
+            "/vendor/tambah": ["Home","Vendor", "Add Vendor"],
+            "/rencana": ["Home", "Rencana", "Daftar Rencana Pengadaan"],
+            "/rencana/create": ["Home","Rencana", "Add Rencana Pengadaan"],
+            // Tambahkan halaman dan breadcrumbs lainnya di sini
+        };
+
+        // Memperbarui breadcrumbs sesuai dengan halaman yang sedang aktif
+        function updateBreadcrumbs() {
+            const breadcrumbContainer = document.querySelector("#breadcrumbs ol.breadcrumb");
+            breadcrumbContainer.innerHTML = ""; // Hapus breadcrumbs sebelumnya
+
+            const breadcrumbs = pageBreadcrumbs[currentPage] || [];
+            breadcrumbs.forEach((breadcrumb, index) => {
+                const listItem = document.createElement("li");
+                listItem.classList.add("breadcrumb-item");
+                if (index === breadcrumbs.length - 1) {
+                listItem.setAttribute("aria-current", "page");
+                const link = document.createElement("span");
+                link.textContent = breadcrumb;
+                listItem.appendChild(link);
+
+            } else {
+                const link = document.createElement("a");
+
+                link.href = index === 0 ? "/" : breadcrumbs.slice(0, index + 1).join("/");
+
+                link.textContent = breadcrumb;
+
+                if (breadcrumb === "user" ) {
+                link.href = "/user";
+                }
+                listItem.appendChild(link);
+            }
+            breadcrumbContainer.appendChild(listItem);
+        });
+
+
+        }
+
+
+        // Panggil fungsi untuk memperbarui breadcrumbs saat halaman dimuat
+        updateBreadcrumbs();
+    });
+
+</script>
+
+</body>
+
+</html>
