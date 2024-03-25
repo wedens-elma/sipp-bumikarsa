@@ -7,10 +7,6 @@
     <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
     <title>View Detail Schedule</title>
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
         .vendor-info {
             display: flex;
             align-items: center;
@@ -47,48 +43,61 @@
 
 
 <body>
-    <div class="container">
-        <div class="card m-4 p-4">
-            <div class="card-body text-center">
-                <h1 th:text="${rencana.namaRencana}" style="font-weight: bold;"></h1>
-                <h5 style="font-style: italic; text-transform: capitalize; font-weight: bold;" th:text="${rencana.logRencana[rencana.logRencana.size() - 1].status}"></h5>
-                <h6 th:text="'Dibuat oleh ' + ${rencana.createdBy}"></h6>
-                <br>
-                <div class="card bg-warning text-white border-0 rounded p-3 d-inline-flex">
-                    <div class="d-flex align-items-center">
-                        <p class="mb-0 mr-3"><b> Tanggal Rencana </b></p>
-                        <span class="font-weight-bold" th:text=" ${#dates.format(#dates.create(rencana.expectedDate.year, rencana.expectedDate.monthValue, rencana.expectedDate.dayOfMonth), 'dd MMMM yyyy')} "></span>
+    <div class="container-fluid">
+        <div class="row">
+            <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/rencana/">Daftar Rencana</a></li>
+                        <li class="breadcrumb-item" aria-current="page">Detail Rencana</li>
+                    </ol>
+                </nav>
+                <div class="card m-4 p-4">
+                    <div class="card-body text-center">
+                        <h1 th:text="${rencana.namaRencana}" style="font-weight: bold;"></h1>
+                        <h5 style="font-style: italic; text-transform: capitalize; font-weight: bold;" th:text="${rencana.logRencana[rencana.logRencana.size() - 1].status}"></h5>
+                        <h6 th:text="'Dibuat oleh ' + ${rencana.createdBy}"></h6>
+                        <br>
+                        <div class="card bg-warning text-white border-0 rounded p-3 d-inline-flex">
+                            <div class="d-flex align-items-center">
+                                <p class="mb-0 mr-3"><b> Tanggal Rencana </b></p>
+                                <span class="font-weight-bold" th:text=" ${#dates.format(#dates.create(rencana.expectedDate.year, rencana.expectedDate.monthValue, rencana.expectedDate.dayOfMonth), 'dd MMMM yyyy')} "></span>
+                            </div>
+                        </div>
+                        <br>
+                        <br><br>
+                        <div class="row">
+                            <div class="col-3">
+                                <h6 style="text-align: left;" class="card-text m-0"><b>Nama Vendor</b></h6>
+                            </div>
+                            <div class="col-9">
+                                <h6 style="text-align: left;" class="card-text m-0" th:text="' : ' + ${rencana.vendor.namaVendor}"></h6>
+                            </div>
+                        </div>
+                        <br>
+                        <h6 style="text-align: left;"><b> Barang Pengadaan </b></h6>
+                        <table id="table" class="table table-bordered text-center">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th scope="col">No.</th>
+                                    <th scope="col">Nama Barang</th>
+                                    <th scope="col">Kuantitas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="barangRencana, iterStat : ${rencana.listBarangRencana}">
+                                    <td th:text="${iterStat.index + 1}"></td>
+                                    <td th:text="${barangRencana.namaBarang}"></td>
+                                    <td th:text="${barangRencana.kuantitas}"></td>
+                                </tr>
+                            </tbody>
+                        </table>  
+                        <br><br>
                     </div>
                 </div>
-                <br>
-                <br><br>
-                <div class="row">
-                    <div class="col-3">
-                        <h6 style="text-align: left;" class="card-text m-0"><b>Nama Vendor</b></h6>
-                    </div>
-                    <div class="col-9">
-                        <h6 style="text-align: left;" class="card-text m-0" th:text="' : ' + ${rencana.vendor.namaVendor}"></h6>
-                    </div>
-                </div>
-                <br>
-                <h6 style="text-align: left;"><b> Barang Pengadaan </b></h6>
-                <table id="table" class="table table-bordered text-center">
-                    <thead class="table-dark">
-                        <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Nama Barang</th>
-                            <th scope="col">Kuantitas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="barangRencana, iterStat : ${rencana.listBarangRencana}">
-                            <td th:text="${iterStat.index + 1}"></td>
-                            <td th:text="${barangRencana.namaBarang}"></td>
-                            <td th:text="${barangRencana.kuantitas}"></td>
-                        </tr>
-                    </tbody>
-                </table>  
-                <br><br>
+    
             </div>
         </div>
     </div>
