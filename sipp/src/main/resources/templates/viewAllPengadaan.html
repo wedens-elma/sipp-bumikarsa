@@ -1,73 +1,219 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">-->
+
+<!--<head>-->
+<!--    <meta charset="UTF-8" />-->
+<!--    <object th:include="~{fragments/fragment :: js}" th:remove="tag"></object>-->
+<!--    <object th:include="~{fragments/fragment :: css}" th:remove="tag"></object>-->
+<!--    <title>View All Pengadaan</title>-->
+<!--    <style>-->
+<!--        #pengadaan {-->
+<!--           width: 100%;-->
+<!--        max-width: 100%;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+
+<!--<body>-->
+<!--&lt;!&ndash;<nav th:replace="~{fragments/navbar :: #msb}">&ndash;&gt;-->
+<!--&lt;!&ndash;</nav>&ndash;&gt;-->
+<!--&lt;!&ndash;<nav th:replace="~{fragments/navbar :: mnb}"></nav>&ndash;&gt;-->
+<!--&lt;!&ndash;<div th:replace="~{fragments/sidebar}"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;<nav th:replace="~{fragments/navbar}"></nav>&ndash;&gt;-->
+<!--&lt;!&ndash;<div th:replace="~{fragments/sidebar :: sidebar}"></div>&ndash;&gt;-->
+<!--<div class="container-fluid">-->
+<!--    <div class="row">-->
+<!--&lt;!&ndash;        <div th:replace=~{"fragments/sidebarf :: sidebar}" class="col-lg-3 col-md-4" ></div>&ndash;&gt;-->
+<!--        <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>-->
+<!--        <div class="col">-->
+<!--            <div id="pengadaan">-->
+<!--                <div class="card m-4 p-4">-->
+<!--                    <div class="card-body">-->
+<!--                        <div class="text-center">-->
+<!--                            <h2> Daftar Pengadaan</h2>-->
+<!--                            <div class="text-center m-3">-->
+<!--                                <a type="button" class="btn btn-md btn-primary" href="/pengadaan/tambah">+ Tambah Pengadaan</a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        <br>-->
+
+<!--                        <table id="pengadaanTable" class="table table-bordered text-center">-->
+<!--                            <thead class="table-dark">-->
+<!--                            <tr>-->
+<!--                                <th scope="col">#</th>-->
+<!--                                <th scope="col">Code Pengadaan</th>-->
+<!--                                <th scope="col">Nama Pengadaan</th>-->
+<!--                                <th scope="col">Vendor</th>-->
+<!--                                <th scope="col">Shipment Status</th>-->
+<!--                                <th scope="col">Payment Status</th>-->
+<!--                                <th scope="col">Action</th>-->
+<!--                            </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody>-->
+<!--                            &lt;!&ndash; Thymeleaf untuk iterasi daftar pengadaan &ndash;&gt;-->
+<!--                            <tr th:each="pengadaan, iterStat : ${listPengadaan}">-->
+<!--                                <td th:text="${iterStat.index + 1}"></td>-->
+<!--                                <td th:text="${pengadaan.idPengadaan}"></td>-->
+<!--                                <td th:text="${pengadaan.namaPengadaan}"></td>-->
+<!--                                <td th:text="${pengadaan.vendor.namaVendor}"></td>-->
+<!--                                <td>-->
+<!--                                    <span th:if="${pengadaan.shipmentStatus == 0}">In Progress</span>-->
+<!--                                    <span th:if="${pengadaan.shipmentStatus == 1}">Arrived</span>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <span th:if="${pengadaan.paymentStatus == 0}">Not Paid</span>-->
+<!--                                    <span th:if="${pengadaan.paymentStatus == 1}">In Progress</span>-->
+<!--                                    <span th:if="${pengadaan.paymentStatus == 2}">Paid</span>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <a type="button" class="btn btn-sm btn-secondary" th:href="@{/pengadaan/{idPengadaan}(idPengadaan=${pengadaan.idPengadaan})}">Detail</a>-->
+
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--</body>-->
+
+<!--<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>-->
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        $('#pengadaanTable').DataTable();-->
+<!--    });-->
+<!--</script>-->
+<!--&lt;!&ndash;<script>&ndash;&gt;-->
+<!--&lt;!&ndash;    // JavaScript code to handle sidebar menu clicks and load content dynamically&ndash;&gt;-->
+<!--&lt;!&ndash;    document.addEventListener("DOMContentLoaded", function () {&ndash;&gt;-->
+<!--&lt;!&ndash;        const sidebarLinks = document.querySelectorAll(".sidebar-link");&ndash;&gt;-->
+<!--&lt;!&ndash;        sidebarLinks.forEach(function (link) {&ndash;&gt;-->
+<!--&lt;!&ndash;            link.addEventListener("click", function (event) {&ndash;&gt;-->
+<!--&lt;!&ndash;                event.preventDefault();&ndash;&gt;-->
+<!--&lt;!&ndash;                const url = this.getAttribute("href");&ndash;&gt;-->
+<!--&lt;!&ndash;                loadContent(url);&ndash;&gt;-->
+<!--&lt;!&ndash;            });&ndash;&gt;-->
+<!--&lt;!&ndash;        });&ndash;&gt;-->
+
+<!--&lt;!&ndash;        function loadContent(url) {&ndash;&gt;-->
+<!--&lt;!&ndash;            // Example: load content using AJAX&ndash;&gt;-->
+<!--&lt;!&ndash;            // You can use any method to load content dynamically based on the URL&ndash;&gt;-->
+<!--&lt;!&ndash;            // For simplicity, here's a basic example using fetch API&ndash;&gt;-->
+<!--&lt;!&ndash;            fetch(url)&ndash;&gt;-->
+<!--&lt;!&ndash;                .then(response => response.text())&ndash;&gt;-->
+<!--&lt;!&ndash;                .then(data => {&ndash;&gt;-->
+<!--&lt;!&ndash;                    document.getElementById("main").innerHTML = data;&ndash;&gt;-->
+<!--&lt;!&ndash;                })&ndash;&gt;-->
+<!--&lt;!&ndash;                .catch(error => console.error('Error:', error));&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;    });&ndash;&gt;-->
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+
+
+<!--</html>-->
 
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
 
 <head>
     <meta charset="UTF-8" />
-    <object th:include="~{fragments/fragment :: js}" th:remove="tag"></object>
-    <object th:include="~{fragments/fragment :: css}" th:remove="tag"></object>
-    <title>View All Pengadaan</title>
+    <title>Daftar Pengguna</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    />
+    <link
+            href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css"
+            rel="stylesheet"
+    />
 </head>
+
 
 <body>
 
-<div class="container">
-    <div class="card m-4 p-4">
-        <div class="card-body">
-            <div class="text-center">
-                <h2> Daftar Pengadaan</h2>
-                <div class="text-center m-3">
-                    <a type="button" class="btn btn-md btn-primary" href="/pengadaan/tambah">+ Tambah Pengadaan</a>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+        <div class="col">
+            <div id="pengadaan">
+                <div class="card m-3 p-2">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <h2> Daftar Pengadaan</h2>
+                            <div class="text-center m-3">
+                                <a href="/pengadaan/tambah" class="btn btn-primary" style="align-self: self-end" >+ Tambah Pengadaan</a>
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <table id="pengadaanTable" class="table table-bordered text-center">
+                            <thead style="background-color: #ffc023">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Code Pengadaan</th>
+                                <th scope="col">Nama Pengadaan</th>
+                                <th scope="col">Vendor</th>
+                                <th scope="col">Shipment Status</th>
+                                <th scope="col">Payment Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- Thymeleaf untuk iterasi daftar pengadaan -->
+                            <tr th:each="pengadaan, iterStat : ${listPengadaan}">
+                                <td th:text="${iterStat.index + 1}"></td>
+                                <td th:text="${pengadaan.idPengadaan}"></td>
+                                <td th:text="${pengadaan.namaPengadaan}"></td>
+                                <td th:text="${pengadaan.vendor.namaVendor}"></td>
+                                <td>
+                                    <span th:if="${pengadaan.shipmentStatus == 0}">In Progress</span>
+                                    <span th:if="${pengadaan.shipmentStatus == 1}">Arrived</span>
+                                </td>
+                                <td>
+                                    <span th:if="${pengadaan.paymentStatus == 0}">Not Paid</span>
+                                    <span th:if="${pengadaan.paymentStatus == 1}">In Progress</span>
+                                    <span th:if="${pengadaan.paymentStatus == 2}">Paid</span>
+                                </td>
+                                <td>
+                                    <a type="button" class="btn btn-sm btn-secondary" th:href="@{/pengadaan/{idPengadaan}(idPengadaan=${pengadaan.idPengadaan})}">Detail</a>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-
-            <br>
-
-            <table id="pengadaanTable" class="table table-bordered text-center">
-                <thead class="table-dark">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Code Pengadaan</th>
-                    <th scope="col">Nama Pengadaan</th>
-                    <th scope="col">Vendor</th>
-                    <th scope="col">Shipment Status</th>
-                    <th scope="col">Payment Status</th>
-                    <th scope="col">Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- Thymeleaf untuk iterasi daftar pengadaan -->
-                <tr th:each="pengadaan, iterStat : ${listPengadaan}">
-                    <td th:text="${iterStat.index + 1}"></td>
-                    <td th:text="${pengadaan.idPengadaan}"></td>-->
-                    <td th:text="${pengadaan.namaPengadaan}"></td>
-                    <td th:text="${pengadaan.vendor.namaVendor}"></td>
-                    <td>
-                        <span th:if="${pengadaan.shipmentStatus == 0}">In Progress</span>
-                        <span th:if="${pengadaan.shipmentStatus == 1}">Arrived</span>
-                    </td>
-                    <td>
-                        <span th:if="${pengadaan.paymentStatus == 0}">Not Paid</span>
-                        <span th:if="${pengadaan.paymentStatus == 1}">In Progress</span>
-                        <span th:if="${pengadaan.paymentStatus == 2}">Paid</span>
-                    </td>
-                    <td>
-                        <a type="button" class="btn btn-sm btn-secondary" th:href="@{/pengadaan/{idPengadaan}(idPengadaan=${pengadaan.idPengadaan})}">Detail</a>
-
-                    </td>
-                </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
+
 </body>
 
-<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 <script>
     $(document).ready(function () {
         $('#pengadaanTable').DataTable();
     });
 </script>
 
+
+
 </html>
+
+
+
+
+
+
+

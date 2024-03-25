@@ -10,51 +10,57 @@
 
 
 <body>
-    <br><br>
-    <div class="text-center">
-        <h2 style="font-size:50px; "> Detail Barang </h2>
-    </div>
-    <div class="container">
-        <div class="card m-4 p-4">
-            <div class="card-body text-center">
-                
-
-                <br>
-
-                <!-- Aku ingin menampilkkan foto barang disini -->
-                <img th:src="'data:image/jpeg;base64,' + ${base64Image}" alt="Foto Barang" style="max-width: 300px;" />
-
-                <p style="font-size:60px; font-weight:600;" th:text="${barang.namaBarang}"></p>
-                <p style="text-align: center;" th:text="${barang.deskripsiBarang}"></p>
-
-                <br><br>
-                <br><br>
-
-                <h3> Spesifikasi </h3>
-                
-                <p th:if="${barang.dimensiBarang == ''}" th:text="'Dimension: NaN'"></p>
-                <p th:unless="${barang.dimensiBarang == ''}" th:text="'Dimension: ' + ${barang.dimensiBarang}"></p>
-
-                <p th:if="${barang.beratBarang == ''}" th:text="'Berat barang: NaN'"></p>
-                <p th:unless="${barang.beratBarang == ''}" th:text="'Berat barang: ' + ${barang.beratBarang}"></p>
-
-                <p th:text="'Tipe Barang: ' + ${barang.tipeBarang == 1 ? 'Alat' : 'Material'}"></p>
-                <p th:text="'Stok barang:' + ${barang.stokBarang}"></p>
+    <div class="container-fluid">
+        <div class="row">
+            <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+            <div class="col">
+                <div class="container">
+                    <div class="card m-4 p-4">
+                        <div class="card-body text-center">
 
 
+                            <br>
 
-            </div>
-        </div>
+                            <!-- Aku ingin menampilkkan foto barang disini -->
+                            <img th:src="'data:image/jpeg;base64,' + ${base64Image}" alt="Foto Barang"
+                                style="max-width: 300px;" />
 
-        <div class="text-center m-3">
+                            <p style="font-size:60px; font-weight:600;" th:text="${barang.namaBarang}"></p>
+                            <p style="text-align: center;" th:text="${barang.deskripsiBarang}"></p>
+
+                            <br><br>
+                            <br><br>
+
+                            <h3> Spesifikasi </h3>
+
+                            <p th:if="${barang.dimensiBarang == ''}" th:text="'Dimensi: NaN'"></p>
+                            <p th:unless="${barang.dimensiBarang == ''}"
+                                th:text="'Dimensi: ' + ${barang.dimensiBarang}"></p>
+
+                            <p th:if="${barang.beratBarang == ''}" th:text="'Berat barang: NaN'"></p>
+                            <p th:unless="${barang.beratBarang == ''}"
+                                th:text="'Berat barang: ' + ${barang.beratBarang}"></p>
+
+                            <p th:text="'Tipe Barang: ' + ${barang.tipeBarang == 1 ? 'Alat' : 'Material'}"></p>
+                            <p th:text="'Stok barang: ' + ${barang.stokBarang}"></p>
+
+
+
+                        </div>
+                    </div>
+
+                    <!-- <div class="text-center m-3">
             <a type="button" class="btn btn-md btn-primary"
                 th:href="@{/barang/{idBarang}/ubah(idBarang=${barang.kodeBarang})}">Edit</a>
-        </div>
+        </div> -->
 
-        <div class="text-center">
-            <a type="button" class="btn btn-sm btn-secondary" href="/barang">Kembali</a>
-        </div>
+                    <div class="text-center">
+                        <a type="button" class="btn btn-sm btn-secondary" href="/barang">Kembali</a>
+                    </div>
 
+                </div>
+            </div>
+        </div>
     </div>
     </div>
     </div>
