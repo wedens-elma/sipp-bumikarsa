@@ -71,7 +71,7 @@ public class RencanaServiceImpl implements RencanaService {
             }
             LogRencana logRencana = new LogRencana();
             logRencana.setRencana(rencana);
-            logRencana.setStatus("created");
+            logRencana.setStatus("Dibuat");
             logRencana.setTanggalWaktu(LocalDateTime.now());
             logRencana.setChangedBy(userService.getCurrentUserName());
             rencana.setLogRencana(new ArrayList<LogRencana>());

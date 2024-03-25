@@ -40,10 +40,6 @@
 
     </script>
     <style>
-        body {
-            background-color: #f8f9fa; 
-        }
-
         .card-title {
             text-align: center;
         }
@@ -55,7 +51,6 @@
 
         .card {
             width: auto; 
-            margin: auto;
             padding: 20px; /* Add padding to the card */
         }
 
@@ -85,19 +80,24 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="card m-4 p-4">
-            <div class="card-body text-center">
-                <h3 class="card-title"><b>Procurement Schedule</b></h3>
-                <div class="button-container">
-                    <a href="/rencana/create" class="btn btn-warning">+ Add Schedule</a>
-                </div>
-                <div class="card-body">
-                    <div id='calendar'></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+            <div class="col">
+                <div class="card m-4 p-4">
+                    <div class="card-body text-center">
+                        <h2 class="card-title"><b>Procurement Schedule</b></h2>
+                        <div class="button-container">
+                            <a href="/rencana/create" class="btn btn-warning">+ Add Schedule</a>
+                        </div>
+                        <div class="card-body">
+                            <div id='calendar'></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>  
+    </div>
 </body>
 
 </html>

@@ -276,7 +276,7 @@
                     </a>
                     <ul id="rencana" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" style="padding-left: 20px;">
                         <li class="sidebar-item">
-                            <a href="/rencana" class="sidebar-link"> <i class="fa-solid fa-list pe-2"></i> Daftar Rencana Pengadaan</a>
+                            <a href="/rencana/" class="sidebar-link"> <i class="fa-solid fa-list pe-2"></i> Daftar Rencana Pengadaan</a>
                         </li>
                         <li class="sidebar-item">
                             <a href="/rencana/create" class="sidebar-link"> <i class="fa-regular fa-square-plus pe-2"></i> Add Rencana Pengadaan</a>
@@ -429,7 +429,7 @@
             "/barang/tambah": ["Home","Barang", "Add Barang"],
             "/vendor": ["Home", "Vendor", "Daftar Vendor"],
             "/vendor/tambah": ["Home","Vendor", "Add Vendor"],
-            "/rencana": ["Home", "Rencana", "Daftar Rencana Pengadaan"],
+            "/rencana/": ["Home", "Rencana", "Daftar Rencana Pengadaan"],
             "/rencana/create": ["Home","Rencana", "Add Rencana Pengadaan"],
             // Tambahkan halaman dan breadcrumbs lainnya di sini
         };
@@ -463,7 +463,7 @@
                 } else if(breadcrumb === "Barang") {
                 link.href = "/barang";
                 } else if(breadcrumb === "Rencana") {
-                link.href = "/rencana";
+                link.href = "/rencana/";
                 }
                 listItem.appendChild(link);
             }
