@@ -1,134 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
     <title>View All Vendors</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8f9fa;
-        }
-
-        .page-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: #007bff;
-        }
-
-        .add-vendor-btn {
-            display: block;
-            width: max-content;
-            margin: 0 auto 1rem auto;
-            background-color: #007bff;
-            border: none;
-            color: white;
-        }
-
-        .table-custom {
-            background-color: white;
-            border-radius: 0.75rem;
-            overflow: hidden;
-            box-shadow: 0 0.46875rem 2.1875rem rgb(8 10 37 / 5%), 0 0.9375rem 1.40625rem rgb(8 10 37 / 5%), 0 0.25rem 0.53125rem rgb(8 10 37 / 5%), 0 0.125rem 0.1875rem rgb(8 10 37 / 5%);
-        }
-
-        .table-custom thead {
-            background-color: #007bff; /* Bootstrap primary blue */
-            color: white;
-        }
-
-        .table-custom tbody tr {
-            border-bottom: 1px solid #e3e6f0;
-        }
-
-        .table-custom tbody tr:last-child {
-            border-bottom: none;
-        }
-
-        .action-buttons .btn {
-            font-size: 0.875rem;
-            padding: 0.5rem 1rem;
-        }
-
-        .action-buttons .btn-info {
-            background-color: #6c757d;
-            border-color: #6c757d;
-        }
-
-        .action-buttons .btn-danger {
-            background-color: #dc3545;
-            border-color: #dc3545;
-        }
-
-        .pagination {
-            justify-content: flex-end;
-        }
-    </style>
 </head>
 <body>
-
-<div class="container mt-5">
-    <div class="page-title">Vendors</div>
-    <button class="btn add-vendor-btn" id="addVendorBtn">Add Vendor</button>
-
-    <table id="vendorTable" class="table table-custom">
-        <thead>
-        <tr>
-            <th>Code Vendor</th>
-            <th>Vendor Name</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="vendor : ${vendors}">
-            <td th:text="${vendor.kodeVendor}"></td>
-            <td th:text="${vendor.namaVendor}"></td>
-            <td th:text="${vendor.emailVendor}"></td>
-            <td th:text="${vendor.nomorHandphoneVendor}"></td>
-            <td class="action-buttons">
-                <a th:href="@{'/vendor/' + ${vendor.kodeVendor}}" class="btn btn-info">Details</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+        <div class="col">
+            <div class="container">
+                <div class="card m-4 p-4 shadow-lg p-3 mb-5 bg-white rounded">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <h2>Vendors</h2>
+                            <div class="text-center m-3">
+                                <a type="button" class="btn btn-md btn-primary" href="/vendor/tambah">+ Add Vendor</a>
+                            </div>
+                        </div>
+                        <table id="vendorTable" class="table table-bordered text-center">
+                            <thead style="background-color: #ffc023">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Code Vendor</th>
+                                <th scope="col">Vendor Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="vendor, iterStat : ${vendors}">
+                                <td th:text="${iterStat.index + 1}"></td>
+                                <td th:text="${vendor.kodeVendor}"></td>
+                                <td th:text="${vendor.namaVendor}"></td>
+                                <td th:text="${vendor.emailVendor}"></td>
+                                <td th:text="${vendor.nomorHandphoneVendor}"></td>
+                                <td>
+                                    <a type="button" class="btn btn-sm btn-secondary" th:href="@{/vendor/' + ${vendor.kodeVendor}}">Details</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Scripts for DataTables -->
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#vendorTable').DataTable({
-            "pagingType": "full_numbers", // Enables full pagination
-            "language": {
-                "lengthMenu": "Display _MENU_ entries per page",
-                "zeroRecords": "Nothing found - sorry",
-                "info": "Showing page _PAGE_ of _PAGES_",
-                "infoEmpty": "No records available",
-                "infoFiltered": "(filtered from _MAX_ total records)",
-                "search": "Filter records:",
-                "paginate": {
-                    "first": "First",
-                    "last": "Last",
-                    "next": "Next",
-                    "previous": "Previous"
-                }
-            }
-        });
-    });
-    document.getElementById("addVendorBtn").addEventListener("click", function() {
-        window.location.href = "/vendor/tambah";
+    $(document).ready(function () {
+        $('#vendorTable').DataTable();
     });
 </script>
-
 </body>
 </html>
