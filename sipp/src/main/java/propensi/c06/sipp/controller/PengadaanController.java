@@ -112,6 +112,14 @@ public class PengadaanController {
     }
 
 
+    @GetMapping("/pengadaan/{id}/delete")
+    public String deletePengadaanBarang(@PathVariable("id") String id, Model model){
+        pengadaanService.deletePengadaan(id);
+        model.addAttribute("id", id);
+        return "successDeletePengadaan";
+    }
+
+
 
 
 

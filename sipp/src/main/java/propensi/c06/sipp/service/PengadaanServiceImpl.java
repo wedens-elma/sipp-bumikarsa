@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -116,6 +117,16 @@ public class PengadaanServiceImpl implements PengadaanService {
         result.put("totalHargaAkhir", totalHargaAkhir);
 
         return result;
+    }
+
+    @Override
+    public void deletePengadaan(String kodePengadaan){
+        Pengadaan pengadaan= pengadaanDb.getReferenceById(kodePengadaan);
+        pengadaan.setIsDeleted(true);
+        pengadaanDb.save(pengadaan);
+
+
+
     }
 
 }

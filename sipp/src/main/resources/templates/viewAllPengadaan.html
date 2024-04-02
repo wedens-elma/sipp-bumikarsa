@@ -166,7 +166,7 @@
                             </thead>
                             <tbody>
                             <!-- Thymeleaf untuk iterasi daftar pengadaan -->
-                            <tr th:each="pengadaan, iterStat : ${listPengadaan}">
+                            <tr th:each="pengadaan, iterStat : ${listPengadaan}" th:if="${!pengadaan.isDeleted}">
                                 <td th:text="${iterStat.index + 1}"></td>
                                 <td th:text="${pengadaan.idPengadaan}"></td>
                                 <td th:text="${pengadaan.namaPengadaan}"></td>
