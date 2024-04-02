@@ -15,7 +15,7 @@ import java.util.UUID;
 public class UpdateBarangRequestDTO extends CreateTambahBarangRequestDTO {
     private String kodeBarang;
 
-    @NotBlank(message = "Judul tidak boleh kosong")
-    @Size(max = 100, message = "Judul maksimal 100 karakter")
-    private String judul;
+    
+    private Integer stokBarang;
+    private Integer standarStokBarang;;
 }

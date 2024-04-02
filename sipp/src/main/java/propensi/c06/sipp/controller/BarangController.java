@@ -101,24 +101,20 @@ public class BarangController {
         return "view-detail-barang.html";
     }
 
-    // @GetMapping(value = "/buku/{kodeBarang}/update")
-    // public String formUpdateBuku(@PathVariable(value = "kodeBarang") String kodeBarang, Model model) {
-    //     // Mendapatkan buku dengan id tersebut
+    @GetMapping(value = "/barang/{kodeBarang}/update")
+    public String formUpdateBuku(@PathVariable(value = "kodeBarang") String kodeBarang, Model model) {
+        // Mendapatkan buku dengan id tersebut
         
-    //     var barang = barangService.getBarangById(kodeBarang);
+        var barang = barangService.getBarangById(kodeBarang);
 
-    //     // Memindahkan data buku ke DTO untuk selanjutnya diubah di form pengguna
+        // Memindahkan data buku ke DTO untuk selanjutnya diubah di form pengguna
 
-    //     var barangDTO = barangMapper.barangToUpdateBarangRequestDTO(barang);
+        var barangDTO = barangMapper.barangToUpdateBarangRequestDTO(barang);
 
-    //     model.addAttribute("listPenerbit", penerbitService.getAllPenerbit());
-    //     model.addAttribute("bukuDTO", bukuDTO);
+        model.addAttribute("barangDTO", barangDTO);
 
-    //     // Mengirimkan list penulis yang sudah ada
-    //     model.addAttribute("listPenulisExisting", buku.getListPenulis());
-
-    //     return "form-update-buku";
-    // }
+        return "form-update-barang";
+    }
 
 
     @GetMapping("/barang/{kodeBarang}/delete")

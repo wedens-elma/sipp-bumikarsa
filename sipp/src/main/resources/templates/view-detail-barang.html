@@ -15,7 +15,7 @@
             <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
             <div class="col">
                 <div class="container">
-                    <div class="card m-4 p-4">
+                    <div class="card m-4 p-4 shadow-lg p-3 mb-5 bg-white rounded">
                         <div class="card-body text-center">
 
 
@@ -43,15 +43,18 @@
 
                             <p th:text="'Tipe Barang: ' + ${barang.tipeBarang == 1 ? 'Alat' : 'Material'}"></p>
                             <p th:text="'Stok barang: ' + ${barang.stokBarang}"></p>
-                            <br>
+                            <br><br>
 
 
                             <div class="container">
                                 <div class="row">
-                                    <div class="col text-end"> <!-- align kanan -->
+                                    <div class="col text-start"> <!-- align kanan -->
                                         <a type="button" class="btn btn-md btn-secondary" href="/barang">Kembali</a>
                                     </div>
-                                    <div class="col text-start"> <!-- align kiri -->
+                                    <div class="col text-center"> <!-- align kanan -->
+                                        <a type="button" class="btn btn-md btn-primary" th:href="@{/barang/{id}/update(id=${barang.kodeBarang})}">Update</a>
+                                    </div>
+                                    <div class="col text-end"> <!-- align kiri -->
                                         <a type="button" class="btn btn-md btn-danger" th:href="@{/barang/{id}/delete(id=${barang.kodeBarang})}">Hapus</a>
                                     </div>
                                 </div>
