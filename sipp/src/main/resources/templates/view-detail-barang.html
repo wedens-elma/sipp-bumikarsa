@@ -43,21 +43,19 @@
 
                             <p th:text="'Tipe Barang: ' + ${barang.tipeBarang == 1 ? 'Alat' : 'Material'}"></p>
                             <p th:text="'Stok barang: ' + ${barang.stokBarang}"></p>
+                            <br>
 
 
-
-                        </div>
-                    </div>
-
-                    <!-- <div class="text-center m-3">
-            <a type="button" class="btn btn-md btn-primary"
-                th:href="@{/barang/{idBarang}/ubah(idBarang=${barang.kodeBarang})}">Edit</a>
-        </div> -->
-
-                    <div class="text-center">
-                        <a type="button" class="btn btn-sm btn-secondary" href="/barang">Kembali</a>
-                    </div>
-
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col text-end"> <!-- align kanan -->
+                                        <a type="button" class="btn btn-md btn-secondary" href="/barang">Kembali</a>
+                                    </div>
+                                    <div class="col text-start"> <!-- align kiri -->
+                                        <a type="button" class="btn btn-md btn-danger" th:href="@{/barang/{id}/delete(id=${barang.kodeBarang})}">Hapus</a>
+                                    </div>
+                                </div>
+                            </div>
                 </div>
             </div>
         </div>

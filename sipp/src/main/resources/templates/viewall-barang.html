@@ -48,7 +48,7 @@
                                 </thead>
                                 <tbody>
                                     <!-- Gunakan Thymeleaf untuk mengulang melalui daftar barang -->
-                                    <tr th:each="barang, iterStat : ${listBarang}">
+                                    <tr th:each="barang, iterStat : ${listBarang}" th:if="${!barang.isDeleted}">
                                         <td th:text="${iterStat.index + 1}"></td>
                                         <td th:text="${barang.kodeBarang}"></td>
                                         <td th:text="${barang.namaBarang}"></td>

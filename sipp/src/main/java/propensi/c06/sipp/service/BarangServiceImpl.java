@@ -85,10 +85,21 @@ public class BarangServiceImpl implements BarangService {
     }
 
     @Override
-    public boolean isBarangExists(String namaBarang) {
-        // Cek apakah barang dengan nama tersebut sudah terdaftar dalam database
-        return barangDb.existsByNamaBarang(namaBarang);
+    public boolean isBarangExistsAndNotDeleted(String namaBarang) {
+        // Menggunakan repository atau method lainnya untuk memeriksa apakah barang ada dan isDeleted-nya false
+        return barangDb.existsByNamaBarangAndIsDeleted(namaBarang, false);
     }
+    
+
+    @Override
+    public void softDeleteBarang(String kodeBarang) {
+        Barang barang = barangDb.findById(kodeBarang).orElse(null);
+        if (barang != null) {
+            barang.setIsDeleted(true);
+            barangDb.save(barang);
+        }
+    }
+
 
 }
 

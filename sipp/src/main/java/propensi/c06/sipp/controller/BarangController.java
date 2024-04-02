@@ -2,6 +2,7 @@ package propensi.c06.sipp.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import lombok.experimental.var;
 import propensi.c06.sipp.dto.BarangMapper;
 import propensi.c06.sipp.dto.request.CreateTambahBarangRequestDTO;
 import propensi.c06.sipp.model.Barang;
@@ -53,17 +55,18 @@ public class BarangController {
         return "form-tambah-barang.html";
     }
 
-    @PostMapping("/barang/tambah")
-    public String addTambahBarang(CreateTambahBarangRequestDTO barangDTO, Model model,
-            @RequestPart("file") MultipartFile file) {
-        var barang = barangMapper.createTambahBarangRequestDTO(barangDTO);
+        @PostMapping("/barang/tambah")
+        public String addTambahBarang(CreateTambahBarangRequestDTO barangDTO, Model model,
+                @RequestPart("file") MultipartFile file) {
+            var barang = barangMapper.createTambahBarangRequestDTO(barangDTO);
 
-        if (barangService.isBarangExists(barang.getNamaBarang())) {
-            model.addAttribute("error", "Barang sudah terdaftar");
-    
-            // Redirect to a page showing the error message and then redirecting back to the form after 5 seconds
-            return "failed-tambah-barang.html";
-        }
+            if (barangService.isBarangExistsAndNotDeleted(barang.getNamaBarang())) {
+                model.addAttribute("error", "Barang sudah terdaftar");
+                    
+                // Redirect to a page showing the error message and then redirecting back to the form after 5 seconds
+                return "failed-tambah-barang.html";
+            }
+            
 
         byte[] imageContent;
 
@@ -98,4 +101,31 @@ public class BarangController {
         return "view-detail-barang.html";
     }
 
+    // @GetMapping(value = "/buku/{kodeBarang}/update")
+    // public String formUpdateBuku(@PathVariable(value = "kodeBarang") String kodeBarang, Model model) {
+    //     // Mendapatkan buku dengan id tersebut
+        
+    //     var barang = barangService.getBarangById(kodeBarang);
+
+    //     // Memindahkan data buku ke DTO untuk selanjutnya diubah di form pengguna
+
+    //     var barangDTO = barangMapper.barangToUpdateBarangRequestDTO(barang);
+
+    //     model.addAttribute("listPenerbit", penerbitService.getAllPenerbit());
+    //     model.addAttribute("bukuDTO", bukuDTO);
+
+    //     // Mengirimkan list penulis yang sudah ada
+    //     model.addAttribute("listPenulisExisting", buku.getListPenulis());
+
+    //     return "form-update-buku";
+    // }
+
+
+    @GetMapping("/barang/{kodeBarang}/delete")
+    public String softDeleteBuku(@PathVariable("kodeBarang") String kodeBarang, Model model) {
+
+        barangService.softDeleteBarang(kodeBarang);
+        model.addAttribute("kodeBarang", kodeBarang);
+        return "success-delete-barang";
+    }
 }

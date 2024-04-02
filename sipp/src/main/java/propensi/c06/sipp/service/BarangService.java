@@ -16,5 +16,7 @@ public interface BarangService {
 
     public byte[] processFile(MultipartFile file) throws IOException;
 
-    public boolean isBarangExists(String namaBarang);
+    public boolean isBarangExistsAndNotDeleted(String namaBarang);
+
+    void softDeleteBarang(String kodeBarang);
 }
