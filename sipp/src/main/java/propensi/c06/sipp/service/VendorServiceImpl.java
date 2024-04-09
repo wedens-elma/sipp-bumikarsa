@@ -4,11 +4,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import jakarta.transaction.Transactional;
 import propensi.c06.sipp.dto.VendorMapper;
 import propensi.c06.sipp.dto.request.CreateVendorRequestDTO;
+import propensi.c06.sipp.model.Barang;
+import propensi.c06.sipp.model.PengadaanBarang;
 import propensi.c06.sipp.model.Vendor;
+import propensi.c06.sipp.repository.VendorDb;
+import propensi.c06.sipp.model.VendorBarang;
+import propensi.c06.sipp.repository.VendorBarangDb;
 import propensi.c06.sipp.repository.VendorDb;
 
 @Service
@@ -20,6 +24,11 @@ public class VendorServiceImpl implements VendorService {
     @Autowired
     private VendorMapper vendorMapper;
 
+    @Autowired
+    private VendorBarangDb vendorBarangDb;
+
+    @Autowired
+    private BarangService barangService;
     @Override
     public List<Vendor> getAllVendors() {
         return vendorDb.findAll();
@@ -53,7 +62,17 @@ public class VendorServiceImpl implements VendorService {
 
         vendorDb.save(vendor);
 
+        for (VendorBarang vendorBarangDTO : vendorDto.getListBarang()){
+            VendorBarang vendorBarang = new VendorBarang();
+            var barang = barangService.getBarangById(vendorBarangDTO.getBarang().getKodeBarang());
+
+            vendorBarang.setBarang(vendorBarangDTO.getBarang());
+            vendorBarang.setNamaBarang(vendorBarangDTO.getNamaBarang());
+            vendorBarang.setVendor(vendor);
+            vendorBarangDb.save(vendorBarang);
+        }
         return vendor;
+
     }
 
     private String generateKodeVendor(String prefix, String lastKodeVendor) {

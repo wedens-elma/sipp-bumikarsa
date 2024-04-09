@@ -24,7 +24,10 @@
                             <p th:if="${vendor.nomorHandphoneVendor == ''}" th:text="'No. Telp: NaN'"></p>
                             <p th:unless="${vendor.nomorHandphoneVendor == ''}" th:text="'No. Telp: ' + ${vendor.nomorHandphoneVendor}"></p>
                         </div>
-
+                        <h2 class="text-center mt-5">List Barang</h2>
+                        <ul>
+                            <li th:each="barang : ${vendor.listBarang}" th:text="${barang.namaBarang}"></li>
+                        </ul>
                         <div class="text-center">
                             <a type="button" class="btn btn-sm btn-secondary" href="/vendor">Kembali</a>
                         </div>
@@ -36,9 +39,4 @@
     </div>
 </div>
 </body>
-<script>
-    $(document).ready(function () {
-        $('#table').DataTable();
-    });
-</script>
 </html>

@@ -50,4 +50,7 @@ public class Vendor {
     @OneToMany(mappedBy = "vendor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Pengadaan> listPengadaan;
 
+    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<VendorBarang> vendorBarang;
+
 }

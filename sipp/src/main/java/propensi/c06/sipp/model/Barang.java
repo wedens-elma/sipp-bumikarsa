@@ -2,15 +2,7 @@ package propensi.c06.sipp.model;
 
 import java.util.List;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -72,4 +64,6 @@ public class Barang {
     @OneToMany(mappedBy = "barang", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<PengadaanBarang> pengadaanBarang;
 
+    @OneToMany(mappedBy = "barang", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<VendorBarang> vendorBarang;
 }

@@ -33,6 +33,16 @@
                                     <input type="text" class="form-control" id="noTelp" th:field="*{nomorHandphoneVendor}" placeholder="Enter Vendor Phone Number" required />
                                 </div>
 
+                                <div class="mb-3">
+                                    <label for="barang" class="form-label" style="font-size:24px"><b>Select Barang</b></label>
+                                    <select class="form-control" id="barang" th:field="*{listBarang[0].barang.kodeBarang}">
+                                        <option value="">Select Barang</option>
+                                        <th:block th:each="barangExisting : ${listBarang}">
+                                            <option th:value="${barangExisting.kodeBarang}" th:text="${barangExisting.namaBarang}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+
                                 <div class="d-flex justify-content-center">
                                     <a class="btn btn-danger btn-lg me-4 px-5" href="/">Cancel</a>
                                     <button type="submit" class="btn btn-primary btn-lg px-5">Submit</button>
