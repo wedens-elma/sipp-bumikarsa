@@ -26,23 +26,25 @@
                   >
                     <div class="row">
                       <div class="col">
-                        <label>Nama Pengadaan:</label>
+                        <label> <b style="font-size:24px"> Nama Pengadaan: </b><span style="color: red;">*</span> </label>
                         <input
                           class="form-control"
                           type="text"
                           required="required"
                           th:field="*{namaPengadaan}"
                         />
+                        <br><br>
 
-                        <label>Tanggal Pengadaan:</label>
+                        <label> <b style="font-size:24px"> Tanggal Pengadaan: </b><span style="color: red;">*</span></label>
                         <input
                           class="form-control"
                           type="date"
                           required="required"
                           th:field="*{tanggalPengadaan}"
                         />
+                        <br><br>
 
-                        <label>Nama Vendor:</label>
+                        <label> <b style="font-size:24px"> Nama Vendor: </b><span style="color: red;">*</span></label>
                         <table class="table">
                           <tbody>
                             <tr>
@@ -68,8 +70,9 @@
 
                     <div class="text-right">
                       <!--                        <button type="submit" class="my-4 ml-2 btn btn-primary" id="add-row" name="addRow">+ Tambah Row</button>-->
-                      <button type="submit" name="addRow">+ Tambah Barang</button>
+                      <button type="submit" class="btn btn-primary btn-lg px-5" name="addRow">+ Tambah Barang</button>
                     </div>
+                    <br><br>
 
                     <table class="table table-bordered">
                       <thead class="thead-dark">
@@ -151,7 +154,7 @@
 
                     <div class="row">
                       <div class="col">
-                        <label>Diskon Keseluruhan (%) :</label>
+                        <label> <b style="font-size:24px"> Diskon Keseluruhan (%): </b><span style="color: red;">*</span></label>
                         <input
                           class="form-control"
                           type="number"
@@ -165,12 +168,13 @@
                       </div>
                     </div>
 
-                    <div class="text-center">
-                      <a th:href="@{/pengadaan}" class="mx-2 btn btn-danger">Batal</a>
-                      <button type="submit" class="mx-2 btn btn-primary">
-                        Simpan
-                      </button>
+                    <div class="d-flex justify-content-center">
+                      <a class="btn btn-danger btn-lg me-4 px-5" href="/">Batal</a>
+                      <!-- me-4 untuk memberikan margin kanan sebesar 20px -->
+                      <button class="btn btn-primary btn-lg px-5"
+                              type="submit">Simpan</button>
                     </div>
+
                   </form>
 
                   <script>
@@ -218,6 +222,7 @@
                 </div>
               </div>
             </div>
+
     </div>
   </body>
 </html>

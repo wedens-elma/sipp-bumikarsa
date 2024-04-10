@@ -99,13 +99,32 @@
                 </div>
                 <div class="d-flex justify-content-end mt-3">
                     <div class="m-3">
-                        <a type="button" class="btn btn-md btn-danger" href="/rencana/">Hapus Rencana</a>
+                        <a id="deleteButton" type="button" class="btn btn-md btn-danger" href="#">Hapus Rencana</a>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmationModalLabel">Konfirmasi Hapus Rencana</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Apakah Anda yakin ingin menghapus rencana ini?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="button" class="btn btn-danger" id="confirmDelete">Hapus</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 
     <script>
         $(document).ready(function() {
@@ -114,6 +133,25 @@
                 "ordering": false, 
                 "info": false, 
                 "searching": false 
+            });
+        });
+
+        $(document).ready(function() {
+            $('#deleteButton').click(function() {
+                $('#confirmationModal').modal('show');
+            });
+
+            $('#confirmDelete').click(function() {
+                var id = [[${rencana.idRencana}]];
+                window.location.href = "/rencana/" + id + "/delete";
+            });
+
+            $('#confirmationModal').on('click', '.btn-secondary', function() {
+                $('#confirmationModal').modal('hide');
+            });
+
+            $('#confirmationModal').on('click', '.close', function() {
+                $('#confirmationModal').modal('hide');
             });
         });
     </script>

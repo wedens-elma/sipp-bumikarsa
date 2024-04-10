@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
 import propensi.c06.sipp.dto.request.CreateRencanaRequestDTO;
@@ -41,8 +42,6 @@ public class RencanaController {
     @GetMapping("/")
     public String daftarRencana(Model model) {
         if (userService.getCurrentUserRole().equalsIgnoreCase("keuangan")) {
-            System.out.println("AAAAAAAAAAAAAAAA");
-            System.out.println(userService.getCurrentUserName());
             return "view-daftar-rencana-keuangan";
         } else {
             return "view-daftar-rencana";
@@ -52,9 +51,7 @@ public class RencanaController {
     @GetMapping(value = "/{id}")
     public String detailRencana(@PathVariable(value = "id") Long id, Model model) {
         Rencana rencana = rencanaService.getRencanaById(id);
-        System.out.println(rencana.getListBarangRencana());
         model.addAttribute("rencana", rencana);
-
         if (userService.getCurrentUserRole().equalsIgnoreCase("manajer")) {
             return "view-detail-rencana-manajer";
         } else if (userService.getCurrentUserRole().equalsIgnoreCase("keuangan")) {
@@ -62,6 +59,15 @@ public class RencanaController {
         } else {
             return "view-detail-rencana-operasional";
         }
+    }
+
+    @GetMapping(value = "/{id}/delete")
+    public String deleteRencana(@PathVariable(value = "id") Long id, RedirectAttributes redirectAttributes) {
+        Rencana rencana = rencanaService.getRencanaById(id);
+        rencanaService.deleteRencana(rencana);
+
+        redirectAttributes.addFlashAttribute("deleteSuccessMessage", "Rencana pengadaan telah berhasil dihapus.");
+        return "redirect:/rencana/";
     }
 
     @GetMapping("/create")
@@ -114,4 +120,6 @@ public class RencanaController {
             return "view-daftar-rencana";
         }
     }
+
+
 }

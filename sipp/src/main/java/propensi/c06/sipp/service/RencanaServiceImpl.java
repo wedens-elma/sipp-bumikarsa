@@ -31,7 +31,15 @@ public class RencanaServiceImpl implements RencanaService {
     UserService userService;
 
     @Override
-    public List<Rencana> getAllRencana() { return rencanaDb.findAll(); }
+    public List<Rencana> getAllRencana() {
+        List<Rencana> listRencanaAvail = new ArrayList<>();
+        for (Rencana rencana : rencanaDb.findAll()) {
+            if (!rencana.getIsDeleted()) {
+                listRencanaAvail.add(rencana);
+            }
+        }
+        return listRencanaAvail;
+    }
 
     @Override
     public Rencana getRencanaById(Long id) {
@@ -41,6 +49,12 @@ public class RencanaServiceImpl implements RencanaService {
             }
         }
         return null;    
+    }
+
+    @Override
+    public void deleteRencana(Rencana rencana) {
+        rencana.setIsDeleted(true);
+        rencanaDb.save(rencana);
     }
 
     @Override
@@ -71,7 +85,7 @@ public class RencanaServiceImpl implements RencanaService {
             }
             LogRencana logRencana = new LogRencana();
             logRencana.setRencana(rencana);
-            logRencana.setStatus("Dibuat");
+            logRencana.setStatus("dibuat");
             logRencana.setTanggalWaktu(LocalDateTime.now());
             logRencana.setChangedBy(userService.getCurrentUserName());
             rencana.setLogRencana(new ArrayList<LogRencana>());

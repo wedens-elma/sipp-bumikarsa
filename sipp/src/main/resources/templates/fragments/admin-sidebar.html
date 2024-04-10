@@ -172,28 +172,6 @@
             width: 100vw;
         }
 
-        .navbar-nav .dropdown {
-            margin: 10px;
-            padding: 10px;
-        }
-<!--        .navbar .dropdown-menu {-->
-<!--            left: 40%; /* Geser menu dropdown ke tengah */-->
-
-<!--            width: 50px;-->
-<!--        }-->
-        .dropdown-menu {
-            right: auto; /* Reset posisi dropdown-menu ke kiri */
-            left: 0; /* Letakkan dropdown-menu di sebelah kiri */
-            transform: translateX(0); /* Reset transformasi horizontal */
-            min-width: auto; /* Hilangkan batasan lebar minimum */
-        }
-
-
-
-
-
-
-
         @media (min-width:768px) {
             .content {
                 max-width: auto;
@@ -264,65 +242,22 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link collapsed" data-bs-target="#barang" data-bs-toggle="collapse"
+                    <a href="#" class="sidebar-link collapsed" data-bs-target="#user" data-bs-toggle="collapse"
                        aria-expanded="false"><i class="fa-solid fa-file-lines pe-2"></i>
-                        Barang
+                        user
                     </a>
-                    <ul id="barang" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" style="padding-left: 20px;">
+                    <ul id="user" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" style="padding-left: 20px;">
                         <li class="sidebar-item">
-                            <a href="/barang" class="sidebar-link"> <i class="fa-solid fa-list pe-2"></i> Daftar Barang</a>
+                            <a href="/user" class="sidebar-link"> <i class="fa-solid fa-list pe-2"></i> Daftar user</a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="/barang/tambah" class="sidebar-link"> <i class="fa-regular fa-square-plus pe-2"></i>Add Barang</a>
+                            <a href="/user/add" class="sidebar-link"> <i class="fa-regular fa-square-plus pe-2"></i>Add user</a>
                         </li>
                     </ul>
                 </li>
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link collapsed" data-bs-target="#vendor" data-bs-toggle="collapse"
-                       aria-expanded="false"><i class="fa-regular fa-building pe-2"></i>
-                          Vendor
-                    </a>
-                    <ul id="vendor" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" style="padding-left: 20px;">
-                        <li class="sidebar-item">
-                            <a href="/vendor" class="sidebar-link"> <i class="fa-solid fa-list pe-2"></i> Daftar Vendor</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="/vendor/tambah" class="sidebar-link"> <i class="fa-regular fa-square-plus pe-2"></i> Add Vendor</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link collapsed" data-bs-target="#rencana" data-bs-toggle="collapse"
-                       aria-expanded="false"><i class="fa-regular fa-calendar-days pe-2"></i>
-                        Rencana Pengadaan
-                    </a>
-                    <ul id="rencana" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" style="padding-left: 20px;">
-                        <li class="sidebar-item">
-                            <a href="/rencana/" class="sidebar-link"> <i class="fa-solid fa-list pe-2"></i> Daftar Rencana Pengadaan</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="/rencana/create" class="sidebar-link"> <i class="fa-regular fa-square-plus pe-2"></i> Add Rencana Pengadaan</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidebar-item" style="margin-bottom: 335px;">
-                    <a href="#" class="sidebar-link collapsed" data-bs-target="#pengadaan" data-bs-toggle="collapse"
-                       aria-expanded="false"><i class="fa-regular fa-note-sticky pe-2"></i>
-                        Pengadaan
-                    </a>
-                    <ul id="pengadaan" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" style="padding-left: 20px;">
-                        <li class="sidebar-item">
-                            <a href="/pengadaan" class="sidebar-link"> <i class="fa-solid fa-list pe-2"></i> Daftar Pengadaan</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="/pengadaan/tambah" class="sidebar-link"> <i class="fa-regular fa-square-plus pe-2"></i> AddPengadaan</a>
-                        </li>
-                    </ul>
-                </li>
-
             </ul>
             <div class="sidebar-footer">
-                <a href="#" class="sidebar-link">
+                <a href="/logout" class="sidebar-link">
                     <i class="fas fa-sign-out-alt pe-2"></i>
                     <span>Logout</span>
                 </a>
@@ -342,16 +277,15 @@
             <div class="navbar-collapse navbar" id="navbar-dropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a href="#" class="nav-icon pe-md-0 dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0 dropdown-toggle">
                             <i class="fas fa-user" style="font-size: 1.5em;"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <div class="dropdown-menu dropdown-menu-end">
                             <a href="#" class="dropdown-item">Profile</a>
-                            <a href="#" class="dropdown-item">Settings</a>
-                            <a href="#" class="dropdown-item">Logout</a>
+                            <a href="#" class="dropdown-item">Setting</a>
+                            <a href="/logout" class="dropdown-item">Logout</a>
                         </div>
                     </li>
-
                 </ul>
             </div>
         </nav>
@@ -364,8 +298,8 @@
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const sidebarToggle = document.querySelector("#sidebar-toggle");
     sidebarToggle.addEventListener("click",function(){
@@ -381,7 +315,6 @@
             }
         });
     });
-
 
 
 
@@ -449,11 +382,11 @@
             "/pengadaan": ["Home", "Pengadaan", "Daftar Pengadaan"],
             "/pengadaan/tambah": ["Home","Pengadaan", "Add Pengadaan"],
             "/pengadaan/{id}": ["Home","Pengadaan", "Daftar Pengadaan", "Detail Pengadaan"],
-            "/barang": ["Home", "Barang", "Daftar Barang"],
-            "/barang/tambah": ["Home","Barang", "Add Barang"],
+            "/user": ["Home", "user", "Daftar user"],
+            "/user/add": ["Home","user", "Add user"],
             "/vendor": ["Home", "Vendor", "Daftar Vendor"],
             "/vendor/tambah": ["Home","Vendor", "Add Vendor"],
-            "/rencana/": ["Home", "Rencana", "Daftar Rencana Pengadaan"],
+            "/rencana": ["Home", "Rencana", "Daftar Rencana Pengadaan"],
             "/rencana/create": ["Home","Rencana", "Add Rencana Pengadaan"],
             // Tambahkan halaman dan breadcrumbs lainnya di sini
         };
@@ -480,14 +413,8 @@
 
                 link.textContent = breadcrumb;
 
-                if (breadcrumb === "Pengadaan" ) {
-                link.href = "/pengadaan";
-                } else if(breadcrumb === "Vendor") {
-                link.href = "/vendor";
-                } else if(breadcrumb === "Barang") {
-                link.href = "/barang";
-                } else if(breadcrumb === "Rencana") {
-                link.href = "/rencana/";
+                if (breadcrumb === "user" ) {
+                link.href = "/user";
                 }
                 listItem.appendChild(link);
             }

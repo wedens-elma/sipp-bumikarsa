@@ -1,3 +1,151 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://thymeleaf.org">-->
+
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>-->
+<!--        Detail Pengadaan-->
+<!--    </title>-->
+<!--    <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>-->
+<!--    <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>-->
+<!--</head>-->
+
+<!--<body>-->
+
+<!--<div class="container-fluid">-->
+<!--    <div class="row">-->
+<!--        &lt;!&ndash;        <div th:replace=~{"fragments/sidebarf :: sidebar}" class="col-lg-3 col-md-4" ></div>&ndash;&gt;-->
+<!--        <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>-->
+<!--        <div class="col">-->
+<!--            <div id="detailpengadaan">-->
+<!--                <nav aria-label="breadcrumb" class="px-3" style="padding-top: 10px;">-->
+<!--                    <ol class="breadcrumb">-->
+<!--                        <li class="breadcrumb-item"><a href="/">Home</a></li>-->
+<!--                        <li class="breadcrumb-item"><a href="/pengadaan">Daftar Pengadaan</a></li>-->
+<!--                        <li class="breadcrumb-item" aria-current="page">Detail Pengadaan</li>-->
+<!--                    </ol>-->
+<!--                </nav>-->
+<!--                <div class="card mx-lg-5 m-4 p-4">-->
+<!--                    <h2 class="card-header">-->
+<!--                        <div class="row">-->
+<!--                            <div class="col">-->
+<!--                                Detail Pengadaan-->
+<!--                            </div>-->
+<!--        -->
+<!--                        </div>-->
+<!--                    </h2>-->
+<!--                    <div class="card-body">-->
+<!--                        <table class="table table-borderless">-->
+<!--                            <tbody>-->
+<!--                            <tr>-->
+<!--                                <td>Kode Pengadaan</td>-->
+<!--                                <td th:text="': '+${pengadaan.idPengadaan}"></td>-->
+<!--                            </tr>-->
+
+<!--                            <tr>-->
+<!--                                <td>Tanggal Peengadaan</td>-->
+<!--                                <td th:text="': '+${pengadaan.tanggalPengadaan}"></td>-->
+<!--                            </tr>-->
+
+<!--                            <tr>-->
+<!--                                <td>Vendor</td>-->
+<!--                                <td th:text="': '+${pengadaan.vendor.namaVendor}"></td>-->
+<!--                            </tr>-->
+
+<!--                            <tr>-->
+<!--                                <td>Shipment Status</td>-->
+<!--                                <td>-->
+<!--                                    <span th:if="${pengadaan.shipmentStatus == 0}">: In Progress</span>-->
+<!--                                    <span th:if="${pengadaan.shipmentStatus == 1}">: Arrived</span>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+
+<!--                            <tr>-->
+<!--                                <td>Payment Status</td>-->
+<!--                                <td>-->
+<!--                                    <span th:if="${pengadaan.paymentStatus == 0}">: Not Paid</span>-->
+<!--                                    <span th:if="${pengadaan.paymentStatus == 1}">: In Progress</span>-->
+<!--                                    <span th:if="${pengadaan.paymentStatus == 2}">: Paid</span>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+
+<!--                            <tr>-->
+<!--                                <td>Diskon Keseluruhan (%)</td>-->
+<!--                                <td th:text="': '+${pengadaan.diskonKeseluruhan}"></td>-->
+<!--                            </tr>-->
+
+
+<!--                            <tr>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                        <div class="py-2 px-2">-->
+<!--                            <h5>Daftar barang </h5>-->
+<!--                            <table class="table table-bordered">-->
+<!--                                <thead class="thead-dark">-->
+<!--                                <tr>-->
+<!--                                    <th scope="col">#</th>-->
+<!--                                    <th scope="col">Nama Barang</th>-->
+<!--                                    <th scope="col">Jumlah Barang</th>-->
+<!--                                    <th scope="col">Harga Barang</th>-->
+<!--                                    <th scope="col">Diskon Satuan</th>-->
+<!--                                </tr>-->
+<!--                                </thead>-->
+<!--                                <tbody>-->
+
+<!--                                <tr-->
+<!--                                        th:each="pengadaanBarang, iterationStatus : ${pengadaan.listPengadaanBarang}">-->
+<!--                                    <td th:text="${iterationStatus.count}"></td>-->
+<!--                                    <td>-->
+<!--                                        &lt;!&ndash;                            <a th:href="@{/pengadaan/{id}(id=${pengadaanBarang.barang2.idBarang})}"&ndash;&gt;-->
+<!--                                        <a th:text="${pengadaanBarang.namaBarang}"></a>-->
+<!--                                    </td>-->
+<!--                                    <td th:text="${pengadaanBarang.jumlahBarang}"></td>-->
+<!--                                    <td th:text="${pengadaanBarang.hargaBarang}"></td>-->
+<!--                                    <td th:text="${pengadaanBarang.diskonSatuan}"></td>-->
+
+<!--                                </tr>-->
+
+<!--                                </tbody>-->
+<!--                            </table>-->
+<!--                            <table class="table table-borderless">-->
+<!--                                <tbody>-->
+<!--                                <tr>-->
+<!--                                    <td style="font-size: 16px;">Total Harga Awal</td>-->
+<!--                                    <td th:text="': '+${totalHargaAwal}"></td>-->
+<!--                                </tr>-->
+
+<!--                                <tr>-->
+<!--                                    <td style="font-size: 16px;">Total Harga Setelah Diskon</td>-->
+<!--                                    <td th:text="': '+${totalHargaDiskonSatuan}"></td>-->
+<!--                                </tr>-->
+
+<!--                                <tr>-->
+<!--                                    <td style="font-size: 16px;">Total Harga Akhir</td>-->
+<!--                                    <td th:text="': '+${totalHargaAkhir}"></td>-->
+<!--                                </tr>-->
+<!--                                </tbody>-->
+<!--                            </table>-->
+
+<!--                            <div class="text-center">-->
+<!--                                <a class="btn btn-secondary my-3" th:href="@{/pengadaan}">Kembali</a>-->
+<!--                                <a class="btn btn-secondary my-3" >Update</a>-->
+<!--                                <a class="btn btn-secondary my-3" >Hapus</a>-->
+
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+<!--</body>-->
+
+<!--</html>-->
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 
@@ -144,10 +292,13 @@
                         
                     </div>
                 </div>
-    
+                </div>
             </div>
         </div>
     </div>
+</div>
+
+
 </body>
 
 </html>

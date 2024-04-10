@@ -10,4 +10,6 @@ public interface RencanaService {
     Rencana getRencanaById(Long id);
 
     Rencana saveRencana(CreateRencanaRequestDTO rencanaDTO);
+
+    void deleteRencana(Rencana rencana);
 }
