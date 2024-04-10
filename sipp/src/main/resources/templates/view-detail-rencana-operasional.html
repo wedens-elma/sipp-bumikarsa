@@ -97,9 +97,9 @@
                         <br><br>
                     </div>
                 </div>
-                <div class="d-flex justify-content-end mt-3">
+                <div class="d-flex justify-content-end mt-3" th:if="${rencana.logRencana.size() > 0}">
                     <div class="m-3">
-                        <a id="deleteButton" type="button" class="btn btn-md btn-danger" href="#">Hapus Rencana</a>
+                        <a id="deleteButton" type="button" class="btn btn-md btn-danger" href="#" th:if="${rencana.logRencana[rencana.logRencana.size() - 1].status != 'disetujui'}">Hapus Rencana</a>
                     </div>
                 </div>
 
