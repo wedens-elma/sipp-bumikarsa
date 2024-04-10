@@ -55,7 +55,7 @@
                                         <a type="button" class="btn btn-md btn-primary" th:href="@{/barang/{id}/update(id=${barang.kodeBarang})}">Update</a>
                                     </div>
                                     <div class="col text-end"> <!-- align kiri -->
-                                        <a type="button" class="btn btn-md btn-danger" th:href="@{/barang/{id}/delete(id=${barang.kodeBarang})}">Hapus</a>
+                                        <a th:if="${barang.stokBarang == 0}" type="button" class="btn btn-md btn-danger" th:href="@{/barang/{id}/delete(id=${barang.kodeBarang})}">Hapus</a>
                                     </div>
                                 </div>
                             </div>

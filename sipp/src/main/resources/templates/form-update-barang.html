@@ -21,7 +21,7 @@
                                 <br>
 
                                 <div class="container">
-                                    <form th:action="@{/barang/tambah}" th:object="${barangDTO}" method="POST"
+                                    <form th:action="@{/barang/update}" th:object="${barangDTO}" method="POST"
                                         enctype="multipart/form-data" onsubmit="return validateForm()">
                                         <div class="row">
                                             <div class="col">
@@ -33,14 +33,14 @@
 
 
                                                 <input required class="form-control" type="text"
-                                                    th:field="*{namaBarang}" placeholder="Contoh: Semen" />
+                                                    th:field="*{namaBarang}" placeholder="Contoh: Semen" readonly/>
                                                 <br><br>
 
                                                 <label for="deskripsiBarang"><b style="font-size:24px"> Deskripsi
                                                         Barang</b><span style="color: red;">*</span></label>
-                                                <input required class="form-control" type="text"
+                                                <input required class="form-control disabled" type="text"
                                                     th:field="*{deskripsiBarang}"
-                                                    placeholder="Contoh: Semen adalah ..." />
+                                                    placeholder="Contoh: Semen adalah ..." readonly/>
                                                 <br><br>
 
                                                 <label for="tipeBarang"><b style="font-size:24px"> Tipe Barang</b><span
@@ -49,7 +49,7 @@
                                                     <tbody>
                                                         <tr>
                                                             <select class="form-control" name="tipeBarang"
-                                                                id="tipeBarang" th:field="*{tipeBarang}">
+                                                                id="tipeBarang" th:field="*{tipeBarang}" disabled>
                                                                 <option value="0" disabled selected>-- Pilih tipe barang
                                                                     --</option>
                                                                 <option value="1">Alat</option>
@@ -59,11 +59,6 @@
                                                     </tbody>
                                                 </table>
                                                 <br>
-
-                                                <label for="fotoBarang"><b style="font-size:24px"> Foto Barang</b><span
-                                                        style="color: red;">*</span></label> <br>
-                                                <input type="file" name="file" class="form-contol-file" id="customFile"
-                                                    style="margin-bottom: 7px;" />
 
 
                                                 <br><br>
@@ -80,12 +75,12 @@
 
                                                 <b style="font-size:24px"> Berat Barang</b> <br>
                                                 <input class="form-control" type="text" th:field="*{beratBarang}"
-                                                    placeholder="Contoh: 30 kg / 5 ons (opsional)" />
+                                                    placeholder="Contoh: 30 kg / 5 ons (opsional)" readonly/>
                                                 <br><br>
 
                                                 <b style="font-size:24px"> Dimensi Barang</b> <br>
                                                 <input class="form-control" type="text" th:field="*{dimensiBarang}"
-                                                    placeholder="P x L x T. Contoh: 10 x 12 x 30 (opsional)" />
+                                                    placeholder="P x L x T. Contoh: 10 x 12 x 30 (opsional)" readonly/>
 
 
                                                 <br><br>
@@ -116,7 +111,7 @@
 
                                             <br>
                                             <div class="d-flex justify-content-center">
-                                                <a class="btn btn-danger btn-lg me-4 px-5" href="/">Batal</a>
+                                                <a class="btn btn-danger btn-lg me-4 px-5" href="/barang">Batal</a>
                                                 <!-- me-4 untuk memberikan margin kanan sebesar 20px -->
                                                 <button class="btn btn-primary btn-lg px-5"
                                                     type="submit">Simpan</button>

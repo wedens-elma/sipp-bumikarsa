@@ -19,4 +19,6 @@ public interface BarangService {
     public boolean isBarangExistsAndNotDeleted(String namaBarang);
 
     void softDeleteBarang(String kodeBarang);
+
+    Barang updateBarang(Barang barang);
 }

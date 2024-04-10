@@ -13,4 +13,6 @@ public interface BarangMapper {
 
     UpdateBarangRequestDTO barangToUpdateBarangRequestDTO(Barang barang);
 
+    Barang updateBarangRequestDTOToBarang(UpdateBarangRequestDTO updateBarangRequestDTO);
+
 }

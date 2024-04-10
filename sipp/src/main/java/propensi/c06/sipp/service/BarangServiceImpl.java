@@ -100,6 +100,18 @@ public class BarangServiceImpl implements BarangService {
         }
     }
 
+    @Override
+    public Barang updateBarang(Barang barangFromDto) {
+        Barang barang = getBarangById(barangFromDto.getKodeBarang());
+        if (barang != null) {
+            barang.setStokBarang(barangFromDto.getStokBarang());
+            barang.setStandarStokBarang(barangFromDto.getStandarStokBarang());
+            barangDb.save(barang);
+        }
+        return barang;
+    }
+
+
 
 }
 
