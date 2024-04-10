@@ -176,125 +176,157 @@
                 <div class="card mx-lg-5 m-4 p-4">
                     <div class="card-body text-center">
                         <h1 th:text="${pengadaan.namaPengadaan}" style="font-weight: bold;"></h1>
-                    <br><br>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <table class="table table-borderless">
+                        <br><br>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <table class="table table-borderless">
+                                        <tbody>
+                                        <tr>
+                                            <td style="text-align: left;">Kode Pengadaan</td>
+                                            <td th:text="': '+${pengadaan.idPengadaan}" style="text-align: left;"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="text-align: left;">Tanggal Peengadaan</td>
+                                            <td th:text="': '+${pengadaan.tanggalPengadaan}" style="text-align: left;"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="text-align: left;">Vendor</td>
+                                            <td th:text="': '+${pengadaan.vendor.namaVendor}" style="text-align: left;"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col">
+                                    <table class="table table-borderless">
+                                        <tbody>
+                                        <tr>
+                                            <td style="text-align: left;">Shipment Status</td>
+                                            <td style="display: flex; align-items: center;">
+                                                <span th:if="${pengadaan.shipmentStatus == 0}" style="margin-right: 5px;">:</span>
+                                                <span th:if="${pengadaan.shipmentStatus == 0}">In Progress</span>
+                                                <span th:if="${pengadaan.shipmentStatus == 1}" style="margin-right: 5px;">:</span>
+                                                <span th:if="${pengadaan.shipmentStatus == 1}">Arrived</span>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="text-align: left;">Payment Status</td>
+                                            <td style="display: flex; align-items: center;">
+                                                <span th:if="${pengadaan.paymentStatus == 0}" style="margin-right: 5px;">:</span>
+                                                <span th:if="${pengadaan.paymentStatus == 0}">Not Paid</span>
+                                                <span th:if="${pengadaan.paymentStatus == 1}" style="margin-right: 5px;">:</span>
+                                                <span th:if="${pengadaan.paymentStatus == 1}">In Progress</span>
+                                                <span th:if="${pengadaan.paymentStatus == 2}" style="margin-right: 5px;">:</span>
+                                                <span th:if="${pengadaan.paymentStatus == 2}">Paid</span>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="text-align: left;">Diskon Keseluruhan (%)</td>
+                                            <td th:text="': '+${pengadaan.diskonKeseluruhan}" style="text-align: left;"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+
+
+
+
+                                <br>
+                                <h6 style="text-align: left;"><b> Barang Pengadaan </b></h6>
+                                <table id="table" class="table table-bordered text-center">
+                                    <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">No.</th>
+                                        <th scope="col">Nama Barang</th>
+                                        <th scope="col">Jumlah Barang</th>
+                                        <th scope="col">Harga Barang</th>
+                                        <th scope="col">Diskon Satuan</th>
+                                    </tr>
+                                    </thead>
                                     <tbody>
-                                    <tr>
-                                        <td style="text-align: left;">Kode Pengadaan</td>
-                                        <td th:text="': '+${pengadaan.idPengadaan}" style="text-align: left;"></td>
-                                    </tr>
+                                    <tr th:each="pengadaanBarang, iterationStatus : ${pengadaan.listPengadaanBarang}">
+                                        <td th:text="${iterationStatus.index +1}"></td>
+                                        <td th:text="${pengadaanBarang.namaBarang}"></td>
+                                        <td th:text="${pengadaanBarang.jumlahBarang}"></td>
+                                        <td th:text="${pengadaanBarang.hargaBarang}"></td>
+                                        <td th:text="${pengadaanBarang.diskonSatuan}"></td>
 
-                                    <tr>
-                                        <td style="text-align: left;">Tanggal Peengadaan</td>
-                                        <td th:text="': '+${pengadaan.tanggalPengadaan}" style="text-align: left;"></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="text-align: left;">Vendor</td>
-                                        <td th:text="': '+${pengadaan.vendor.namaVendor}" style="text-align: left;"></td>
                                     </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                            <div class="col">
+                                <br><br>
                                 <table class="table table-borderless">
                                     <tbody>
                                     <tr>
-                                        <td style="text-align: left;">Shipment Status</td>
-                                        <td style="display: flex; align-items: center;">
-                                            <span th:if="${pengadaan.shipmentStatus == 0}" style="margin-right: 5px;">:</span>
-                                            <span th:if="${pengadaan.shipmentStatus == 0}">In Progress</span>
-                                            <span th:if="${pengadaan.shipmentStatus == 1}" style="margin-right: 5px;">:</span>
-                                            <span th:if="${pengadaan.shipmentStatus == 1}">Arrived</span>
-                                        </td>
+                                        <td style="font-size: 16px; text-align: left;">Total Harga Awal</td>
+                                        <td th:text="': Rp.'+${totalHargaAwal}" style="text-align: left;"></td>
                                     </tr>
 
                                     <tr>
-                                        <td style="text-align: left;">Payment Status</td>
-                                        <td style="display: flex; align-items: center;">
-                                            <span th:if="${pengadaan.paymentStatus == 0}" style="margin-right: 5px;">:</span>
-                                            <span th:if="${pengadaan.paymentStatus == 0}">Not Paid</span>
-                                            <span th:if="${pengadaan.paymentStatus == 1}" style="margin-right: 5px;">:</span>
-                                            <span th:if="${pengadaan.paymentStatus == 1}">In Progress</span>
-                                            <span th:if="${pengadaan.paymentStatus == 2}" style="margin-right: 5px;">:</span>
-                                            <span th:if="${pengadaan.paymentStatus == 2}">Paid</span>
-                                        </td>
+                                        <td style="font-size: 16px; text-align: left;">Total Harga Setelah Diskon</td>
+                                        <td th:text="': Rp.'+${totalHargaDiskonSatuan}" style="text-align: left;"></td>
                                     </tr>
 
                                     <tr>
-                                        <td style="text-align: left;">Diskon Keseluruhan (%)</td>
-                                        <td th:text="': '+${pengadaan.diskonKeseluruhan}" style="text-align: left;"></td>
+                                        <td style="font-size: 16px; text-align: left; ">Total Harga Akhir</td>
+                                        <td th:text="': Rp.'+${totalHargaAkhir}" style="text-align: left; font-weight: bold;"></td>
                                     </tr>
                                     </tbody>
                                 </table>
-                            </div>
 
-
-
-
-
-
-                        <br>
-                            <h6 style="text-align: left;"><b> Barang Pengadaan </b></h6>
-                            <table id="table" class="table table-bordered text-center">
-                                <thead class="table-dark">
-                                <tr>
-                                    <th scope="col">No.</th>
-                                    <th scope="col">Nama Barang</th>
-                                    <th scope="col">Jumlah Barang</th>
-                                    <th scope="col">Harga Barang</th>
-                                    <th scope="col">Diskon Satuan</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="pengadaanBarang, iterationStatus : ${pengadaan.listPengadaanBarang}">
-                                    <td th:text="${iterationStatus.index +1}"></td>
-                                    <td th:text="${pengadaanBarang.namaBarang}"></td>
-                                    <td th:text="${pengadaanBarang.jumlahBarang}"></td>
-                                    <td th:text="${pengadaanBarang.hargaBarang}"></td>
-                                    <td th:text="${pengadaanBarang.diskonSatuan}"></td>
-
-                                </tr>
-                                </tbody>
-                            </table>
-                            <br><br>
-                            <table class="table table-borderless">
-                                <tbody>
-                                <tr>
-                                    <td style="font-size: 16px; text-align: left;">Total Harga Awal</td>
-                                    <td th:text="': Rp.'+${totalHargaAwal}" style="text-align: left;"></td>
-                                </tr>
-
-                                <tr>
-                                    <td style="font-size: 16px; text-align: left;">Total Harga Setelah Diskon</td>
-                                    <td th:text="': Rp.'+${totalHargaDiskonSatuan}" style="text-align: left;"></td>
-                                </tr>
-
-                                <tr>
-                                    <td style="font-size: 16px; text-align: left; ">Total Harga Akhir</td>
-                                    <td th:text="': Rp.'+${totalHargaAkhir}" style="text-align: left; font-weight: bold;"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-
-                            <div class="d-flex justify-content-end mt-3">
-                                <div class="m-3">
-                                <a type="button" class="btn btn-md btn-success" th:href="@{/pengadaan}">Kembali</a>
-                                <a type="button" class="btn btn-md btn-success" th:href="@{/pengadaan/{id}/update(id=${pengadaan.idPengadaan})}">Update</a>
-                                <a type="button" class="btn btn-md btn-danger" th:href="@{/pengadaan/{id}/delete(id=${pengadaan.idPengadaan})}">Hapus</a>
+                                <div class="d-flex justify-content-end mt-3">
+                                    <div class="m-3">
+                                        <a type="button" class="btn btn-md btn-success" th:href="@{/pengadaan}">Kembali</a>
+                                        <a type="button" class="btn btn-md btn-success" th:href="@{/pengadaan/{id}/updateStatus(id=${pengadaan.idPengadaan})}">Update Status</a>
+                                        <a type="button" class="btn btn-md btn-success" th:href="@{/pengadaan/{id}/update(id=${pengadaan.idPengadaan})}">Update Pengadaan</a>
+                                        <a type="button" class="btn btn-md btn-danger" th:href="@{/pengadaan/{id}/delete(id=${pengadaan.idPengadaan})}">Hapus</a>
+                                    </div>
                                 </div>
                             </div>
+<!--                            <br>-->
+<!--                            <div class="row">-->
+<!--                                <div class="col">-->
+<!--                                    <h2>Update Status<h2>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <br>-->
+<!--                            <form action="/pengadaan/{id}/updateStatus" method="post">-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col">-->
+<!--                                        &lt;!&ndash; Dropdown untuk Shipment Status &ndash;&gt;-->
+<!--                                        <label for="shipmentStatus">Shipment Status:</label>-->
+<!--                                        <select id="shipmentStatus" name="shipmentStatus" class="form-control">-->
+<!--                                            <option value="0">In Progress</option>-->
+<!--                                            <option value="1">Arrived</option>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                    <div class="col">-->
+<!--                                        &lt;!&ndash; Dropdown untuk Payment Status &ndash;&gt;-->
+<!--                                        <label for="paymentStatus">Payment Status:</label>-->
+<!--                                        <select id="paymentStatus" name="paymentStatus" class="form-control">-->
+<!--                                            <option value="0">Not Paid</option>-->
+<!--                                            <option value="1">In Progress</option>-->
+<!--                                            <option value="2">Paid</option>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <br>-->
+<!--                            <a type="button" class="btn btn-md btn-success" th:href="@{/pengadaan/{id}/update(id=${pengadaan.idPengadaan})}">Update</a>-->
+
+                            </form>
                         </div>
                     </div>
-                </div>
-                </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <script>
