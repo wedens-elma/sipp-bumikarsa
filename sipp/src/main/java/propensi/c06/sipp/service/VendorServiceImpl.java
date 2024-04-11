@@ -2,7 +2,8 @@ package propensi.c06.sipp.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
@@ -15,6 +16,7 @@ import propensi.c06.sipp.repository.VendorDb;
 @Service
 @Transactional
 public class VendorServiceImpl implements VendorService {
+    private static final Logger logger = LoggerFactory.getLogger(VendorServiceImpl.class);
 
     @Autowired
     private  VendorDb vendorDb;
@@ -30,12 +32,17 @@ public class VendorServiceImpl implements VendorService {
 
     @Override
     public Vendor getVendorDetail(String kodeVendor) {
-        for (Vendor vendor : getAllVendors()) {
-            if (vendor.getKodeVendor().equals(kodeVendor)) {
-                return vendor;
-            }
+        Vendor vendor = vendorDb.findByKodeVendor(kodeVendor)
+                .orElse(null);
+
+        if (vendor != null) {
+            logger.info("Fetched vendor: {}", vendor.getNamaVendor());
+            logger.info("Barang list size: {}", vendor.getBarangList().size());
+        } else {
+            logger.warn("Vendor not found for kodeVendor: {}", kodeVendor);
         }
-        return null;
+
+        return vendor;
     }
 
     @Override

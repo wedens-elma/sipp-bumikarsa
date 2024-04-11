@@ -10,6 +10,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public String handleException(Exception e, Model model) {
         model.addAttribute("errorMessage", "An unexpected error occurred: " + e.getMessage());
-        return "error-view"; // Make sure this template exists
+        return "error-view";
     }
 }

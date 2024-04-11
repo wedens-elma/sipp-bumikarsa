@@ -27,11 +27,10 @@
 
                         <h2 class="text-center mt-5">List of Barang</h2>
                         <div class="list-group">
-                            <th:block th:each="barang : ${vendor.listBarang}">
-                                <a href="#" class="list-group-item list-group-item-action" th:text="${barang.namaBarang}"></a>
+                            <th:block th:each="barang : ${vendor.barangList}">
+                                <span class="list-group-item list-group-item-action" th:text="${barang.namaBarang}"></span>
                             </th:block>
                         </div>
-
                         <div class="text-center mt-4">
                             <a type="button" class="btn btn-secondary" href="/vendor">Back to List</a>
                         </div>
