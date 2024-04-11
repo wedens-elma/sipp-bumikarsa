@@ -1,5 +1,6 @@
 package propensi.c06.sipp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +9,7 @@ import jakarta.transaction.Transactional;
 import propensi.c06.sipp.dto.VendorMapper;
 import propensi.c06.sipp.dto.request.CreateVendorRequestDTO;
 import propensi.c06.sipp.model.Barang;
-import propensi.c06.sipp.model.PengadaanBarang;
 import propensi.c06.sipp.model.Vendor;
-import propensi.c06.sipp.repository.VendorDb;
-import propensi.c06.sipp.model.VendorBarang;
-import propensi.c06.sipp.repository.VendorBarangDb;
 import propensi.c06.sipp.repository.VendorDb;
 
 @Service
@@ -23,9 +20,6 @@ public class VendorServiceImpl implements VendorService {
     private  VendorDb vendorDb;
     @Autowired
     private VendorMapper vendorMapper;
-
-    @Autowired
-    private VendorBarangDb vendorBarangDb;
 
     @Autowired
     private BarangService barangService;
@@ -50,30 +44,28 @@ public class VendorServiceImpl implements VendorService {
 
         String kodeVendorPrefix = "VEND-";
         List<String> lastKodeVendors = vendorDb.findLastKodeVendorByCode(kodeVendorPrefix + "%");
-
         String lastKodeVendor = (lastKodeVendors.isEmpty()) ? null : lastKodeVendors.get(0);
-
         String newKodeVendor = generateKodeVendor(kodeVendorPrefix, lastKodeVendor);
-        vendor.setKodeVendor(newKodeVendor);
 
+        vendor.setKodeVendor(newKodeVendor);
         vendor.setNamaVendor(vendorDto.getNamaVendor());
         vendor.setEmailVendor(vendorDto.getEmailVendor());
         vendor.setNomorHandphoneVendor(vendorDto.getNomorHandphoneVendor());
 
-        vendorDb.save(vendor);
-
-        for (VendorBarang vendorBarangDTO : vendorDto.getListBarang()){
-            VendorBarang vendorBarang = new VendorBarang();
-            var barang = barangService.getBarangById(vendorBarangDTO.getBarang().getKodeBarang());
-
-            vendorBarang.setBarang(vendorBarangDTO.getBarang());
-            vendorBarang.setNamaBarang(vendorBarangDTO.getNamaBarang());
-            vendorBarang.setVendor(vendor);
-            vendorBarangDb.save(vendorBarang);
+        if (vendorDto.getVendorBarang() != null) {
+            List<Barang> barangList = new ArrayList<>();
+            for (String barangId : vendorDto.getVendorBarang()) {
+                Barang existingBarang = barangService.getBarangById(barangId);
+                if (existingBarang != null) {
+                    barangList.add(existingBarang);
+                }
+            }
+            vendor.setBarangList(barangList);
         }
-        return vendor;
 
+        return vendorDb.save(vendor);
     }
+
 
     private String generateKodeVendor(String prefix, String lastKodeVendor) {
         int nextId = 1;

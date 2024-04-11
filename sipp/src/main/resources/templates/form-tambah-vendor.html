@@ -35,7 +35,7 @@
 
                                 <div class="mb-3">
                                     <label for="barang" class="form-label" style="font-size:24px"><b>Select Barang</b></label>
-                                    <select class="form-control" id="barang" th:field="*{listBarang[0].barang.kodeBarang}">
+                                    <select multiple class="form-control" id="barang" th:field="*{vendorBarang}" name="vendorBarang">
                                         <option value="">Select Barang</option>
                                         <th:block th:each="barangExisting : ${listBarang}">
                                             <option th:value="${barangExisting.kodeBarang}" th:text="${barangExisting.namaBarang}"></option>
@@ -59,7 +59,7 @@
 <script>
     function validateForm() {
         var phone = document.getElementById('noTelp').value;
-        var phoneRegex = /^[0-9]+$/; // Regex pattern to allow only numbers
+        var phoneRegex = /^[0-9]+$/;
 
         if (!phoneRegex.test(phone) || phone.length < 10) {
             alert('Phone number must contain only numbers and be at least 10 digits long.');

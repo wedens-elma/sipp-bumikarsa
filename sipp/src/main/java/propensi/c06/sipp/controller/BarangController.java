@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.Valid;
-import lombok.experimental.var;
 import propensi.c06.sipp.dto.BarangMapper;
 import propensi.c06.sipp.dto.request.CreateTambahBarangRequestDTO;
 import propensi.c06.sipp.dto.request.UpdateBarangRequestDTO;

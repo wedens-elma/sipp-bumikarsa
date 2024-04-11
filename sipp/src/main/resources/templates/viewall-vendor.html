@@ -39,7 +39,7 @@
                                 <td th:text="${vendor.emailVendor}"></td>
                                 <td th:text="${vendor.nomorHandphoneVendor}"></td>
                                 <td>
-                                    <a type="button" class="btn btn-sm btn-secondary" th:href="@{/vendor/' + ${vendor.kodeVendor}}">Details</a>
+                                    <a class="btn btn-sm btn-secondary" th:href="@{/vendor/{kodeVendor}(kodeVendor=${vendor.kodeVendor})}">Details</a>
                                 </td>
                             </tr>
                             </tbody>

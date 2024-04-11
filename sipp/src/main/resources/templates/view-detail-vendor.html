@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <title>Vendor Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
     <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
 </head>
@@ -15,21 +17,23 @@
                 <div class="card m-4 p-4">
                     <div class="card-body text-center">
 
-                        <h1 th:text="${vendor.namaVendor}" style="font-size:60px; font-weight:600;"></h1>
-                        <h4 th:text="${vendor.kodeVendor}" style="text-align: center;"></h4>
+                        <h1 th:text="${vendor.namaVendor}" class="display-4"></h1>
+                        <p th:text="'Vendor Code: ' + ${vendor.kodeVendor}" class="lead"></p>
 
-                        <div class="vendor-info">
-                            <p th:if="${vendor.emailVendor == ''}" th:text="'Email: NaN'"></p>
-                            <p th:unless="${vendor.emailVendor == ''}" th:text="'Email: ' + ${vendor.emailVendor}"></p>
-                            <p th:if="${vendor.nomorHandphoneVendor == ''}" th:text="'No. Telp: NaN'"></p>
-                            <p th:unless="${vendor.nomorHandphoneVendor == ''}" th:text="'No. Telp: ' + ${vendor.nomorHandphoneVendor}"></p>
+                        <div class="vendor-info mt-4">
+                            <p th:text="'Email: ' + ${vendor.emailVendor} ?: 'NaN'"></p>
+                            <p th:text="'Phone: ' + ${vendor.nomorHandphoneVendor} ?: 'NaN'"></p>
                         </div>
-                        <h2 class="text-center mt-5">List Barang</h2>
-                        <ul>
-                            <li th:each="barang : ${vendor.listBarang}" th:text="${barang.namaBarang}"></li>
-                        </ul>
-                        <div class="text-center">
-                            <a type="button" class="btn btn-sm btn-secondary" href="/vendor">Kembali</a>
+
+                        <h2 class="text-center mt-5">List of Barang</h2>
+                        <div class="list-group">
+                            <th:block th:each="barang : ${vendor.listBarang}">
+                                <a href="#" class="list-group-item list-group-item-action" th:text="${barang.namaBarang}"></a>
+                            </th:block>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <a type="button" class="btn btn-secondary" href="/vendor">Back to List</a>
                         </div>
 
                     </div>

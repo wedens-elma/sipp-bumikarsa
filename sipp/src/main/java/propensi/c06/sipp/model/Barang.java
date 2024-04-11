@@ -64,6 +64,6 @@ public class Barang {
     @OneToMany(mappedBy = "barang", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<PengadaanBarang> pengadaanBarang;
 
-    @OneToMany(mappedBy = "barang", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<VendorBarang> vendorBarang;
+    @ManyToMany(mappedBy = "barangList")
+    private List<Vendor> vendorList;
 }

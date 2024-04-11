@@ -21,7 +21,6 @@ public class VendorController {
     @Autowired
     private VendorService vendorService;
 
-
     @Autowired
     private BarangService barangService;
 
@@ -29,7 +28,6 @@ public class VendorController {
     public String daftarVendor(Model model) {
         List<Vendor> listVendor = vendorService.getAllVendors();
         model.addAttribute("vendors", listVendor);
-        System.out.print(listVendor);
         return "viewall-vendor";
     }
 
@@ -41,25 +39,24 @@ public class VendorController {
     }
 
     @PostMapping("/vendor/tambah")
-    public String addVendor(@ModelAttribute("vendorDTO") CreateVendorRequestDTO vendorDTO, RedirectAttributes redirectAttributes, Model model) {
-
-        Vendor vendor = vendorService.addVendor(vendorDTO);
-        List<Vendor> listVendor = vendorService.getAllVendors();
-        model.addAttribute("vendors", listVendor);
-        model.addAttribute("listBarang", barangService.getAllBarang());
-        return "viewall-vendor";
-
+    public String addVendor(@ModelAttribute("vendorDTO") CreateVendorRequestDTO vendorDTO, RedirectAttributes redirectAttributes) {
+        try {
+            Vendor vendor = vendorService.addVendor(vendorDTO);
+            redirectAttributes.addFlashAttribute("successMessage", "Vendor '" + vendor.getNamaVendor() + "' successfully added.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error adding vendor: " + e.getMessage());
+        }
+        return "redirect:/vendor";
     }
 
     @GetMapping("/vendor/{kodeVendor}")
-    public String detailVendor(@PathVariable("kodeVendor") String kodeVendor, Model model) {
+    public String detailVendor(@PathVariable("kodeVendor") String kodeVendor, Model model, RedirectAttributes redirectAttributes) {
         Vendor vendor = vendorService.getVendorDetail(kodeVendor);
         if (vendor == null) {
-            return "vendor-not-found";
+            redirectAttributes.addFlashAttribute("errorMessage", "Vendor not found.");
+            return "redirect:/vendor";
         }
         model.addAttribute("vendor", vendor);
-        model.addAttribute("listBarang", barangService.getAllBarang());
         return "view-detail-vendor";
-
     }
 }
