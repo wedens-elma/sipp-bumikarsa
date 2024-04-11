@@ -18,7 +18,7 @@
                     const events = data.map(item => ({
                         title: item.namaRencana,
                         start: item.expectedDate,
-                        url: '/rencana/' + item.idRencana // Specify the URL for event detail page
+                        url: '/rencana/detail/' + item.idRencana // Specify the URL for event detail page
                     }));
 
                     var calendarEl = document.getElementById('calendar');

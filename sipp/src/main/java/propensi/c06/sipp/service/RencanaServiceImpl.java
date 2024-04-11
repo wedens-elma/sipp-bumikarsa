@@ -30,6 +30,9 @@ public class RencanaServiceImpl implements RencanaService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    LogRencanaService logRencanaService;
+
     @Override
     public List<Rencana> getAllRencana() {
         List<Rencana> listRencanaAvail = new ArrayList<>();
@@ -53,8 +56,14 @@ public class RencanaServiceImpl implements RencanaService {
 
     @Override
     public void deleteRencana(Rencana rencana) {
+        logRencanaService.createLogRencana(rencana, "dihapus", null);
         rencana.setIsDeleted(true);
         rencanaDb.save(rencana);
+    }
+
+    @Override
+    public void ubahStatusRencana(Rencana rencana, String status, String feedback) {
+        logRencanaService.createLogRencana(rencana, status, feedback);
     }
 
     @Override

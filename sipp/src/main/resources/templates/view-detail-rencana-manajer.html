@@ -60,12 +60,24 @@
                         <h5 style="font-style: italic; text-transform: capitalize; font-weight: bold;" th:text="${rencana.logRencana[rencana.logRencana.size() - 1].status}"></h5>
                         <h6 th:text="'Dibuat oleh ' + ${rencana.createdBy}"></h6>
                         <br>
+
                         <div class="card bg-warning text-white border-0 rounded p-3 d-inline-flex">
                             <div class="d-flex align-items-center">
                                 <p class="mb-0 mr-3"><b> Tanggal Rencana </b></p>
-                                <span class="font-weight-bold" th:text=" ${#dates.format(#dates.create(rencana.expectedDate.year, rencana.expectedDate.monthValue, rencana.expectedDate.dayOfMonth), 'dd MMMM yyyy')} "></span>
+                                <span class="font-weight-bold" th:text="${#dates.format(#dates.create(rencana.expectedDate.year, rencana.expectedDate.monthValue, rencana.expectedDate.dayOfMonth), 'dd MMMM yyyy')}"></span>
+                            </div>
+                            <div th:switch="${rencana.logRencana[rencana.logRencana.size() - 1].status}">
+                                <div class="d-flex align-items-center" th:case="'disetujui'">
+                                    <p class="mb-0 mr-3"><b> Tanggal Disetujui </b></p>
+                                    <span th:text="${#dates.format(#dates.create(rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.year, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.monthValue, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.dayOfMonth), 'dd MMMM yyyy')}"></span>
+                                </div>
+                                <div class="d-flex align-items-center" th:case="'dibatalkan'">
+                                    <p class="mb-0 mr-3"><b> Tanggal Dibatalkan </b></p>
+                                    <span th:text="${#dates.format(#dates.create(rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.year, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.monthValue, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.dayOfMonth), 'dd MMMM yyyy')}"></span>
+                                </div>
                             </div>
                         </div>
+                        
                         <br>
                         <br><br>
                         <div class="row">
@@ -96,14 +108,28 @@
                             </tbody>
                         </table>  
                         <br><br>
-                        <h6 style="text-align: left;"><b> Ubah Status Rencana Pengadaan </b></h6>
-                        <div class="d-flex justify-content-end">
-                            <input type="text" class="form-control" style="margin-right: 10px;" placeholder="Tambahkan komentar...">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-md btn-success">Setujui</button>
-                                <button type="button" class="btn btn-md btn-danger">Batalkan</button>
+
+                        <div th:switch="${rencana.logRencana[rencana.logRencana.size() - 1].status}">
+                            <div th:case="'dibuat'">
+                                <h6 style="text-align: left;"><b> Ubah Status Rencana Pengadaan </b></h6>
+                                <form id="statusForm" th:action="@{'/rencana/detail/' + ${rencana.idRencana}}" th:object="${statusDTO}" method="POST">
+                                    <div class="d-flex justify-content-end">
+                                        <input type="text" th:field="*{feedback}" class="form-control" style="margin-right: 10px;" placeholder="Tambahkan komentar..." required>
+                                        <div class="btn-group">
+                                            <button type="submit" name="setujui" class="btn btn-md btn-success">Setujui</button>
+                                            <button type="submit" name="batalkan" class="btn btn-md btn-danger">Batalkan</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div th:case="*">
+                                <h6 style="text-align: left;"><b> Komentar Pengubahan Status </b></h6>
+                                <div class="d-flex justify-content-end">
+                                    <input type="text" class="form-control" th:value="${rencana.logRencana[rencana.logRencana.size() - 1].feedback}" readonly>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                     <br>
                 </div>
@@ -145,9 +171,7 @@
                 "info": false, 
                 "searching": false 
             });
-        });
 
-        $(document).ready(function() {
             $('#deleteButton').click(function() {
                 $('#confirmationModal').modal('show');
             });
@@ -163,6 +187,38 @@
 
             $('#confirmationModal').on('click', '.close', function() {
                 $('#confirmationModal').modal('hide');
+            });
+
+            $('#statusForm button[type="submit"]').click(function(event) {
+                event.preventDefault();
+
+                var feedback = $('#statusForm input[name="feedback"]').val();
+                if (feedback.trim() === '') {
+                    alert('Komentar wajib diisi.');
+                    return;
+                }
+
+                var id = [[${rencana.idRencana}]];
+                console.log("idRencana:", id);
+
+                var formData = $(this).closest('form').serialize();
+                
+                if ($(this).attr('name') === 'setujui') {
+                    formData += '&setujui=1'; 
+                } else if ($(this).attr('name') === 'batalkan') {
+                    formData += '&batalkan=1'; 
+                }
+                
+                $.post("/rencana/detail/" + id, formData, function(data) {
+                    if (data.startsWith("Status rencana berhasil diubah menjadi disetujui")) {
+                        alert('Status berhasil diubah menjadi disetujui.');
+                    } else if (data.startsWith("Status rencana berhasil diubah menjadi dibatalkan")) {
+                        alert('Status berhasil diubah menjadi dibatalkan.');
+                    } else {
+                        alert('Terjadi kesalahan');
+                    }
+                    window.location.reload();
+                });
             });
         });
     </script>

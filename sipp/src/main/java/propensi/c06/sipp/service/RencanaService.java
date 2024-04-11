@@ -12,4 +12,6 @@ public interface RencanaService {
     Rencana saveRencana(CreateRencanaRequestDTO rencanaDTO);
 
     void deleteRencana(Rencana rencana);
+
+    void ubahStatusRencana(Rencana rencana, String status, String feedback);
 }

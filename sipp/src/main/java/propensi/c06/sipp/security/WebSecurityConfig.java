@@ -57,8 +57,8 @@ public class WebSecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/user")).hasAuthority("Admin")
                         .requestMatchers(new AntPathRequestMatcher("/user/**")).hasAuthority("Admin")
                         .requestMatchers(new AntPathRequestMatcher("/dashboard")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")
-                        .requestMatchers(new AntPathRequestMatcher("/api/rencana/view-all")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")  // Menambahkan izin untuk endpoint kalender
-                        .requestMatchers(new AntPathRequestMatcher("/rencana/detail/**")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")  // Menambahkan izin untuk endpoint kalender
+                        .requestMatchers(new AntPathRequestMatcher("/api/rencana/view-all")).hasAnyAuthority("Manajer", "Operasional", "Keuangan") 
+                        .requestMatchers(new AntPathRequestMatcher("/rencana/detail/**")).hasAnyAuthority("Manajer", "Operasional", "Keuangan") 
                         .requestMatchers(new AntPathRequestMatcher("/rencana/")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")
                         .requestMatchers(new AntPathRequestMatcher("/rencana/create")).hasAnyAuthority("Manajer", "Operasional")
                         .requestMatchers(new AntPathRequestMatcher("/barang/detail/**")).hasAnyAuthority("Manajer", "Operasional")

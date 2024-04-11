@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,12 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import jakarta.validation.Valid;
 import propensi.c06.sipp.dto.request.CreateRencanaRequestDTO;
+import propensi.c06.sipp.dto.request.UpdateStatusRencanaRequestDTO;
 import propensi.c06.sipp.model.Rencana;
 import propensi.c06.sipp.service.BarangService;
 import propensi.c06.sipp.service.RencanaService;
@@ -48,11 +50,12 @@ public class RencanaController {
         }
     }
 
-    @GetMapping(value = "/{id}")
-    public String detailRencana(@PathVariable(value = "id") Long id, Model model) {
+    @GetMapping(value = "/detail/{id}")
+    public String detailRencana(@PathVariable(value = "id") Long id, Model model, @ModelAttribute UpdateStatusRencanaRequestDTO statusDTO) {
         Rencana rencana = rencanaService.getRencanaById(id);
         model.addAttribute("rencana", rencana);
         if (userService.getCurrentUserRole().equalsIgnoreCase("manajer")) {
+            model.addAttribute("statusDTO", statusDTO);
             return "view-detail-rencana-manajer";
         } else if (userService.getCurrentUserRole().equalsIgnoreCase("keuangan")) {
             return "view-detail-rencana-keuangan";
@@ -65,9 +68,36 @@ public class RencanaController {
     public String deleteRencana(@PathVariable(value = "id") Long id, RedirectAttributes redirectAttributes) {
         Rencana rencana = rencanaService.getRencanaById(id);
         rencanaService.deleteRencana(rencana);
-
         redirectAttributes.addFlashAttribute("deleteSuccessMessage", "Rencana pengadaan telah berhasil dihapus.");
         return "redirect:/rencana/";
+    }
+
+    @PostMapping(value = "/detail/{id}", params = {"setujui"})
+    public ResponseEntity<String> setujuiRencana( 
+        @PathVariable("id") Long id, 
+        @ModelAttribute UpdateStatusRencanaRequestDTO statusDTO
+    ) {
+        Rencana rencana = rencanaService.getRencanaById(id);
+        if (rencana != null) {
+            rencanaService.ubahStatusRencana(rencana, "disetujui", statusDTO.getFeedback());
+            return ResponseEntity.ok("Status rencana berhasil diubah menjadi disetujui");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping(value = "/detail/{id}", params = {"batalkan"})
+    public ResponseEntity<String> batalkanRencana(
+        @PathVariable("id") Long id,
+        @ModelAttribute UpdateStatusRencanaRequestDTO statusDTO
+    ) {
+        Rencana rencana = rencanaService.getRencanaById(id);
+        if (rencana != null) {
+            rencanaService.ubahStatusRencana(rencana, "dibatalkan", statusDTO.getFeedback());
+            return ResponseEntity.ok("Status rencana berhasil diubah menjadi dibatalkan");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/create")
