@@ -3,6 +3,7 @@ package propensi.c06.sipp.dto;
 import org.mapstruct.Mapper;
 
 import propensi.c06.sipp.dto.request.CreateTambahBarangRequestDTO;
+import propensi.c06.sipp.dto.request.UpdateBarangRequestDTO;
 import propensi.c06.sipp.dto.response.ReadBarangResponseDTO;
 import propensi.c06.sipp.model.Barang;
 
@@ -10,6 +11,8 @@ import propensi.c06.sipp.model.Barang;
 public interface BarangMapper {
     Barang createTambahBarangRequestDTO(CreateTambahBarangRequestDTO createTambahBarangRequestDTO);
 
-    // ReadBarangResponseDTO barangToReadBarangResponseDTO(Barang barang);
+    UpdateBarangRequestDTO barangToUpdateBarangRequestDTO(Barang barang);
+
+    Barang updateBarangRequestDTOToBarang(UpdateBarangRequestDTO updateBarangRequestDTO);
 
 }
