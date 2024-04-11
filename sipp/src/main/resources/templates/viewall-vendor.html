@@ -24,11 +24,11 @@
                             <thead style="background-color: #ffc023">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Code Vendor</th>
-                                <th scope="col">Vendor Name</th>
+                                <th scope="col">Kode Vendor</th>
+                                <th scope="col">Nama Vendor</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Phone Number</th>
-                                <th scope="col">Actions</th>
+                                <th scope="col">Nomor Handphone</th>
+                                <th scope="col">Aksi</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -39,7 +39,7 @@
                                 <td th:text="${vendor.emailVendor}"></td>
                                 <td th:text="${vendor.nomorHandphoneVendor}"></td>
                                 <td>
-                                    <a class="btn btn-sm btn-secondary" th:href="@{/vendor/{kodeVendor}(kodeVendor=${vendor.kodeVendor})}">Details</a>
+                                    <a class="btn btn-sm btn-secondary" th:href="@{/vendor/{kodeVendor}(kodeVendor=${vendor.kodeVendor})}">Detail</a>
                                 </td>
                             </tr>
                             </tbody>

@@ -7,87 +7,96 @@
     <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
   </head>
   <body>
-    <div class="container py-lg-5">
-      <div class="card mx-lg-5">
-        <form th:action="@{/rencana/create}" th:object="${rencanaDTO}" method="post">
-          <div class="card-header text-center p-3">
-            <h2>
-              Add Schedule
-            </h2>
-            <input class="form-control" type="date" required="required" th:field="*{expectedDate}" /> 
-          </div>
-            <div class="card-body">
-            <table class="table table-borderless">
-              <tbody>
-                  <tr>
-                      <td><b>Procurement Name</b></td>
-                      <td><input class="form-control" type="text" required="required" th:field="*{namaRencana}" /></td>
-                  </tr>
-                  <tr>
-                      <td><b>Vendor Name</b></td>
-                      <td><table class="table">
-                        <tbody>
+    <div class="container-fluid">
+      <div class="row">
+          <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+          <div class="col">
+  
+            <div class="container py-lg-5">
+              <div class="card mx-lg-5">
+                <form th:action="@{/rencana/create}" th:object="${rencanaDTO}" method="post">
+                  <div class="card-header text-center p-3">
+                    <h2>
+                      Add Schedule
+                    </h2>
+                    <input class="form-control" type="date" required="required" th:field="*{expectedDate}" /> 
+                  </div>
+                    <div class="card-body">
+                    <table class="table table-borderless">
+                      <tbody>
+                          <tr>
+                              <td><b>Procurement Name</b></td>
+                              <td><input class="form-control" type="text" required="required" th:field="*{namaRencana}" /></td>
+                          </tr>
+                          <tr>
+                              <td><b>Vendor Name</b></td>
+                              <td><table class="table">
+                                <tbody>
+                                <tr>
+                                  <select class="form-control" name="kodeVendor" id="kodeVendor" th:field="*{vendor.kodeVendor}">
+                                    <option th:each="vendor: ${listVendorExisted}"
+                                            th:value="${vendor.kodeVendor}" th:text="${vendor.namaVendor}"></option>
+                                  </select>
+                                </tr>
+                                </tbody>
+                              </table></td>
+                          </tr>
+                      </tbody>
+                  </table>
+            
+                    <b> Procurement Items</b>
+                    <br> <br>
+                    <table class="table table-bordered text-center">
+            
+                      <thead class="table-dark">
                         <tr>
-                          <select class="form-control" name="kodeVendor" id="kodeVendor" th:field="*{vendor.kodeVendor}">
-                            <option th:each="vendor: ${listVendorExisted}"
-                                    th:value="${vendor.kodeVendor}" th:text="${vendor.namaVendor}"></option>
-                          </select>
+                          <th scope="col">#</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Quantity</th>
+                          <th scope="col">Action</th>
                         </tr>
-                        </tbody>
-                      </table></td>
-                  </tr>
-              </tbody>
-          </table>
-    
-            <b> Procurement Items</b>
-            <br> <br>
-            <table class="table table-bordered text-center">
-    
-              <thead class="table-dark">
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Quantity</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-    
-              <tbody id="container">
-                <tr th:each="barang, iterationStatus : *{listBarangRencana}">
-                    <td th:text="${iterationStatus.count}">
-                    </td>
-                    <td>
-                        <select
-                            class="form-control gap-2" th:field="*{listBarangRencana[__${iterationStatus.index}__].barang}">
-                            <div th:each="barangExisting : ${listBarangExisted}">
-                                <option th:value="${barangExisting.kodeBarang}" th:text="${barangExisting.namaBarang}">
-                                </option>
-                            </div>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number" 
-                            class="form-control" min="1" placeholder="Jumlah Barang" th:field="*{listBarangRencana[__${iterationStatus.index}__].kuantitas}" required="required" />
-                    </td>
-                    <td>
-                        <button th:value="${iterationStatus.index}" class="btn btn-danger" type="submit"
-                            name="deleteRow">
-                            Hapus
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-
-          </table>
-          
-          <div class="text-right">
-            <button class="my-4 ml-2 btn btn-primary" name="addRow">+ Add Item</button>
+                      </thead>
+            
+                      <tbody id="container">
+                        <tr th:each="barang, iterationStatus : *{listBarangRencana}">
+                            <td th:text="${iterationStatus.count}">
+                            </td>
+                            <td>
+                                <select
+                                    class="form-control gap-2" th:field="*{listBarangRencana[__${iterationStatus.index}__].barang}">
+                                    <div th:each="barangExisting : ${listBarangExisted}">
+                                        <option th:value="${barangExisting.kodeBarang}" th:text="${barangExisting.namaBarang}">
+                                        </option>
+                                    </div>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="number" 
+                                    class="form-control" min="1" placeholder="Jumlah Barang" th:field="*{listBarangRencana[__${iterationStatus.index}__].kuantitas}" required="required" />
+                            </td>
+                            <td>
+                                <button th:value="${iterationStatus.index}" class="btn btn-danger" type="submit"
+                                    name="deleteRow">
+                                    Hapus
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+        
+                  </table>
+                  
+                  <div class="text-right">
+                    <button class="my-4 ml-2 btn btn-primary" name="addRow">+ Add Item</button>
+                  </div>
+            
+                  <button type="submit">Submit</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+  
           </div>
-    
-          <button type="submit">Submit</button>
-          </form>
-        </div>
       </div>
-    </div>
+  </div>
   </body>
 </html>

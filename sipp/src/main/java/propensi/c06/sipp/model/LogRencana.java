@@ -31,6 +31,9 @@ public class LogRencana {
     @Column(name = "status", nullable =false)
     private String status; // approved, canceled, created, procured, deleted
 
+    @Column(name = "feedback")
+    private String feedback;
+
     @NotNull
     @Column(name = "tanggalWaktu", nullable = false)
     private LocalDateTime tanggalWaktu;
