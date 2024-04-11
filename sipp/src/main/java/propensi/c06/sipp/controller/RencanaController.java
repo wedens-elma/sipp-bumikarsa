@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -22,6 +21,7 @@ import propensi.c06.sipp.dto.request.CreateRencanaRequestDTO;
 import propensi.c06.sipp.dto.request.UpdateStatusRencanaRequestDTO;
 import propensi.c06.sipp.model.Rencana;
 import propensi.c06.sipp.service.BarangService;
+import propensi.c06.sipp.service.LogRencanaService;
 import propensi.c06.sipp.service.RencanaService;
 import propensi.c06.sipp.service.UserService;
 import propensi.c06.sipp.service.VendorService;
@@ -31,6 +31,9 @@ import propensi.c06.sipp.service.VendorService;
 public class RencanaController {
     @Autowired
     private RencanaService rencanaService;
+
+    @Autowired
+    private LogRencanaService logRencanaService;
 
     @Autowired
     private BarangService barangService;
@@ -43,6 +46,7 @@ public class RencanaController {
 
     @GetMapping("/")
     public String daftarRencana(Model model) {
+        model.addAttribute("listLogRencana", logRencanaService.getAllLogRencana());
         if (userService.getCurrentUserRole().equalsIgnoreCase("keuangan")) {
             return "view-daftar-rencana-keuangan";
         } else {
