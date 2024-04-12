@@ -10,7 +10,7 @@ import propensi.c06.sipp.model.Vendor;
 public interface VendorService {
     List<Vendor> getAllVendors();
 
-    Vendor updateVendor(UpdateVendorRequestDTO vendorDTO);
+    Vendor updateVendor(UpdateVendorRequestDTO dto);
 
     Vendor addVendor(CreateVendorRequestDTO vendorDto);
     Vendor getVendorDetail(String kodeVendor);

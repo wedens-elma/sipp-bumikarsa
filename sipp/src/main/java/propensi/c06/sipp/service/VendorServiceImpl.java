@@ -2,7 +2,9 @@ package propensi.c06.sipp.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import propensi.c06.sipp.dto.request.CreateVendorRequestDTO;
 import propensi.c06.sipp.dto.request.UpdateVendorRequestDTO;
 import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.model.Vendor;
+import propensi.c06.sipp.repository.BarangDb;
 import propensi.c06.sipp.repository.VendorDb;
 
 @Service
@@ -23,19 +26,18 @@ public class VendorServiceImpl implements VendorService {
 
     @Autowired
     private  VendorDb vendorDb;
+
     @Autowired
     private VendorMapper vendorMapper;
 
     @Autowired
     private BarangService barangService;
+
+    @Autowired
+    private BarangDb barangDb;
     @Override
     public List<Vendor> getAllVendors() {
         return vendorDb.findAllActiveVendors();
-    }
-
-    @Override
-    public Vendor updateVendor(UpdateVendorRequestDTO vendorDTO) {
-        return null;
     }
 
 
@@ -53,6 +55,60 @@ public class VendorServiceImpl implements VendorService {
 
         return vendor;
     }
+    public Vendor updateVendor(UpdateVendorRequestDTO dto) {
+        Vendor existingVendor = vendorDb.findByKodeVendor(dto.getKodeVendor())
+                .orElseThrow(() -> new IllegalArgumentException("Vendor not found with kodeVendor: " + dto.getKodeVendor()));
+
+        existingVendor.setEmailVendor(dto.getEmailVendor());
+        existingVendor.setNomorHandphoneVendor(dto.getNomorHandphoneVendor());
+
+        updateVendorBarangList(existingVendor, dto.getBarangList());
+        System.out.println(existingVendor);
+        return vendorDb.save(existingVendor);
+    }
+
+    private void updateVendorBarangList(Vendor vendor, List<String> newBarangListCodes) {
+        List<Barang> updatedBarangList = newBarangListCodes.stream()
+                .map(barangDb::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+
+        vendor.getBarangList().clear();
+        vendor.getBarangList().addAll(updatedBarangList);
+    }
+
+
+
+
+
+//    public Vendor updateVendor(UpdateVendorRequestDTO vendorDTO) {
+//        Vendor existingVendor = vendorDb.findByKodeVendor(vendorDTO.getKodeVendor())
+//                .orElseThrow(() -> new IllegalStateException("Vendor not found with kodeVendor: " + vendorDTO.getKodeVendor()));
+//
+//        Vendor vendorFromDto = vendorMapper.updateVendorRequestDTOToVendor(vendorDTO);
+//        existingVendor.setEmailVendor(vendorFromDto.getEmailVendor());
+//        existingVendor.setNomorHandphoneVendor(vendorFromDto.getNomorHandphoneVendor());
+//
+//        if (vendorDTO.getAddBarang() != null && !vendorDTO.getAddBarang().isEmpty()) {
+//            List<Barang> barangToAdd = vendorDTO.getAddBarang().stream()
+//                    .map(barangService::getBarangById)
+//                    .filter(Objects::nonNull)
+//                    .collect(Collectors.toList());
+//            existingVendor.getBarangList().addAll(barangToAdd);
+//        }
+//
+//        if (vendorDTO.getRemoveBarang() != null && !vendorDTO.getRemoveBarang().isEmpty()) {
+//            List<Barang> barangToRemove = existingVendor.getBarangList().stream()
+//                    .filter(barang -> vendorDTO.getRemoveBarang().contains(barang.getKodeBarang()))
+//                    .collect(Collectors.toList());
+//            existingVendor.getBarangList().removeAll(barangToRemove);
+//        }
+//
+//        return vendorDb.save(existingVendor);
+//    }
+//
+
 
 //    public Vendor updateVendor(Vendor vendorFromDto) {
 //        Vendor existingVendor = vendorDb.findByKodeVendor(vendorFromDto.getKodeVendor()).orElse(null);

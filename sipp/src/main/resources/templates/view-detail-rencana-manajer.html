@@ -75,6 +75,10 @@
                                     <p class="mb-0 mr-3"><b> Tanggal Dibatalkan </b></p>
                                     <span th:text="${#dates.format(#dates.create(rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.year, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.monthValue, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.dayOfMonth), 'dd MMMM yyyy')}"></span>
                                 </div>
+                                <div class="d-flex align-items-center" th:case="'direalisasikan'">
+                                    <p class="mb-0 mr-3"><b> Tanggal Direalisasikan </b></p>
+                                    <span th:text="${#dates.format(#dates.create(rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.year, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.monthValue, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.dayOfMonth), 'dd MMMM yyyy')}"></span>
+                                </div>
                             </div>
                         </div>
                         
@@ -133,9 +137,11 @@
                     </div>
                     <br>
                 </div>
+                
                 <div class="d-flex justify-content-end mt-3" th:if="${rencana.logRencana.size() > 0}">
                     <div class="m-3">
-                        <a id="deleteButton" type="button" class="btn btn-md btn-danger" href="#" th:if="${rencana.logRencana[rencana.logRencana.size() - 1].status != 'disetujui'}">Hapus Rencana</a>
+                        <a id="buatPengadaanButton" type="button" class="btn btn-md btn-primary" th:href="@{'/pengadaan/tambah?idRencana=' + ${rencana.idRencana}}" th:if="${rencana.logRencana[rencana.logRencana.size() - 1].status == 'disetujui'}">Buat Pengadaan</a>
+                        <a id="deleteButton" type="button" class="btn btn-md btn-danger" href="#" th:if="${rencana.logRencana[rencana.logRencana.size() - 1].status != 'disetujui' and rencana.logRencana[rencana.logRencana.size() - 1].status != 'direalisasikan'}">Hapus Rencana</a>
                     </div>
                 </div>
 

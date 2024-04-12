@@ -4,10 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import propensi.c06.sipp.dto.BarangMapper;
 import propensi.c06.sipp.dto.VendorMapper;
@@ -71,37 +68,39 @@ public class VendorController {
         return "view-detail-vendor";
     }
     @GetMapping("/vendor/{kodeVendor}/update")
-    public String formUpdateVendor(@PathVariable("kodeVendor") String kodeVendor, Model model) {
+    public String formUpdateVendor(@PathVariable String kodeVendor, Model model, RedirectAttributes redirectAttributes) {
         Vendor vendor = vendorService.getVendorDetail(kodeVendor);
         if (vendor == null) {
-            model.addAttribute("errorMessage", "Vendor not found.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Vendor not found.");
             return "redirect:/vendor";
         }
-        UpdateVendorRequestDTO vendorDTO = new UpdateVendorRequestDTO();
+        UpdateVendorRequestDTO vendorDTO = vendorMapper.vendorToUpdateVendorRequestDTO(vendor);
         model.addAttribute("vendorDTO", vendorDTO);
         model.addAttribute("allBarang", barangService.getAllBarang());
-        model.addAttribute("barangList", vendor.getBarangList());
         return "form-update-vendor";
     }
 
-    @PostMapping("/vendor/update")
-    public String updateVendor(@Valid @ModelAttribute("vendorDTO") UpdateVendorRequestDTO vendorDTO, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+    @PostMapping("/vendor/{kodeVendor}/update")
+    public String updateVendor(@PathVariable String kodeVendor, @Valid @ModelAttribute("vendorDTO") UpdateVendorRequestDTO vendorDTO, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("vendorDTO", vendorDTO);
             model.addAttribute("allBarang", barangService.getAllBarang());
+            model.addAttribute("errorMessage", "Please correct the form fields.");
             return "form-update-vendor";
         }
 
         try {
             Vendor updatedVendor = vendorService.updateVendor(vendorDTO);
+            System.out.println(updatedVendor);
             redirectAttributes.addFlashAttribute("successMessage", "Vendor '" + updatedVendor.getNamaVendor() + "' successfully updated.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Error updating vendor: " + e.getMessage());
-            return "redirect:/vendor/update";
+            return "redirect:/vendor/" + kodeVendor + "/update";
         }
 
         return "redirect:/vendor";
     }
+
+
 
     @GetMapping("/vendor/{kodeVendor}/delete")
     public String softDeleteVendor(@PathVariable("kodeVendor") String kodeVendor, Model model) {
