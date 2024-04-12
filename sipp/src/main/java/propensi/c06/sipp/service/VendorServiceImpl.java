@@ -55,28 +55,32 @@ public class VendorServiceImpl implements VendorService {
 
         return vendor;
     }
-    public Vendor updateVendor(UpdateVendorRequestDTO dto) {
-        Vendor existingVendor = vendorDb.findByKodeVendor(dto.getKodeVendor())
-                .orElseThrow(() -> new IllegalArgumentException("Vendor not found with kodeVendor: " + dto.getKodeVendor()));
 
-        existingVendor.setEmailVendor(dto.getEmailVendor());
-        existingVendor.setNomorHandphoneVendor(dto.getNomorHandphoneVendor());
+        public Vendor updateVendor(UpdateVendorRequestDTO dto) throws IllegalArgumentException {
+            Vendor existingVendor = vendorDb.findByKodeVendor(dto.getKodeVendor())
+                    .orElseThrow(() -> new IllegalArgumentException("Vendor not found with kodeVendor: " + dto.getKodeVendor()));
 
-        updateVendorBarangList(existingVendor, dto.getBarangList());
-        System.out.println(existingVendor);
-        return vendorDb.save(existingVendor);
-    }
+            boolean exists = vendorDb.existsByEmailOrPhoneExcludingVendor(dto.getEmailVendor(), dto.getNomorHandphoneVendor(), dto.getKodeVendor());
+            if (exists) {
+                throw new IllegalArgumentException("Another active vendor with the same email or phone number already exists.");
+            }
 
-    private void updateVendorBarangList(Vendor vendor, List<String> newBarangListCodes) {
-        List<Barang> updatedBarangList = newBarangListCodes.stream()
-                .map(barangDb::findById)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
+            existingVendor.setEmailVendor(dto.getEmailVendor());
+            existingVendor.setNomorHandphoneVendor(dto.getNomorHandphoneVendor());
+            updateVendorBarangList(existingVendor, dto.getBarangList());
 
-        vendor.getBarangList().clear();
-        vendor.getBarangList().addAll(updatedBarangList);
-    }
+            return vendorDb.save(existingVendor);
+        }
+
+        private void updateVendorBarangList(Vendor vendor, List<String> newBarangListCodes) {
+            List<Barang> updatedBarangList = newBarangListCodes.stream()
+                    .map(barangDb::findById)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toList());
+            vendor.getBarangList().clear();
+            vendor.getBarangList().addAll(updatedBarangList);
+        }
 
 
 

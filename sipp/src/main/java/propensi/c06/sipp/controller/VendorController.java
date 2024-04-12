@@ -90,10 +90,9 @@ public class VendorController {
 
         try {
             Vendor updatedVendor = vendorService.updateVendor(vendorDTO);
-            System.out.println(updatedVendor);
             redirectAttributes.addFlashAttribute("successMessage", "Vendor '" + updatedVendor.getNamaVendor() + "' successfully updated.");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Error updating vendor: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/vendor/" + kodeVendor + "/update";
         }
 

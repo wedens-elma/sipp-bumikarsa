@@ -27,5 +27,7 @@ public interface VendorDb extends JpaRepository<Vendor, String> {
     @Query("SELECT v FROM Vendor v WHERE v.isDeleted = false")
     List<Vendor> findAllActiveVendors();
 
+    @Query("SELECT COUNT(v) > 0 FROM Vendor v WHERE (v.emailVendor = :email OR v.nomorHandphoneVendor = :phone) AND v.kodeVendor != :kodeVendor AND v.isDeleted = false")
+    boolean existsByEmailOrPhoneExcludingVendor(@Param("email") String email, @Param("phone") String phone, @Param("kodeVendor") String kodeVendor);
 }
 
