@@ -84,18 +84,23 @@
                                     <!-- <th scope="col">Jumlah Barang</th> -->
                                     <th scope="col">Status</th>
                                     <!-- <th scope="col">Tanggal Rencana</th> -->
-                                    <th scope="col">Terakhir Diubah</th>
+                                    <th scope="col">Pengubah</th>
+                                    <th scope="col">Waktu Diubah</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr th:each="log, iterStat : ${listLogRencana}">
                                     <td th:text="${iterStat.index + 1}"></td>
-                                    <td style="text-transform: capitalize;" th:text="${log.rencana.namaRencana}"></td>
+                                    <td style="text-transform: capitalize;">
+                                        <a th:if="${log.rencana.logRencana[log.rencana.logRencana.size() - 1].status != 'dihapus'}" th:href="'/rencana/detail/' + ${log.rencana.idRencana}" th:text="${log.rencana.namaRencana}"></a>
+                                        <span th:if="${log.rencana.logRencana[log.rencana.logRencana.size() - 1].status == 'dihapus'}" th:text="${log.rencana.namaRencana}"></span>
+                                    </td>                                        
                                     <td style="text-transform: capitalize;" th:text="${log.rencana.vendor.namaVendor}"></td>
                                     <!-- <td style="text-transform: capitalize;" th:text="${log.rencana.listBarangRencana.size()}"></td> -->
                                     <td style="text-transform: capitalize;" th:text="${log.status}"></td>
                                     <!-- <td th:text="${#dates.format(log.rencana.expectedDate, 'dd/MM/yyyy')}"></td> -->
-                                    <td style="text-transform: capitalize;" th:text="${log.changedBy + ', ' + #dates.format(#dates.create(log.tanggalWaktu.year, log.tanggalWaktu.monthValue, log.tanggalWaktu.dayOfMonth), 'dd/MM/yyyy') + ', ' + #dates.format(#dates.create(log.tanggalWaktu.year, log.tanggalWaktu.monthValue, log.tanggalWaktu.dayOfMonth, log.tanggalWaktu.hour, log.tanggalWaktu.minute, log.tanggalWaktu.second), 'HH:mm')}"></td>
+                                    <td style="text-transform: capitalize;" th:text="${log.changedBy}"></td>
+                                    <td style="text-transform: capitalize;" th:text="${#dates.format(#dates.create(log.tanggalWaktu.year, log.tanggalWaktu.monthValue, log.tanggalWaktu.dayOfMonth), 'dd/MM/yyyy') + ', ' + #dates.format(#dates.create(log.tanggalWaktu.year, log.tanggalWaktu.monthValue, log.tanggalWaktu.dayOfMonth, log.tanggalWaktu.hour, log.tanggalWaktu.minute, log.tanggalWaktu.second), 'HH:mm')}"></td>
                                 </tr>
                             </tbody>
                         </table>
