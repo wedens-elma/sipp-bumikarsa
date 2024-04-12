@@ -172,6 +172,28 @@
             width: 100vw;
         }
 
+        .navbar-nav .dropdown {
+            margin: 10px;
+            padding: 10px;
+        }
+<!--        .navbar .dropdown-menu {-->
+<!--            left: 40%; /* Geser menu dropdown ke tengah */-->
+
+<!--            width: 50px;-->
+<!--        }-->
+        .dropdown-menu {
+            right: auto; /* Reset posisi dropdown-menu ke kiri */
+            left: 0; /* Letakkan dropdown-menu di sebelah kiri */
+            transform: translateX(0); /* Reset transformasi horizontal */
+            min-width: auto; /* Hilangkan batasan lebar minimum */
+        }
+
+
+
+
+
+
+
         @media (min-width:768px) {
             .content {
                 max-width: auto;
@@ -320,15 +342,16 @@
             <div class="navbar-collapse navbar" id="navbar-dropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0 dropdown-toggle">
+                        <a href="#" class="nav-icon pe-md-0 dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user" style="font-size: 1.5em;"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end">
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <a href="#" class="dropdown-item">Profile</a>
-                            <a href="#" class="dropdown-item">Setting</a>
+                            <a href="#" class="dropdown-item">Settings</a>
                             <a href="#" class="dropdown-item">Logout</a>
                         </div>
                     </li>
+
                 </ul>
             </div>
         </nav>
@@ -341,8 +364,8 @@
 
 
 
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
     const sidebarToggle = document.querySelector("#sidebar-toggle");
     sidebarToggle.addEventListener("click",function(){
@@ -358,6 +381,7 @@
             }
         });
     });
+
 
 
 
