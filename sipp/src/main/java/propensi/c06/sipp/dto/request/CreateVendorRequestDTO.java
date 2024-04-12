@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateVendorRequestDTO {
     private String namaVendor;
-    private String alamatVendor;
     private String emailVendor;
     private String nomorHandphoneVendor;
     private List<String> vendorBarang;

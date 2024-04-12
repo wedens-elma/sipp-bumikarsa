@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UpdateStatusRencanaRequestDTO {
+public class UpdateStatusRencanaRequestDTO  {
     private String feedback;
 }

@@ -16,5 +16,9 @@ public interface VendorDb extends JpaRepository<Vendor, String> {
 
     @Query("SELECT v.kodeVendor FROM Vendor v WHERE v.kodeVendor LIKE CONCAT(:code, '%') ORDER BY v.kodeVendor DESC")
     List<String> findLastKodeVendorByCode(@Param("code") String code);
+
+    @Query("SELECT v FROM Vendor v WHERE v.namaVendor = :namaVendor OR v.emailVendor = :emailVendor")
+    Optional<Vendor> findByNamaVendorOrEmailVendor(@Param("namaVendor") String namaVendor, @Param("emailVendor") String emailVendor);
+
 }
 
