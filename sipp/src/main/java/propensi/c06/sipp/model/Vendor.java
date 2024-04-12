@@ -37,7 +37,7 @@ public class Vendor {
     private String nomorHandphoneVendor;
 
     @Column(name = "is_deleted")
-    private boolean is_deleted = Boolean.FALSE;
+    private Boolean isDeleted = false;
 
     @OneToMany(mappedBy = "vendor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Pengadaan> listPengadaan;
@@ -47,5 +47,6 @@ public class Vendor {
             joinColumns = @JoinColumn(name = "kode_vendor", referencedColumnName = "kodeVendor"),
             inverseJoinColumns = @JoinColumn(name = "kode_barang", referencedColumnName = "kodeBarang"))
     private List<Barang> barangList;
+
 
 }

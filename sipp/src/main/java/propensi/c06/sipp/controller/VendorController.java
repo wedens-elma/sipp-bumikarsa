@@ -77,24 +77,23 @@ public class VendorController {
             model.addAttribute("errorMessage", "Vendor not found.");
             return "redirect:/vendor";
         }
-        UpdateVendorRequestDTO vendorDTO = vendorMapper.vendorToUpdateVendorRequestDTO(vendor);
+        UpdateVendorRequestDTO vendorDTO = new UpdateVendorRequestDTO();
         model.addAttribute("vendorDTO", vendorDTO);
-        model.addAttribute("allBarang", barangService.getAllBarang()); // Assuming you're listing items for selection
+        model.addAttribute("allBarang", barangService.getAllBarang());
+        model.addAttribute("barangList", vendor.getBarangList());
         return "form-update-vendor";
     }
-
 
     @PostMapping("/vendor/update")
     public String updateVendor(@Valid @ModelAttribute("vendorDTO") UpdateVendorRequestDTO vendorDTO, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("vendorDTO", vendorDTO);
-            model.addAttribute("listBarang", barangService.getAllBarang());
+            model.addAttribute("allBarang", barangService.getAllBarang());
             return "form-update-vendor";
         }
 
         try {
-            Vendor vendorFromDto = vendorMapper.updateVendorRequestDTOToVendor(vendorDTO);
-            Vendor updatedVendor = vendorService.updateVendor(vendorFromDto);
+            Vendor updatedVendor = vendorService.updateVendor(vendorDTO);
             redirectAttributes.addFlashAttribute("successMessage", "Vendor '" + updatedVendor.getNamaVendor() + "' successfully updated.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Error updating vendor: " + e.getMessage());
@@ -102,6 +101,13 @@ public class VendorController {
         }
 
         return "redirect:/vendor";
+    }
+
+    @GetMapping("/vendor/{kodeVendor}/delete")
+    public String softDeleteVendor(@PathVariable("kodeVendor") String kodeVendor, Model model) {
+        vendorService.softDeleteVendor(kodeVendor);
+        model.addAttribute("kodeVendor", kodeVendor);
+        return "success-delete-vendor";
     }
 
 }

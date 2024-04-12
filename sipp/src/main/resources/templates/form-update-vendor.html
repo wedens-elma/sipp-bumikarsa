@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <title>Update Vendor Form</title>
+    <title>Update Vendor</title>
 </head>
 <body>
 <div class="container-fluid">
@@ -15,29 +15,36 @@
                 <div class="card m-4 p-4 shadow-lg bg-white rounded">
                     <div class="card-body">
                         <div class="justify-content-center">
-                            <h2 class="text-center"><b style="font-size:40px">Update Vendor Form</b></h2>
+                            <h2 class="text-center"><b style="font-size:40px">Update Vendor</b></h2>
                             <br>
                             <form th:action="@{/vendor/update}" th:object="${vendorDTO}" method="post" class="container" onsubmit="return validateForm()">
+                                <input class="form-control" type="hidden" th:field="*{kodeVendor}" />
                                 <div class="mb-3">
                                     <label for="email" class="form-label" style="font-size:24px"><b>Vendor Email</b><span style="color: red;">*</span></label>
-                                    <input type="email" class="form-control" id="email" th:field="*{emailVendor}" placeholder="Enter Vendor Email" required />
+                                    <input type="email" class="form-control" id="email" th:field="*{emailVendor}" placeholder="Enter vendor email" required />
                                 </div>
-
                                 <div class="mb-3">
                                     <label for="noTelp" class="form-label" style="font-size:24px"><b>Vendor Phone Number</b><span style="color: red;">*</span></label>
-                                    <input type="text" class="form-control" id="noTelp" th:field="*{nomorHandphoneVendor}" placeholder="Enter Vendor Phone Number" required />
+                                    <input type="text" class="form-control" id="noTelp" th:field="*{nomorHandphoneVendor}" placeholder="Enter vendor phone number" required />
                                 </div>
-
                                 <div class="mb-3">
-                                    <label for="barang" class="form-label" style="font-size:24px"><b>Select Barang</b></label>
-                                    <select multiple class="form-control" id="barang" th:field="*{vendorBarang}" required>
-                                        <option value="">Select Barang</option>
+                                    <label for="barangAdd" class="form-label" style="font-size:24px"><b>Select Barang to Add</b></label>
+                                    <select multiple class="form-control" id="barangAdd" name="addBarang">
+                                        <option value="">Select Barang to Add</option>
                                         <th:block th:each="barang : ${allBarang}">
                                             <option th:value="${barang.kodeBarang}" th:text="${barang.namaBarang}"></option>
                                         </th:block>
                                     </select>
                                 </div>
-
+                                <div class="mb-3">
+                                    <label for="barangRemove" class="form-label" style="font-size:24px"><b>Select Barang to Remove</b></label>
+                                    <select multiple class="form-control" id="barangRemove" name="removeBarang">
+                                        <option value="">Select Barang to Remove</option>
+                                        <th:block th:each="barang : ${vendorDTO.currentBarang}">
+                                            <option th:value="${barang.kodeBarang}" th:text="${barang.namaBarang}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
                                 <div class="d-flex justify-content-center">
                                     <a class="btn btn-danger btn-lg me-4 px-5" href="/vendor">Cancel</a>
                                     <button type="submit" class="btn btn-primary btn-lg px-5">Submit</button>
@@ -55,12 +62,10 @@
     function validateForm() {
         var phone = document.getElementById('noTelp').value;
         var phoneRegex = /^[0-9]+$/;
-
         if (!phoneRegex.test(phone) || phone.length < 10) {
             alert('Phone number must contain only numbers and be at least 10 digits long.');
             return false;
         }
-
         return true;
     }
 </script>

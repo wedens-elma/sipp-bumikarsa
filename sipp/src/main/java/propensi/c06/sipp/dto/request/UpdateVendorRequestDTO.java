@@ -3,7 +3,6 @@ package propensi.c06.sipp.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.validation.constraints.*;
 import propensi.c06.sipp.model.Barang;
 
 import java.util.List;
@@ -15,11 +14,13 @@ public class UpdateVendorRequestDTO extends CreateVendorRequestDTO {
     private String kodeVendor;
     private String emailVendor;
     private String nomorHandphoneVendor;
+    private List<String> addBarang;
+    private List<String> removeBarang;
+    private List<Barang> currentBarang;
 
-    private List<String> vendorBarang;
+    @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    @Data
     public static class VendorBarangDTO {
         private String namaBarang;
         private Barang barang;

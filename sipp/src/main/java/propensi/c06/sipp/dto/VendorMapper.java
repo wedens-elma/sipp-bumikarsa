@@ -5,7 +5,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import propensi.c06.sipp.dto.request.CreateVendorRequestDTO;
-import propensi.c06.sipp.dto.request.UpdateBarangRequestDTO;
 import propensi.c06.sipp.dto.request.UpdateVendorRequestDTO;
 import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.model.Vendor;

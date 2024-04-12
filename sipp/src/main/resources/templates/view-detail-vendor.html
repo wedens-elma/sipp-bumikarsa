@@ -69,8 +69,8 @@
                         </table>
                         <div class="mt-4 text-center">
                             <a href="/vendor" class="btn btn-secondary">Kembali ke Daftar</a>
-                            <!-- Update Vendor Button -->
                             <a th:href="@{/vendor/{kodeVendor}/update(kodeVendor=${vendor.kodeVendor})}" class="btn btn-primary">Update Vendor</a>
+                            <a class="btn btn-md btn-danger" th:href="@{/vendor/{kodeVendor}/delete(kodeVendor=${vendor.kodeVendor})}">Hapus Vendor</a>
                         </div>
                     </div>
                 </div>
