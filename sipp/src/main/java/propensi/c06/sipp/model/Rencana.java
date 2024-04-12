@@ -47,4 +47,7 @@ public class Rencana {
     @NotNull
     @Column(name = "isDeleted", nullable=false)
     private Boolean isDeleted = false;
+
+    @Column(name = "latestStatus")
+    private String latestStatus;
 }

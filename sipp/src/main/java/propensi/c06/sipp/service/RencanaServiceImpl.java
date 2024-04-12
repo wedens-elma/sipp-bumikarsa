@@ -57,6 +57,7 @@ public class RencanaServiceImpl implements RencanaService {
     @Override
     public void deleteRencana(Rencana rencana) {
         logRencanaService.createLogRencana(rencana, "dihapus", null);
+        rencana.setLatestStatus("dihapus");
         rencana.setIsDeleted(true);
         rencanaDb.save(rencana);
     }
@@ -64,6 +65,8 @@ public class RencanaServiceImpl implements RencanaService {
     @Override
     public void ubahStatusRencana(Rencana rencana, String status, String feedback) {
         logRencanaService.createLogRencana(rencana, status, feedback);
+        rencana.setLatestStatus(status);
+        rencanaDb.save(rencana);
     }
 
     @Override
@@ -76,6 +79,7 @@ public class RencanaServiceImpl implements RencanaService {
             rencana.setCreatedBy(userService.getCurrentUserName());
             rencana.setNamaRencana(rencanaDTO.getNamaRencana());
             rencana.setExpectedDate(LocalDate.parse(rencanaDTO.getExpectedDate()));
+            rencana.setLatestStatus("dibuat");
             rencanaDb.save(rencana);
 
             for (CreateRencanaRequestDTO.BarangRencanaDTO barangRencanaDTO : rencanaDTO.getListBarangRencana()) {

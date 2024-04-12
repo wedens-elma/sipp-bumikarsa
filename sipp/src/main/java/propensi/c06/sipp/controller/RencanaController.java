@@ -148,12 +148,11 @@ public class RencanaController {
             return "error-view";
         }
         Rencana rencana = rencanaService.saveRencana(rencanaDTO);
+        model.addAttribute("listLogRencana", logRencanaService.getAllLogRencana());
         if (rencana == null) {
             return "create-rencana-error-view";
         } else {
             return "view-daftar-rencana";
         }
     }
-
-
 }
