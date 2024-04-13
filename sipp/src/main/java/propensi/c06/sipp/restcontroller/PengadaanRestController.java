@@ -37,6 +37,7 @@ public class PengadaanRestController {
         if (data.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
+        System.out.println(data);
         return ResponseEntity.ok(data);
     }
 

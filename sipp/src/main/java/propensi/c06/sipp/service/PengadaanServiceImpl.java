@@ -136,23 +136,23 @@ public class PengadaanServiceImpl implements PengadaanService {
         pengadaanDb.save(pengadaan);
     }
 
-@Override
-public void updateStatusPengadaan(Pengadaan pengadaan) {
-    // Periksa apakah paymentStatus baru adalah 1
-    if (pengadaan.getShipmentStatus() == 1) {
-        List<PengadaanBarang> listPengadaanBarang = pengadaan.getListPengadaanBarang();
-        // Iterasi melalui setiap PengadaanBarang dalam daftar
-        for (PengadaanBarang pengadaanBarang : listPengadaanBarang) {
-            Barang barang = pengadaanBarang.getBarang();
-            int jumlahBarang = pengadaanBarang.getJumlahBarang();
-            // Tambahkan jumlah barang ke stok barang terkait
-            barang.setStokBarang(barang.getStokBarang() + jumlahBarang);
-            // Simpan perubahan pada barang
-            barangDb.save(barang);
+    @Override
+    public void updateStatusPengadaan(Pengadaan pengadaan) {
+        // Periksa apakah paymentStatus baru adalah 1
+        if (pengadaan.getShipmentStatus() == 1) {
+            List<PengadaanBarang> listPengadaanBarang = pengadaan.getListPengadaanBarang();
+            // Iterasi melalui setiap PengadaanBarang dalam daftar
+            for (PengadaanBarang pengadaanBarang : listPengadaanBarang) {
+                Barang barang = pengadaanBarang.getBarang();
+                int jumlahBarang = pengadaanBarang.getJumlahBarang();
+                // Tambahkan jumlah barang ke stok barang terkait
+                barang.setStokBarang(barang.getStokBarang() + jumlahBarang);
+                // Simpan perubahan pada barang
+                barangDb.save(barang);
+            }
         }
+        pengadaanDb.save(pengadaan);
     }
-    pengadaanDb.save(pengadaan);
-}
 
 
 
@@ -206,6 +206,7 @@ public void updateStatusPengadaan(Pengadaan pengadaan) {
 //        return expenditurePerYear;
 //    }
 
+    @Override
     public Map<String, Double> getTotalPengeluaranPertahun() {
         List<Pengadaan> allPengadaans = pengadaanDb.findAll();
         Map<String, Double> expenditurePerYear = new HashMap<>();
@@ -216,10 +217,14 @@ public void updateStatusPengadaan(Pengadaan pengadaan) {
                 Double total = pengadaan.getListPengadaanBarang().stream()
                         .mapToDouble(pb -> pb.getHargaBarang() * pb.getJumlahBarang())
                         .sum();
-                expenditurePerYear.merge(year, total, Double::sum);
+                if (total >= 0) {
+                    expenditurePerYear.merge(year, total, Double::sum);
+                } else {
+                    expenditurePerYear.merge(year, 0.0, Double::sum);
+                }
             }
         }
-
+        System.out.println(expenditurePerYear);
         return expenditurePerYear;
     }
 
