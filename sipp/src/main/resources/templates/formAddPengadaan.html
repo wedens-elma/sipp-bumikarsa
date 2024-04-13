@@ -32,6 +32,7 @@
                           type="text"
                           required="required"
                           th:field="*{namaPengadaan}"
+                          th:value="*{namaPengadaan}"
                         />
                         <br><br>
 
@@ -53,6 +54,7 @@
                                 name="kodeVendor"
                                 id="kodeVendor"
                                 th:field="*{vendor.kodeVendor}"
+                                th:value="*{vendor.kodeVendor}"
                               >
                                 <option
                                   th:each="vendor: ${listVendor}"

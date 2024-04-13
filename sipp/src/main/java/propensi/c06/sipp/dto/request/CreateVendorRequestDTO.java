@@ -1,5 +1,6 @@
 package propensi.c06.sipp.dto.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.util.List;
 public class CreateVendorRequestDTO {
     private String namaVendor;
     private String alamatVendor;
+    @Email
     private String emailVendor;
     private String nomorHandphoneVendor;
     private List<String> vendorBarang;
