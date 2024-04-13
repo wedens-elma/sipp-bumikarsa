@@ -12,7 +12,7 @@ public class HomeController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/") 
+    @GetMapping("/")
     public String home() {
 
         if (userService.getCurrentUserRole().equalsIgnoreCase("admin")) {

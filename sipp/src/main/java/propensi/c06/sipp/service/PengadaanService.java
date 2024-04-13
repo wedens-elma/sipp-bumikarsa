@@ -17,9 +17,13 @@ public interface PengadaanService {
     //void updateStatusShipment(PengadaanRequestDTO pengadaanRequestDTO);
     //Pengadaan findById(String id);
     //void updatePengadaan(UpdatePengadaanRequestDTO pengadaanDto);
-    Pengadaan update (Pengadaan pengadaan);
+    Pengadaan updatePengadaan(Pengadaan pengadaanFromDto);
     void updateStatusPengadaan(Pengadaan pengadaan);
 
+    Map<String, Double> getTotalPengeluaranPerbulan();
+
+    Map<String, Double> getTotalPengeluaranPertahun();
+    int getTotalNumberOfPengadaans();
 }
 
 

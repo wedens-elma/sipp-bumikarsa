@@ -38,6 +38,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/user/add").hasAuthority("Admin")
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/rencana/view-all").permitAll()
+                        .requestMatchers("/api/pengadaan/view-all").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
