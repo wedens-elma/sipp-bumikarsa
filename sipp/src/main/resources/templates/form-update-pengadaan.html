@@ -13,26 +13,26 @@
         <!--        <div th:replace=~{"fragments/sidebarf :: sidebar}" class="col-lg-3 col-md-4" ></div>-->
         <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
         <div class="col">
-            <div id="updatepengadaan">
+            <div id="addpengadaan">
                 <div class="card mx-lg-5 m-4 p-4">
                     <h2 class="card-header text-center p-3">Update Pengadaan</h2>
                     <div class="card-body">
                         <div class="justify-content-center">
                             <form
-                                    th:action="@{'/pengadaan/{pengadaan.idPengadaan}/update/'}"
-                                    th:object="${pengadaan}"
+                                    th:action="@{/pengadaan/{pengadaan.idPengadaan}/update}"
+                                    th:object="${pengadaanDTO}"
                                     method="POST"
                                     class="mx-4"
                             >
                                 <div class="row">
                                     <div class="col">
+                                        <input class="form=control" type="hidden" th:field="*{idPengadaan}" />
                                         <label> <b style="font-size:24px"> Nama Pengadaan: </b><span style="color: red;">*</span> </label>
                                         <input
                                                 class="form-control"
                                                 type="text"
                                                 required="required"
-                                                th:field="*{namaPengadaan}"
-<!--                                                th:value="${pengadaan.namaPengadaan}"-->
+                                                th:field="*{namaPengadaan}" readonly
                                         />
                                         <br><br>
 
@@ -41,8 +41,7 @@
                                                 class="form-control"
                                                 type="date"
                                                 required="required"
-                                                th:field="*{tanggalPengadaan}"
-
+                                                th:field="*{tanggalPengadaan}" readonly
                                         />
                                         <br><br>
 
@@ -55,7 +54,6 @@
                                                         name="kodeVendor"
                                                         id="kodeVendor"
                                                         th:field="*{vendor.kodeVendor}"
-
                                                 >
                                                     <option
                                                             th:each="vendor: ${listVendor}"
@@ -179,49 +177,84 @@
                                 </div>
 
                             </form>
+                            <script th:inline="javascript">
+                                 /*<![CDATA[*/
+                                function addRow() {
+                                    // Dapatkan elemen tbody dari tabel
+                                    var tbody = document.getElementById("table-body");
 
-                            <script>
-                    function addRow() {
-                      // Dapatkan div kontainer untuk baris-baris barang
-                      var barangRows = document.getElementById("barangRows");
+                                    // Buat elemen baris baru
+                                    var newRow = document.createElement("tr");
 
-                      // Buat elemen div baru untuk baris barang
-                      var newBarangRow = document.createElement("div");
-                      newBarangRow.className = "barangRow";
+                                    // Isi baris baru dengan sel data
+                                    newRow.innerHTML = `
+                                        <td><select class="form-control" name="listBarang[0].barang.kodeBarang">
+                                                <option value="">Pilih Barang</option>
+                                                <option th:each="barang : ${listBarang}" th:value="${barang.kodeBarang}" th:text="${barang.namaBarang}"></option>
+                                            </select>
+                                        </td>
+                                        <td><input type="number" class="form-control" name="listBarang[0].jumlahBarang" min="1" step="1" placeholder="Jumlah Barang"/></td>
+                                        <td><input type="number" class="form-control" name="listBarang[0].hargaBarang" min="0" step="1" placeholder="Harga Barang"/></td>
+                                        <td><input type="number" class="form-control" name="listBarang[0].diskonSatuan" min="0" max="100" step="1" placeholder="Diskon Satuan (%)"/></td>
+                                        <td><button type="button" class="btn btn-danger" onclick="deleteRow(this)">Hapus</button></td>
+                                    `;
 
-                      // Tambahkan input namaBarang pada baris baru
-                      var inputNamaBarang = document.createElement("input");
-                      inputNamaBarang.type = "text";
-                      inputNamaBarang.placeholder = "Nama Barang";
-                      inputNamaBarang.name =
-                        "listBarang[" + barangRows.childElementCount + "].namaBarang"; // Sesuaikan dengan atribut lain yang dibutuhkan
-                      newBarangRow.appendChild(inputNamaBarang);
+                                    // Tambahkan baris baru ke dalam tabel
+                                    tbody.appendChild(newRow);
+                                }
 
-                      // Tambahkan tombol untuk menghapus baris
-                      var deleteButton = document.createElement("button");
-                      deleteButton.type = "button";
-                      deleteButton.textContent = "Hapus Baris";
-                      deleteButton.onclick = function () {
-                        removeRow(this);
-                      };
-                      newBarangRow.appendChild(deleteButton);
+                                function deleteRow(button) {
+                                    // Dapatkan elemen tr (baris) yang mengandung tombol hapus
+                                    var row = button.parentNode.parentNode;
 
-                      // Tambahkan baris baru ke dalam kontainer
-                      barangRows.appendChild(newBarangRow);
-                    }
+                                    // Hapus baris dari tabel
+                                    row.parentNode.removeChild(row);
+                                }
+                                /*]]>*/
+                            </script>
 
-                    function removeRow(button) {
-                      // Dapatkan elemen div baris yang berisi tombol yang diklik
-                      var rowToRemove = button.parentNode;
+<!--                            <script>-->
+<!--                    function addRow() {-->
+<!--                      // Dapatkan div kontainer untuk baris-baris barang-->
+<!--                      var barangRows = document.getElementById("barangRows");-->
 
-                      // Dapatkan elemen div kontainer untuk baris-baris barang
-                      var barangRows = document.getElementById("barangRows");
+<!--                      // Buat elemen div baru untuk baris barang-->
+<!--                      var newBarangRow = document.createElement("div");-->
+<!--                      newBarangRow.className = "barangRow";-->
 
-                      // Hapus baris dari kontainer
-                      barangRows.removeChild(rowToRemove);
-                    }
+<!--                      // Tambahkan input namaBarang pada baris baru-->
+<!--                      var inputNamaBarang = document.createElement("input");-->
+<!--                      inputNamaBarang.type = "text";-->
+<!--                      inputNamaBarang.placeholder = "Nama Barang";-->
+<!--                      inputNamaBarang.name =-->
+<!--                        "listBarang[" + barangRows.childElementCount + "].namaBarang"; // Sesuaikan dengan atribut lain yang dibutuhkan-->
+<!--                      newBarangRow.appendChild(inputNamaBarang);-->
 
-                  </script>
+<!--                      // Tambahkan tombol untuk menghapus baris-->
+<!--                      var deleteButton = document.createElement("button");-->
+<!--                      deleteButton.type = "button";-->
+<!--                      deleteButton.textContent = "Hapus Baris";-->
+<!--                      deleteButton.onclick = function () {-->
+<!--                        removeRow(this);-->
+<!--                      };-->
+<!--                      newBarangRow.appendChild(deleteButton);-->
+
+<!--                      // Tambahkan baris baru ke dalam kontainer-->
+<!--                      barangRows.appendChild(newBarangRow);-->
+<!--                    }-->
+
+<!--                    function removeRow(button) {-->
+<!--                      // Dapatkan elemen div baris yang berisi tombol yang diklik-->
+<!--                      var rowToRemove = button.parentNode;-->
+
+<!--                      // Dapatkan elemen div kontainer untuk baris-baris barang-->
+<!--                      var barangRows = document.getElementById("barangRows");-->
+
+<!--                      // Hapus baris dari kontainer-->
+<!--                      barangRows.removeChild(rowToRemove);-->
+<!--                    }-->
+
+<!--                  </script>-->
                         </div>
                     </div>
                 </div>

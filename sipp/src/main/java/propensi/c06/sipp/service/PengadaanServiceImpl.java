@@ -3,14 +3,17 @@ package propensi.c06.sipp.service;
 import java.time.LocalDate;
 import java.util.*;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import propensi.c06.sipp.dto.PengadaanRequestDTO;
 import propensi.c06.sipp.dto.request.UpdatePengadaanRequestDTO;
+import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.model.Pengadaan;
 import propensi.c06.sipp.model.PengadaanBarang;
+import propensi.c06.sipp.repository.BarangDb;
 import propensi.c06.sipp.repository.PengadaanBarangDb;
 import propensi.c06.sipp.repository.PengadaanDb;
 
@@ -23,7 +26,9 @@ public class PengadaanServiceImpl implements PengadaanService {
 
     @Autowired
     private PengadaanBarangDb pengadaanBarangDb;
-    
+
+    @Autowired
+    private BarangDb barangDb;
     @Autowired
     private BarangService barangService;
 
@@ -126,10 +131,64 @@ public class PengadaanServiceImpl implements PengadaanService {
         pengadaanDb.save(pengadaan);
     }
 
-    @Override
-    public void updateStatusPengadaan(Pengadaan pengadaan) {
-        pengadaanDb.save(pengadaan);
+@Override
+public void updateStatusPengadaan(Pengadaan pengadaan) {
+    // Periksa apakah paymentStatus baru adalah 1
+    if (pengadaan.getShipmentStatus() == 1) {
+        List<PengadaanBarang> listPengadaanBarang = pengadaan.getListPengadaanBarang();
+        // Iterasi melalui setiap PengadaanBarang dalam daftar
+        for (PengadaanBarang pengadaanBarang : listPengadaanBarang) {
+            Barang barang = pengadaanBarang.getBarang();
+            int jumlahBarang = pengadaanBarang.getJumlahBarang();
+            // Tambahkan jumlah barang ke stok barang terkait
+            barang.setStokBarang(barang.getStokBarang() + jumlahBarang);
+            // Simpan perubahan pada barang
+            barangDb.save(barang);
+        }
     }
+    pengadaanDb.save(pengadaan);
+}
+
+
+
+    @Override
+    public Pengadaan updatePengadaan(Pengadaan pengadaanFromDto){
+        Pengadaan pengadaan = getPengadaanDetail(pengadaanFromDto.getIdPengadaan());
+        if(pengadaan != null){
+            //pengadaan.setIdPengadaan(pengadaanFromDto.getIdPengadaan());
+            pengadaan.setIdPengadaan(pengadaanFromDto.getIdPengadaan());
+            pengadaan.setNamaPengadaan(pengadaanFromDto.getNamaPengadaan());
+            pengadaan.setVendor(pengadaanFromDto.getVendor());
+            pengadaan.setListPengadaanBarang(pengadaanFromDto.getListPengadaanBarang());
+            pengadaan.setDiskonKeseluruhan(pengadaanFromDto.getDiskonKeseluruhan());
+            pengadaan.setShipmentStatus(pengadaanFromDto.getShipmentStatus());
+            pengadaan.setPaymentStatus(pengadaanFromDto.getPaymentStatus());
+            pengadaanDb.save(pengadaan);
+        }
+        return pengadaan;
+    }
+
+//    @Override
+//    public Pengadaan updatePengadaan(Pengadaan pengadaanFromDto) {
+//        // Dapatkan entitas Pengadaan dari database berdasarkan ID
+//        Optional<Pengadaan> pengadaanOptional = pengadaanDb.findById(pengadaanFromDto.getIdPengadaan());
+//
+//        if (pengadaanOptional.isPresent()) {
+//            // Jika entitas ditemukan, perbarui propertinya dengan nilai dari DTO
+//            Pengadaan pengadaanToUpdate = pengadaanOptional.get();
+//            pengadaanToUpdate.setNamaPengadaan(pengadaanFromDto.getNamaPengadaan());
+//            pengadaanToUpdate.setTanggalPengadaan(pengadaanFromDto.getTanggalPengadaan());
+//            pengadaanToUpdate.setVendor(pengadaanFromDto.getVendor());
+//            pengadaanToUpdate.setListPengadaanBarang(pengadaanFromDto.getListPengadaanBarang());
+//
+//            // Simpan entitas yang diperbarui ke dalam database dan kembalikan
+//            return pengadaanDb.save(pengadaanToUpdate);
+//        } else {
+//            // Jika entitas tidak ditemukan, Anda bisa menangani kasus ini sesuai kebutuhan aplikasi Anda.
+//            // Misalnya, Anda bisa melemparkan exception atau mengembalikan nilai null.
+//            throw new EntityNotFoundException("Pengadaan dengan ID " + pengadaanFromDto.getIdPengadaan() + " tidak ditemukan.");
+//        }
+//    }
 
 
 //    @Override
@@ -143,6 +202,14 @@ public class PengadaanServiceImpl implements PengadaanService {
 //            pengadaan.setShipmentStatus(pengadaanDto.getShipmentStatus());
 //            pengadaan.setDiskonKeseluruhan(pengadaanDto.getDiskonKeseluruhan());
 //            deletePengadaan(pengadaan.getIdPengadaan());
+
+    //nitip
+//    //pengadaan.setIdPengadaan(pengadaanFromDto.getIdPengadaan());
+//    //pengadaan.setNamaPengadaan(pengadaanFromDto.getNamaPengadaan());
+//            pengadaan.setVendor(pengadaanFromDto.getVendor());
+//            pengadaan.setDiskonKeseluruhan(pengadaanFromDto.getDiskonKeseluruhan());
+//            pengadaan.setListPengadaanBarang(pengadaanFromDto.getListPengadaanBarang());
+//nitip
 //
 //            for (PengadaanBarang pengadaanBarangDTO : pengadaanDto.getListBarang()) {
 //                PengadaanBarang pengadaanBarang = new PengadaanBarang();
@@ -245,18 +312,34 @@ public class PengadaanServiceImpl implements PengadaanService {
 //    }
 
 
-    @Override
-    public Pengadaan update(Pengadaan pengadaan){
-        String id = pengadaan.getIdPengadaan();
-        Pengadaan dto = pengadaanDb.findById(id).get();
-        dto.setTanggalPengadaan(pengadaan.getTanggalPengadaan());
-        dto.setNamaPengadaan(pengadaan.getNamaPengadaan());
-        dto.setVendor(pengadaan.getVendor());
-        dto.setListPengadaanBarang(pengadaan.getListPengadaanBarang());
-        dto.setDiskonKeseluruhan(pengadaan.getDiskonKeseluruhan());
-        dto.setPaymentStatus(0);
-        dto.setShipmentStatus(0);
-        return pengadaanDb.save(dto);
-    }
+//    @Override
+//    public void updatePengadaan(String id, PengadaanRequestDTO pengadaanDto) {
+//        Pengadaan pengadaanToUpdate = pengadaanDb.findById(id).orElseThrow(() -> new NoSuchElementException("Pengadaan not found"));
+//
+//        // Update data pengadaan dengan data baru dari DTO
+//        pengadaanToUpdate.setNamaPengadaan(pengadaanDto.getNamaPengadaan());
+//        pengadaanToUpdate.setTanggalPengadaan(LocalDate.parse(pengadaanDto.getTanggalPengadaan()));
+//        pengadaanToUpdate.setVendor(pengadaanDto.getVendor());
+//        pengadaanToUpdate.setPaymentStatus(pengadaanDto.getPaymentStatus());
+//        pengadaanToUpdate.setShipmentStatus(pengadaanDto.getShipmentStatus());
+//        pengadaanToUpdate.setDiskonKeseluruhan(pengadaanDto.getDiskonKeseluruhan());
+//
+//        // Hapus dulu semua barang pengadaan lama
+//        pengadaanBarangDb.deleteAllById(pengadaanToUpdate.get);
+//
+//        // Tambahkan barang pengadaan baru dari DTO
+//        for (PengadaanRequestDTO.PengadaanBarangDTO barangDto : pengadaanDto.getListBarang()) {
+//            PengadaanBarang pengadaanBarang = new PengadaanBarang();
+//            pengadaanBarang.setJumlahBarang(barangDto.getJumlahBarang());
+//            pengadaanBarang.setHargaBarang(barangDto.getHargaBarang());
+//            pengadaanBarang.setDiskonSatuan(barangDto.getDiskonSatuan());
+//            pengadaanBarang.setBarang(barangDto.getBarang());
+//            pengadaanBarang.setPengadaan(pengadaanToUpdate);
+//            pengadaanBarang.setNamaBarang(barangDto.getBarang().getNamaBarang());
+//
+//            pengadaanBarangDb.save(pengadaanBarang);
+//        }
+//    }
+
 
 }
