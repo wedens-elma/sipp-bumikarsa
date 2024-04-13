@@ -92,17 +92,6 @@ public class SippApplication {
 
 			}
 
-			if (barangService.getAllBarang().isEmpty()) {
-				var barang = new CreateTambahBarangRequestDTO();
-				barang.setNamaBarang("Barang 1");
-				barang.setDeskripsiBarang("Ini adalah Barang 1");
-				barang.setTipeBarang(1);
-				barang.setStokBarang(50);
-				barang.setStandarStokBarang(5);
-				Barang barangSave = barangMapper.createTambahBarangRequestDTO(barang);
-				barangService.addBarang(barangSave);
-			}
-
 			if (vendorService.getAllVendors().isEmpty()) {
 				var vendor = new CreateVendorRequestDTO();
 				vendor.setAlamatVendor("Jl. Alamat Vendor 1 no. 123");

@@ -1,6 +1,7 @@
 package propensi.c06.sipp.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +12,7 @@ import propensi.c06.sipp.model.Vendor;
 
 @Repository
 public interface VendorDb extends JpaRepository<Vendor, String> {
+    Optional<Vendor> findByKodeVendor(String kodeVendor);
 
     @Query("SELECT v.kodeVendor FROM Vendor v WHERE v.kodeVendor LIKE CONCAT(:code, '%') ORDER BY v.kodeVendor DESC")
     List<String> findLastKodeVendorByCode(@Param("code") String code);
