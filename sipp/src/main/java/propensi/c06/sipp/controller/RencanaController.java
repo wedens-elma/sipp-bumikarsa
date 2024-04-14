@@ -1,6 +1,7 @@
 package propensi.c06.sipp.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.validation.Valid;
 import propensi.c06.sipp.dto.request.CreateRencanaRequestDTO;
 import propensi.c06.sipp.dto.request.UpdateStatusRencanaRequestDTO;
+import propensi.c06.sipp.model.LogRencana;
 import propensi.c06.sipp.model.Rencana;
 import propensi.c06.sipp.service.BarangService;
 import propensi.c06.sipp.service.LogRencanaService;
@@ -46,7 +48,8 @@ public class RencanaController {
 
     @GetMapping("/")
     public String daftarRencana(Model model) {
-        model.addAttribute("listLogRencana", logRencanaService.getAllLogRencana());
+        List<LogRencana> listLogRencana = logRencanaService.getAllLogRencana();
+        model.addAttribute("listLogRencana", listLogRencana);
         if (userService.getCurrentUserRole().equalsIgnoreCase("keuangan")) {
             return "view-daftar-rencana-keuangan";
         } else {
