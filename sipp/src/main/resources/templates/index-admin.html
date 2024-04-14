@@ -26,7 +26,10 @@
     <div class="container-fluid">
       <div class="row">
         <!--        <div th:replace=~{"fragments/sidebarf :: sidebar}" class="col-lg-3 col-md-4" ></div>-->
-        <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+        <div
+          th:replace="~{fragments/admin-sidebar}"
+          class="col-lg-3 col-md-4"
+        ></div>
         <div class="col">
           <div class="card m-4 p-4">
             <div style="text-align: center">
@@ -44,24 +47,9 @@
                 our amazing sipp information system for pt bumi karsa is coming
                 soon!
               </p>
-              <a href="/rencana/" class="btn btn-primary">daftar rencana</a>
-              <a href="/rencana/create" class="btn btn-primary">add rencana</a>
-              <a href="/barang" class="btn btn-primary">Daftar barang</a>
-              <a href="/barang/tambah" class="btn btn-primary">Add barang</a>
-              <a href="/vendor/tambah" class="btn btn-primary">add vendor</a>
-              <a href="/vendor" class="btn btn-primary"> list vendor</a>
-              <a href="/pengadaan" class="btn btn-primary"> Daftar Pengadaan</a>
-              <a href="/pengadaan/tambah" class="btn btn-primary"
-                >Add Pengadaan</a
-              >
+              <a href="/user/add" class="btn btn-primary">Add User</a>
+              <a href="/user" class="btn btn-primary">View All User</a>
               <a href="/logout" class="btn btn-primary">Logout</a>
-              <!-- <a href="/user" class="btn btn-primary">View All User</a>
-              <a href="/user" class="btn btn-primary">View All User</a>
-              <a href="/user" class="btn btn-primary">View All User</a>
-              <a href="/user" class="btn btn-primary">View All User</a>
-              <a href="/user" class="btn btn-primary">View All User</a>
-              <a href="/user" class="btn btn-primary">View All User</a>
-              <a href="/user" class="btn btn-primary">View All User</a> -->
               <p>stay tuned x</p>
             </div>
           </div>

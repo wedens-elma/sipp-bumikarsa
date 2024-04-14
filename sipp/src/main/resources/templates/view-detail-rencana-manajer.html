@@ -7,10 +7,6 @@
     <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
     <title>View Detail Schedule</title>
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
         .vendor-info {
             display: flex;
             align-items: center;
@@ -47,88 +43,192 @@
 
 
 <body>
-    <div class="container">
-        <div class="card m-4 p-4">
-            <div class="card-body text-center">
-                <h2 th:text="${rencana.namaRencana}" style="font-weight: bold;"></h2>
-                <h5 style="font-style: italic; text-transform: capitalize; font-weight: bold;" th:text="${rencana.logRencana[rencana.logRencana.size() - 1].status}"></h5>
-                <h6 th:text="'Created by ' + ${rencana.createdBy}"></h6>
-                <br>
-                <div class="card bg-warning text-white border-0 rounded p-3 d-inline-flex">
-                    <div class="d-flex align-items-center">
-                        <p class="mb-0 mr-3"><b>Expected Date</b></p>
-                        <span class="font-weight-bold" th:text="${#dates.format(#dates.create(rencana.expectedDate.year, rencana.expectedDate.monthValue, rencana.expectedDate.dayOfMonth), 'dd MMMM yyyy')}"></span>
+    <div class="container-fluid">
+        <div class="row">
+            <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/rencana/">Daftar Rencana</a></li>
+                        <li class="breadcrumb-item" aria-current="page">Detail Rencana</li>
+                    </ol>
+                </nav>
+                <div class="card m-4 p-4">
+                    <div class="card-body text-center">
+                        <h1 th:text="${rencana.namaRencana}" style="font-weight: bold;"></h1>
+                        <h5 style="font-style: italic; text-transform: capitalize; font-weight: bold;" th:text="${rencana.logRencana[rencana.logRencana.size() - 1].status}"></h5>
+                        <h6 th:text="'Dibuat oleh ' + ${rencana.createdBy}"></h6>
+                        <br>
+
+                        <div class="card bg-warning text-white border-0 rounded p-3 d-inline-flex">
+                            <div class="d-flex align-items-center">
+                                <p class="mb-0 mr-3"><b> Tanggal Rencana </b></p>
+                                <span class="font-weight-bold" th:text="${#dates.format(#dates.create(rencana.expectedDate.year, rencana.expectedDate.monthValue, rencana.expectedDate.dayOfMonth), 'dd MMMM yyyy')}"></span>
+                            </div>
+                            <div th:switch="${rencana.logRencana[rencana.logRencana.size() - 1].status}">
+                                <div class="d-flex align-items-center" th:case="'disetujui'">
+                                    <p class="mb-0 mr-3"><b> Tanggal Disetujui </b></p>
+                                    <span th:text="${#dates.format(#dates.create(rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.year, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.monthValue, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.dayOfMonth), 'dd MMMM yyyy')}"></span>
+                                </div>
+                                <div class="d-flex align-items-center" th:case="'dibatalkan'">
+                                    <p class="mb-0 mr-3"><b> Tanggal Dibatalkan </b></p>
+                                    <span th:text="${#dates.format(#dates.create(rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.year, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.monthValue, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.dayOfMonth), 'dd MMMM yyyy')}"></span>
+                                </div>
+                                <div class="d-flex align-items-center" th:case="'direalisasikan'">
+                                    <p class="mb-0 mr-3"><b> Tanggal Direalisasikan </b></p>
+                                    <span th:text="${#dates.format(#dates.create(rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.year, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.monthValue, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.dayOfMonth), 'dd MMMM yyyy')}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <br>
+                        <br><br>
+                        <div class="row">
+                            <div class="col-3">
+                                <h6 style="text-align: left;" class="card-text m-0"><b>Nama Vendor</b></h6>
+                            </div>
+                            
+                            <div class="col-9">
+                                <h6 style="text-align: left;" class="card-text m-0" th:text="' : ' + ${rencana.vendor.namaVendor}"></h6>
+                            </div>
+                        </div>
+                        <br>
+                        <h6 style="text-align: left;"><b> Barang Pengadaan </b></h6>
+                        <table id="table" class="table table-bordered text-center">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th scope="col">No.</th>
+                                    <th scope="col">Nama Barang</th>
+                                    <th scope="col">Kuantitas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="barangRencana, iterStat : ${rencana.listBarangRencana}">
+                                    <td th:text="${iterStat.index + 1}"></td>
+                                    <td th:text="${barangRencana.namaBarang}"></td>
+                                    <td th:text="${barangRencana.kuantitas}"></td>
+                                </tr>
+                            </tbody>
+                        </table>  
+                        <br><br>
+
+                        <div th:switch="${rencana.logRencana[rencana.logRencana.size() - 1].status}">
+                            <div th:case="'dibuat'">
+                                <h6 style="text-align: left;"><b> Ubah Status Rencana Pengadaan </b></h6>
+                                <form id="statusForm" th:action="@{'/rencana/detail/' + ${rencana.idRencana}}" th:object="${statusDTO}" method="POST">
+                                    <div class="d-flex justify-content-end">
+                                        <input type="text" th:field="*{feedback}" class="form-control" style="margin-right: 10px;" placeholder="Tambahkan komentar..." required>
+                                        <div class="btn-group">
+                                            <button type="submit" name="setujui" class="btn btn-md btn-success">Setujui</button>
+                                            <button type="submit" name="batalkan" class="btn btn-md btn-danger">Batalkan</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div th:case="*">
+                                <h6 style="text-align: left;"><b> Komentar Pengubahan Status </b></h6>
+                                <div class="d-flex justify-content-end">
+                                    <input type="text" class="form-control" th:value="${rencana.logRencana[rencana.logRencana.size() - 1].feedback}" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <br>
+                </div>
+                
+                <div class="d-flex justify-content-end mt-3" th:if="${rencana.logRencana.size() > 0}">
+                    <div class="m-3">
+                        <a id="buatPengadaanButton" type="button" class="btn btn-md btn-primary" th:href="@{'/pengadaan/tambah?idRencana=' + ${rencana.idRencana}}" th:if="${rencana.logRencana[rencana.logRencana.size() - 1].status == 'disetujui'}">Buat Pengadaan</a>
+                        <a id="deleteButton" type="button" class="btn btn-md btn-danger" href="#" th:if="${rencana.logRencana[rencana.logRencana.size() - 1].status != 'disetujui' and rencana.logRencana[rencana.logRencana.size() - 1].status != 'direalisasikan'}">Hapus Rencana</a>
                     </div>
                 </div>
-                <br>
-                <br><br>
-                <div class="row">
-                    <div class="col">
-                        <h5 style="text-align: left;" class="card-text m-0"><b>Vendor Name</b></h5>
-                    </div>
-                    <div class="col-8"> 
-                        <input type="text" class="form-control" th:value="${rencana.vendor.namaVendor}" disabled />
-                    </div>
-                </div>
-                <br>
-                <h5 style="text-align: left;"><b> Procurement Items </b></h5>
-                <table id="table" class="table table-bordered text-center">
-                    <thead class="table-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Quantity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="barangRencana, iterStat : ${rencana.listBarangRencana}">
-                            <td th:text="${iterStat.index + 1}"></td>
-                            <td th:text="${barangRencana.namaBarang}"></td>
-                            <td th:text="${barangRencana.kuantitas}"></td>
-                        </tr>
-                    </tbody>
-                </table>  
-                <br>
-                <h5 style="text-align: left;"><b> Change Status </b></h5>
-                <div class="d-flex justify-content-end">
-                    <input type="text" class="form-control" style="margin-right: 10px;" placeholder="Add aproval/cancelation comment...">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-md btn-success">Approve</button>
-                        <button type="button" class="btn btn-md btn-danger">Cancel</button>
+
+                <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmationModalLabel">Konfirmasi Hapus Rencana</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Apakah Anda yakin ingin menghapus rencana ini?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="button" class="btn btn-danger" id="confirmDelete">Hapus</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+
             </div>
         </div>
-
-        <!-- <div class="text-center m-3">
-            <a type="button" class="btn btn-md btn-primary"
-                href="/rencana/">Make Procurement</a>
-        </div> -->
-
-        <div class="d-flex justify-content-center mt-3"> 
-            <div class="m-3">
-                <a type="button" class="btn btn-md btn-secondary" href="/rencana/">Kembali</a>
-            </div>
-            <div class="m-3">
-                <a type="button" class="btn btn-md btn-danger" href="/rencana/">Delete Schedule</a>
-            </div>
-        </div>
-
     </div>
-    </div>
-    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#table').DataTable({
+                "paging": false,
+                "ordering": false, 
+                "info": false, 
+                "searching": false 
+            });
+
+            $('#deleteButton').click(function() {
+                $('#confirmationModal').modal('show');
+            });
+
+            $('#confirmDelete').click(function() {
+                var id = [[${rencana.idRencana}]];
+                window.location.href = "/rencana/" + id + "/delete";
+            });
+
+            $('#confirmationModal').on('click', '.btn-secondary', function() {
+                $('#confirmationModal').modal('hide');
+            });
+
+            $('#confirmationModal').on('click', '.close', function() {
+                $('#confirmationModal').modal('hide');
+            });
+
+            $('#statusForm button[type="submit"]').click(function(event) {
+                event.preventDefault();
+
+                var feedback = $('#statusForm input[name="feedback"]').val();
+                if (feedback.trim() === '') {
+                    alert('Komentar wajib diisi.');
+                    return;
+                }
+
+                var id = [[${rencana.idRencana}]];
+                console.log("idRencana:", id);
+
+                var formData = $(this).closest('form').serialize();
+                
+                if ($(this).attr('name') === 'setujui') {
+                    formData += '&setujui=1'; 
+                } else if ($(this).attr('name') === 'batalkan') {
+                    formData += '&batalkan=1'; 
+                }
+                
+                $.post("/rencana/detail/" + id, formData, function(data) {
+                    if (data.startsWith("Status rencana berhasil diubah menjadi disetujui")) {
+                        alert('Status berhasil diubah menjadi disetujui.');
+                    } else if (data.startsWith("Status rencana berhasil diubah menjadi dibatalkan")) {
+                        alert('Status berhasil diubah menjadi dibatalkan.');
+                    } else {
+                        alert('Terjadi kesalahan');
+                    }
+                    window.location.reload();
+                });
+            });
+        });
+    </script>
+
 </body>
-
-<script>
-    $(document).ready(function() {
-    $('#table').DataTable({
-        "paging": false,
-        "ordering": false, 
-        "info": false, 
-        "searching": false 
-    });
-});
-</script>
 
 </html>

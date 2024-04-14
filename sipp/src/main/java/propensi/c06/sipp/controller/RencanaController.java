@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,11 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.validation.Valid;
 import propensi.c06.sipp.dto.request.CreateRencanaRequestDTO;
+import propensi.c06.sipp.dto.request.UpdateStatusRencanaRequestDTO;
 import propensi.c06.sipp.model.Rencana;
 import propensi.c06.sipp.service.BarangService;
+import propensi.c06.sipp.service.LogRencanaService;
 import propensi.c06.sipp.service.RencanaService;
 import propensi.c06.sipp.service.UserService;
 import propensi.c06.sipp.service.VendorService;
@@ -28,6 +31,9 @@ import propensi.c06.sipp.service.VendorService;
 public class RencanaController {
     @Autowired
     private RencanaService rencanaService;
+
+    @Autowired
+    private LogRencanaService logRencanaService;
 
     @Autowired
     private BarangService barangService;
@@ -40,27 +46,61 @@ public class RencanaController {
 
     @GetMapping("/")
     public String daftarRencana(Model model) {
+        model.addAttribute("listLogRencana", logRencanaService.getAllLogRencana());
         if (userService.getCurrentUserRole().equalsIgnoreCase("keuangan")) {
-            System.out.println("AAAAAAAAAAAAAAAA");
-            System.out.println(userService.getCurrentUserName());
             return "view-daftar-rencana-keuangan";
         } else {
             return "view-daftar-rencana";
         }
     }
 
-    @GetMapping(value = "/{id}")
-    public String detailRencana(@PathVariable(value = "id") Long id, Model model) {
+    @GetMapping(value = "/detail/{id}")
+    public String detailRencana(@PathVariable(value = "id") Long id, Model model, @ModelAttribute UpdateStatusRencanaRequestDTO statusDTO) {
         Rencana rencana = rencanaService.getRencanaById(id);
-        System.out.println(rencana.getListBarangRencana());
         model.addAttribute("rencana", rencana);
-
         if (userService.getCurrentUserRole().equalsIgnoreCase("manajer")) {
+            model.addAttribute("statusDTO", statusDTO);
             return "view-detail-rencana-manajer";
         } else if (userService.getCurrentUserRole().equalsIgnoreCase("keuangan")) {
             return "view-detail-rencana-keuangan";
         } else {
             return "view-detail-rencana-operasional";
+        }
+    }
+
+    @GetMapping(value = "/{id}/delete")
+    public String deleteRencana(@PathVariable(value = "id") Long id, RedirectAttributes redirectAttributes) {
+        Rencana rencana = rencanaService.getRencanaById(id);
+        rencanaService.deleteRencana(rencana);
+        redirectAttributes.addFlashAttribute("deleteSuccessMessage", "Rencana pengadaan telah berhasil dihapus.");
+        return "redirect:/rencana/";
+    }
+
+    @PostMapping(value = "/detail/{id}", params = {"setujui"})
+    public ResponseEntity<String> setujuiRencana( 
+        @PathVariable("id") Long id, 
+        @ModelAttribute UpdateStatusRencanaRequestDTO statusDTO
+    ) {
+        Rencana rencana = rencanaService.getRencanaById(id);
+        if (rencana != null) {
+            rencanaService.ubahStatusRencana(rencana, "disetujui", statusDTO.getFeedback());
+            return ResponseEntity.ok("Status rencana berhasil diubah menjadi disetujui");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping(value = "/detail/{id}", params = {"batalkan"})
+    public ResponseEntity<String> batalkanRencana(
+        @PathVariable("id") Long id,
+        @ModelAttribute UpdateStatusRencanaRequestDTO statusDTO
+    ) {
+        Rencana rencana = rencanaService.getRencanaById(id);
+        if (rencana != null) {
+            rencanaService.ubahStatusRencana(rencana, "dibatalkan", statusDTO.getFeedback());
+            return ResponseEntity.ok("Status rencana berhasil diubah menjadi dibatalkan");
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -114,4 +154,6 @@ public class RencanaController {
             return "view-daftar-rencana";
         }
     }
+
+
 }

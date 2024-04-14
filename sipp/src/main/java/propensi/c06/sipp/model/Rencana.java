@@ -31,15 +31,12 @@ public class Rencana {
     private String createdBy; 
 
     @NotNull
-    @Column(name="namaRencana", nullable=false)
+    @Column(name = "namaRencana", nullable=false)
     private String namaRencana; 
 
     @NotNull
-    @Column(name="tanggalRencana", nullable=false)
+    @Column(name = "tanggalRencana", nullable=false)
     private LocalDate expectedDate; 
-
-    @Column(name="feedback")
-    private String feedback;
 
     @OneToMany(mappedBy = "rencana", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<BarangRencana> listBarangRencana; 
@@ -48,6 +45,6 @@ public class Rencana {
     private List<LogRencana> logRencana;
 
     @NotNull
-    @Column(name="isDeleted", nullable=false)
+    @Column(name = "isDeleted", nullable=false)
     private Boolean isDeleted = false;
 }

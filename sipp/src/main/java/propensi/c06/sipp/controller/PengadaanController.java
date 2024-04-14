@@ -18,18 +18,21 @@ import propensi.c06.sipp.dto.request.CreateTambahBarangRequestDTO;
 import propensi.c06.sipp.dto.request.PengadaanBarangDTO;
 import propensi.c06.sipp.dto.request.UpdatePengadaanRequestDTO;
 import propensi.c06.sipp.model.Barang;
+import propensi.c06.sipp.model.BarangRencana;
 import propensi.c06.sipp.model.Pengadaan;
 import propensi.c06.sipp.model.PengadaanBarang;
+import propensi.c06.sipp.model.Rencana;
 import propensi.c06.sipp.model.Vendor;
 import propensi.c06.sipp.repository.PengadaanDb;
 import propensi.c06.sipp.service.BarangService;
 import propensi.c06.sipp.service.PengadaanService;
+
 import propensi.c06.sipp.service.UserService;
+
+import propensi.c06.sipp.service.RencanaService;
+
 import propensi.c06.sipp.service.VendorService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.*;
 
 @Controller
@@ -45,13 +48,19 @@ public class PengadaanController {
     private VendorService vendorService;
 
     @Autowired
+
     private PengadaanMapper pengadaanMapper;
 
     @Autowired
     private PengadaanDb pengadaanDb;
 
+
     @Autowired
     private UserService userService;
+
+
+    private RencanaService rencanaService;
+
 
     @GetMapping("/pengadaan")
     public String listPengadaan(Model model){
@@ -191,8 +200,24 @@ public class PengadaanController {
 
 
     @GetMapping("/pengadaan/tambah")
-    public String formAddPengadaan(Model model) {
-        model.addAttribute("dto", new PengadaanRequestDTO());
+    public String formAddPengadaan(@RequestParam(required=false) Long idRencana, Model model) {
+        PengadaanRequestDTO dtoPengadaan = new PengadaanRequestDTO();
+
+        if (idRencana != null) {
+            Rencana rencana = rencanaService.getRencanaById(idRencana);
+            dtoPengadaan.setNamaPengadaan(rencana.getNamaRencana());
+            dtoPengadaan.setVendor(rencana.getVendor());
+            dtoPengadaan.setListBarang(new ArrayList<>());
+            for (BarangRencana barangRencana : rencana.getListBarangRencana()) {
+                PengadaanBarang barangPengadaan = new PengadaanBarang();
+                barangPengadaan.setBarang(barangRencana.getBarang());
+                barangPengadaan.setJumlahBarang(barangRencana.getKuantitas());
+                dtoPengadaan.getListBarang().add(barangPengadaan);
+            }
+            rencanaService.ubahStatusRencana(rencana, "direalisasikan", rencana.getLogRencana().get(rencana.getLogRencana().size()-1).getFeedback());
+        }
+
+        model.addAttribute("dto", dtoPengadaan);
         model.addAttribute("listVendor", vendorService.getAllVendors());
         model.addAttribute("listBarang", barangService.getAllBarang());
         String username = userService.getCurrentUserName();

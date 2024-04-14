@@ -2,12 +2,15 @@ package propensi.c06.sipp.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
+import java.util.ArrayList;
 import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import jakarta.validation.Valid;
 import propensi.c06.sipp.dto.BarangMapper;
 import propensi.c06.sipp.dto.request.CreateTambahBarangRequestDTO;
+import propensi.c06.sipp.dto.request.UpdateBarangRequestDTO;
 import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.repository.BarangDb;
 import propensi.c06.sipp.service.BarangService;
@@ -38,7 +43,24 @@ public class BarangController {
     @GetMapping("/barang")
     public String daftarBarang(Model model) {
         List<Barang> listBarang = barangService.getAllBarang();
+
+        // Membuat daftar barang yang stokBarang-nya kurang dari standarStokBarang
+        List<Barang> listBarangStokKurang = new ArrayList<>();
+        for (Barang barang : listBarang) {
+            if (barang.getStokBarang() < barang.getStandarStokBarang()) {
+                listBarangStokKurang.add(barang);
+            }
+        }
+
+        // Mengecek apakah ada barang dengan stok kurang dari standar
+        boolean adaBarangDenganStokKurangDariStandar = listBarang.stream()
+                .anyMatch(barang -> barang.getStokBarang() < barang.getStandarStokBarang());
+
         model.addAttribute("listBarang", listBarang);
+        
+        model.addAttribute("listBarangStokKurang", listBarangStokKurang);
+
+        model.addAttribute("adaBarangDenganStokKurangDariStandar", adaBarangDenganStokKurangDariStandar);
 
         return "viewall-barang.html";
     }
@@ -58,10 +80,11 @@ public class BarangController {
             @RequestPart("file") MultipartFile file) {
         var barang = barangMapper.createTambahBarangRequestDTO(barangDTO);
 
-        if (barangService.isBarangExists(barang.getNamaBarang())) {
+        if (barangService.isBarangExistsAndNotDeleted(barang.getNamaBarang())) {
             model.addAttribute("error", "Barang sudah terdaftar");
-    
-            // Redirect to a page showing the error message and then redirecting back to the form after 5 seconds
+
+            // Redirect to a page showing the error message and then redirecting back to the
+            // form after 5 seconds
             return "failed-tambah-barang.html";
         }
 
@@ -77,8 +100,6 @@ public class BarangController {
         barang.setImage(imageContent);
 
         barangService.addBarang(barang);
-
-        
 
         model.addAttribute("kodeBarang", barang.getKodeBarang());
 
@@ -98,4 +119,48 @@ public class BarangController {
         return "view-detail-barang.html";
     }
 
+    @GetMapping(value = "/barang/{kodeBarang}/update")
+    public String formUpdateBuku(@PathVariable(value = "kodeBarang") String kodeBarang, Model model) {
+        // Mendapatkan buku dengan id tersebut
+
+        var barang = barangService.getBarangById(kodeBarang);
+
+        // Memindahkan data buku ke DTO untuk selanjutnya diubah di form pengguna
+
+        var barangDTO = barangMapper.barangToUpdateBarangRequestDTO(barang);
+
+        model.addAttribute("barangDTO", barangDTO);
+
+        return "form-update-barang";
+    }
+
+    @PostMapping("barang/update")
+    public String updateBuku(@Valid @ModelAttribute UpdateBarangRequestDTO barangDTO, BindingResult bindingResult,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            // Validasi gagal, kembalikan error
+            var errorMessage = "Data yang anda kirimkan tidak valid";
+
+            model.addAttribute("errorMessage", errorMessage);
+
+            return "error-view";
+        }
+
+        var barangFromDto = barangMapper.updateBarangRequestDTOToBarang(barangDTO);
+        // Memanggil Service addBuku
+        var barang = barangService.updateBarang(barangFromDto);
+        // Add variabel kode buku ke 'kode' untuk dirender di thymeleaf
+        model.addAttribute("kodeBarang", barang.getKodeBarang());
+
+        return "success-update-barang";
+    }
+
+    @GetMapping("/barang/{kodeBarang}/delete")
+    public String softDeleteBuku(@PathVariable("kodeBarang") String kodeBarang, Model model) {
+
+        barangService.softDeleteBarang(kodeBarang);
+        model.addAttribute("kodeBarang", kodeBarang);
+        return "success-delete-barang";
+    }
 }

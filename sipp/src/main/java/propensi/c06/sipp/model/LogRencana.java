@@ -29,7 +29,10 @@ public class LogRencana {
 
     @NotNull
     @Column(name = "status", nullable =false)
-    private String status; // approved, canceled, created, procured, deleted
+    private String status; // disetujui, dibatalkan, dibuat, direalisasikan, dihapus
+
+    @Column(name = "feedback")
+    private String feedback;
 
     @NotNull
     @Column(name = "tanggalWaktu", nullable = false)
