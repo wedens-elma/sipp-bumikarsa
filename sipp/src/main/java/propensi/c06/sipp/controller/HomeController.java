@@ -36,10 +36,18 @@ public class HomeController {
         model.addAttribute("top5LatestPengadaan", top5LatestPengadaan);
 
         addDashboardDataToModel(model);
+
+        model.addAttribute("countPaymentBelumDibayar", pengadaanService.countPaymentStatus("belum dibayar"));
+        model.addAttribute("countPaymentSudahDibayar", pengadaanService.countPaymentStatus("sudah dibayar"));
+        model.addAttribute("countPaymentSedangDiproses", pengadaanService.countPaymentStatus("sedang diproses"));
+        model.addAttribute("countShipmentSedangDiproses", pengadaanService.countShipmentStatus("sedang diproses"));
+        model.addAttribute("countShipmentSudahSampai", pengadaanService.countShipmentStatus("sudah sampai"));
+        model.addAttribute("countAllPengadaan", pengadaanService.countAllPengadaan());
         if (userService.getCurrentUserRole().equalsIgnoreCase("admin")) {
             return "index-admin.html";
+        } else {
+            return "index.html";
         }
-        return "index.html";
     }
 
     private void addDashboardDataToModel(Model model) {

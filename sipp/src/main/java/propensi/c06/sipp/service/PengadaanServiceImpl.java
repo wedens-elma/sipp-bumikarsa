@@ -127,6 +127,55 @@ public class PengadaanServiceImpl implements PengadaanService {
     }
 
     @Override
+    public Long countPaymentStatus(String status) {
+        List<Pengadaan> listPengadaan = pengadaanDb.findAll();
+        Long count = 0L;
+        int statusInt;
+        
+        if (status.equalsIgnoreCase("belum dibayar")) {
+            statusInt = 0;
+        } else if (status.equalsIgnoreCase("sudah dibayar")) {
+            statusInt = 2;
+        } else {
+            statusInt = 1;
+        }
+
+        for (Pengadaan pengadaan : listPengadaan) {
+            if (pengadaan.getPaymentStatus() == statusInt) {
+                count += 1;
+            }
+        }
+
+        return count;
+    }
+
+    @Override
+    public Long countShipmentStatus(String status) {
+        List<Pengadaan> listPengadaan = pengadaanDb.findAll();
+        Long count = 0L;
+        int statusInt;
+        
+        if (status.equalsIgnoreCase("sedang diproses")) {
+            statusInt = 0;
+        } else {
+            statusInt = 1;
+        }
+
+        for (Pengadaan pengadaan : listPengadaan) {
+            if (pengadaan.getShipmentStatus() == statusInt) {
+                count += 1;
+            }
+        }
+
+        return count;
+    }
+
+    @Override
+    public Long countAllPengadaan() {
+        return pengadaanDb.count();
+    }
+
+    @Override
     public void deletePengadaan(String kodePengadaan){
         Pengadaan pengadaan= pengadaanDb.getReferenceById(kodePengadaan);
         pengadaan.setIsDeleted(true);

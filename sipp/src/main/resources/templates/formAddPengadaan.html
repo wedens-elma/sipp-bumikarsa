@@ -24,6 +24,11 @@
 										method="POST"
 										class="mx-4"
 									>
+										<input
+											type="hidden"
+											name="idRencana"
+											th:value="${idRencana}"
+										/>
 										<div class="row">
 											<div class="col">
 												<label>
@@ -35,6 +40,7 @@
 													type="text"
 													required="required"
 													th:field="*{namaPengadaan}"
+													th:value="${dto != null} ? ${dto.namaPengadaan} : ''"
 												/>
 												<br /><br />
 
@@ -47,6 +53,7 @@
 													type="date"
 													required="required"
 													th:field="*{tanggalPengadaan}"
+													th:value="${dto != null ? dto.tanggalPengadaan : ''}"
 												/>
 												<br /><br />
 
@@ -67,6 +74,7 @@
 																	th:each="vendor: ${listVendor}"
 																	th:value="${vendor.kodeVendor}"
 																	th:text="${vendor.namaVendor}"
+																	th:selected="${dto != null && dto.vendor != null && dto.vendor.kodeVendor == vendor.kodeVendor}"
 																></option>
 															</select>
 														</tr>
@@ -117,6 +125,7 @@
 																<option
 																	th:value="${barangExisting.kodeBarang}"
 																	th:text="${barangExisting.namaBarang}"
+																	th:selected="${dto != null && dto.listBarang != null && dto.listBarang[__${iterationStatus.index}__].barang != null && dto.listBarang[__${iterationStatus.index}__].barang.kodeBarang == barangExisting.kodeBarang}"
 																></option>
 															</th:block>
 														</select>

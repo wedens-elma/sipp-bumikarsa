@@ -22,7 +22,7 @@ public class Rencana {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRencana;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_vendor", referencedColumnName = "kodeVendor")
     private Vendor vendor;
 
@@ -47,4 +47,7 @@ public class Rencana {
     @NotNull
     @Column(name = "isDeleted", nullable=false)
     private Boolean isDeleted = false;
+
+    @Column(name = "latestStatus")
+    private String latestStatus;
 }

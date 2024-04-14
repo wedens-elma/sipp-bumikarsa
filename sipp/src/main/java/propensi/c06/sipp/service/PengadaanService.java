@@ -11,6 +11,9 @@ public interface PengadaanService {
     Pengadaan addPengadaan(PengadaanRequestDTO pengadaanDto);
     Pengadaan getPengadaanDetail(String id);
     Map<String, Float> hitungTotalHarga(Pengadaan dto);
+    Long countPaymentStatus(String status);
+    Long countShipmentStatus(String status);
+    Long countAllPengadaan();
     void deletePengadaan(String kodePengadaan);
     //Pengadaan updatePengadaan(PengadaanRequestDTO pengadaanDto);
     //void updateStatusShipment(PengadaanRequestDTO pengadaanRequestDTO);

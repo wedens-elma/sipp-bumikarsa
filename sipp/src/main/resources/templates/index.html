@@ -73,6 +73,35 @@
 				}
 			}
 		</style>
+		<style>
+			.chart-container {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.legend-container {
+				display: flex;
+				flex-direction: column;
+			}
+
+			.legend-item {
+				display: flex;
+				align-items: center;
+				margin-bottom: 5px;
+			}
+
+			.legend-color {
+				width: 15px;
+				height: 15px;
+				border-radius: 50%;
+				margin-right: 5px;
+			}
+
+			.legend-text {
+				font-size: 14px;
+			}
+		</style>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	</head>
 
@@ -200,182 +229,280 @@
 							</div>
 						</div>
 					</div>
+
+					<div class="row">
+						<div class="col">
+							<div class="card m-4 p-4">
+								<h5 class="card-title">Status Pembayaran</h5>
+								<div class="row">
+									<div class="col">
+										<div class="chart-container">
+											<canvas
+												id="paymentChart"
+												width="100"
+												height="100"
+											></canvas>
+										</div>
+									</div>
+									<div class="col align-self-center">
+										<div class="legend-container">
+											<div class="legend-item">
+												<div
+													class="legend-color"
+													style="background-color: rgba(255, 99, 132, 0.5)"
+												></div>
+												<div class="legend-text">
+													Belum Dibayar:
+													[[${countPaymentBelumDibayar}]]/[[${countAllPengadaan}]]
+												</div>
+											</div>
+											<div class="legend-item">
+												<div
+													class="legend-color"
+													style="background-color: rgba(54, 162, 235, 0.5)"
+												></div>
+												<div class="legend-text">
+													Sudah Dibayar:
+													[[${countPaymentSudahDibayar}]]/[[${countAllPengadaan}]]
+												</div>
+											</div>
+											<div class="legend-item">
+												<div
+													class="legend-color"
+													style="background-color: rgba(255, 205, 86, 0.5)"
+												></div>
+												<div class="legend-text">
+													Sedang Diproses:
+													[[${countPaymentSedangDiproses}]]/[[${countAllPengadaan}]]
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="card m-4 p-4">
+								<h5 class="card-title">Status Pengiriman</h5>
+								<div class="row">
+									<div class="col">
+										<div class="chart-container">
+											<canvas
+												id="shipmentChart"
+												width="100"
+												height="100"
+											></canvas>
+										</div>
+									</div>
+									<div class="col align-self-center">
+										<div class="legend-container">
+											<div class="legend-item">
+												<div
+													class="legend-color"
+													style="background-color: rgba(255, 99, 132, 0.5)"
+												></div>
+												<div class="legend-text">
+													Sedang Diproses:
+													[[${countShipmentSedangDiproses}]]/[[${countAllPengadaan}]]
+												</div>
+											</div>
+											<div class="legend-item">
+												<div
+													class="legend-color"
+													style="background-color: rgba(54, 162, 235, 0.5)"
+												></div>
+												<div class="legend-text">
+													Sudah Sampai:
+													[[${countShipmentSudahSampai}]]/[[${countAllPengadaan}]]
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script>
+			$(document).ready(function () {
+				fetch("/api/pengadaan/view-all")
+					.then((response) => {
+						if (!response.ok) {
+							throw new Error("Network response was not ok");
+						}
+						return response.json();
+					})
+					.then((data) => {
+						let entries = Object.entries(data);
+						entries.sort((a, b) => new Date(a[0]) - new Date(b[0]));
 
-			<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-			<script>
-				$(document).ready(function () {
-					fetch("/api/pengadaan/view-all")
-						.then((response) => {
-							if (!response.ok) {
-								throw new Error("Network response was not ok");
-							}
-							return response.json();
-						})
-						.then((data) => {
-							let entries = Object.entries(data);
-							entries.sort((a, b) => new Date(a[0]) - new Date(b[0]));
+						const labels = entries.map((entry) => entry[0]);
+						const dataValues = entries.map((entry) =>
+							typeof entry[1] === "number" && isFinite(entry[1]) ? entry[1] : 0
+						);
 
-							const labels = entries.map((entry) => entry[0]);
-							const dataValues = entries.map((entry) =>
-								typeof entry[1] === "number" && isFinite(entry[1])
-									? entry[1]
-									: 0
-							);
-
-							var ctx = document
-								.getElementById("monthlyExpenditureChart")
-								.getContext("2d");
-							new Chart(ctx, {
-								type: "bar",
-								data: {
-									labels: labels,
-									datasets: [
-										{
-											label: "Total Pengeluaran Bulanan",
-											data: dataValues,
-											backgroundColor: "rgba(54, 162, 235, 0.2)",
-											borderColor: "rgba(54, 162, 235, 1)",
-											borderWidth: 1,
-										},
-									],
-								},
-								options: {
-									scales: {
-										y: {
-											beginAtZero: true,
-										},
+						var ctx = document
+							.getElementById("monthlyExpenditureChart")
+							.getContext("2d");
+						new Chart(ctx, {
+							type: "bar",
+							data: {
+								labels: labels,
+								datasets: [
+									{
+										label: "Total Pengeluaran Bulanan",
+										data: dataValues,
+										backgroundColor: "rgba(54, 162, 235, 0.2)",
+										borderColor: "rgba(54, 162, 235, 1)",
+										borderWidth: 1,
+									},
+								],
+							},
+							options: {
+								scales: {
+									y: {
+										beginAtZero: true,
 									},
 								},
-							});
-						})
-						.catch((error) => {
-							console.error("Error fetching data:", error);
+							},
 						});
+					})
+					.catch((error) => {
+						console.error("Error fetching data:", error);
+					});
+			});
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			document.addEventListener('DOMContentLoaded', function () {
+				var paymentCtx = document.getElementById('paymentChart').getContext('2d');
+				var shipmentCtx = document.getElementById('shipmentChart').getContext('2d');
+
+				var paymentCounts = [
+					[[${countPaymentBelumDibayar}]],
+					[[${countPaymentSudahDibayar}]],
+					[[${countPaymentSedangDiproses}]]
+				];
+
+				var shipmentCounts = [
+					[[${countShipmentSedangDiproses}]],
+					[[${countShipmentSudahSampai}]]
+				];
+
+				var totalPengadaan = [[${countAllPengadaan}]];
+
+				var paymentChart = new Chart(paymentCtx, {
+				type: 'doughnut',
+				data: {
+					datasets: [{
+						label: 'Total',
+						data: paymentCounts,
+						backgroundColor: [
+							'rgba(255, 99, 132, 0.5)',
+							'rgba(54, 162, 235, 0.5)',
+							'rgba(255, 205, 86, 0.5)'
+						],
+						borderColor: [
+							'rgba(255, 99, 132, 1)',
+							'rgba(54, 162, 235, 1)',
+							'rgba(255, 205, 86, 1)'
+						],
+						borderWidth: 1
+					}]
+				},
+				options: {
+					aspectRatio: 1,
+					responsive: true,
+					title: {
+						display: true,
+						text: 'Payment Status'
+					},
+					animation: {
+						animateScale: true,
+						animateRotate: true
+					},
+					plugins: {
+						tooltip: {
+							callbacks: {
+								label: function(context) {
+									var label = '';
+									switch (context.dataIndex) {
+										case 0:
+											label = 'Belum Dibayar';
+											break;
+										case 1:
+											label = 'Sudah Dibayar';
+											break;
+										case 2:
+											label = 'Sedang Diproses';
+											break;
+										default:
+											label = '';
+									}
+									return label;
+								}
+							}
+						}
+					},
+				}
+			});
+
+				var shipmentChart = new Chart(shipmentCtx, {
+					type: 'doughnut',
+					data: {
+						datasets: [{
+							label: 'Total',
+							data: shipmentCounts,
+							backgroundColor: [
+								'rgba(255, 99, 132, 0.5)',
+								'rgba(54, 162, 235, 0.5)'
+							],
+							borderColor: [
+								'rgba(255, 99, 132, 1)',
+								'rgba(54, 162, 235, 1)'
+							],
+							borderWidth: 1
+						}]
+					},
+					options: {
+						aspectRatio: 1,
+						responsive: true,
+						title: {
+							display: true,
+							text: 'Shipment Status'
+						},
+						animation: {
+							animateScale: true,
+							animateRotate: true
+						},
+						plugins: {
+						tooltip: {
+							callbacks: {
+								label: function(context) {
+									var label = '';
+									switch (context.dataIndex) {
+										case 0:
+											label = 'Sedang Diproses';
+											break;
+										case 1:
+											label = 'Sudah Sampai';
+											break;
+									}
+									return label;
+								}
+							}
+						}
+					},
+					}
 				});
-			</script>
-		</body>
-	</html>
-
-	<!--<!DOCTYPE html>-->
-	<!--<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">-->
-	<!--<head>-->
-	<!--  <meta charset="UTF-8" />-->
-	<!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />-->
-	<!--  <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" />-->
-	<!--  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">-->
-	<!--  <title>Dashboard Pengadaan</title>-->
-	<!--</head>-->
-	<!--<body>-->
-	<!--<div class="container-fluid">-->
-	<!--  <div class="row">-->
-	<!--    <div class="col">-->
-	<!--      <div class="container">-->
-	<!--        <div class="card m-4 p-4 shadow-lg p-3 mb-5 bg-white rounded">-->
-	<!--          <div class="card-body">-->
-	<!--            <div class="row">-->
-	<!--              <div class="col-md-6">-->
-	<!--                <div class="text-center">-->
-	<!--                  <h2>Pengadaan</h2>-->
-	<!--                </div>-->
-	<!--                <canvas id="monthlyExpenditureChart" width="800" height="400"></canvas>-->
-	<!--              </div>-->
-	<!--              <div class="col-md-6">-->
-	<!--                <div class="text-center">-->
-	<!--                  <h4>Pengeluaran Pertahun</h4>-->
-	<!--                  <div class="card">-->
-	<!--                    <div class="card-body">-->
-	<!--                      <p class="card-text">Total Pengeluaran Tahunan: <span th:text="${totalPengeluaranTahunan}"></span></p>-->
-	<!--                    </div>-->
-	<!--                  </div>-->
-	<!--                  <div class="col-md-6">-->
-	<!--                    <div class="text-center">-->
-	<!--                      <h4>Pengadaan</h4>-->
-	<!--                      <div class="card">-->
-	<!--                        <div class="card-body">-->
-	<!--                          <p class="card-text">Total Pengadaan: <span th:text="${totalPengadaan} + ' unit'"></span></p>-->
-	<!--                        </div>-->
-	<!--                      </div>-->
-	<!--                    </div>-->
-	<!--                  </div>-->
-	<!--                </div>-->
-	<!--              </div>-->
-	<!--            </div>-->
-	<!--          </div>-->
-	<!--        </div>-->
-	<!--      </div>-->
-	<!--    </div>-->
-	<!--  </div>-->
-	<!--</div>-->
-
-	<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
-	<!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
-	<!--<script>-->
-	<!--  $(document).ready(function () {-->
-	<!--    // Lakukan fetch ke endpoint API-->
-	<!--    fetch('/api/pengadaan/view-all')-->
-	<!--            .then(response => {-->
-	<!--              if (!response.ok) {-->
-	<!--                throw new Error('Network response was not ok');-->
-	<!--              }-->
-	<!--              return response.json(); // Parse response ke JSON-->
-	<!--            })-->
-	<!--            .then(data => {-->
-	<!--              const labels = Object.keys(data); // Ambil label dari keys object-->
-	<!--              const dataValues = Object.values(data); // Ambil data dari values object-->
-
-	<!--              // Pastikan semua data adalah finite number-->
-	<!--              const cleanedDataValues = dataValues.map(value =>-->
-	<!--                      (typeof value === 'number' && isFinite(value)) ? value : 0-->
-	<!--              );-->
-
-	<!--              // Ambil context dari canvas untuk Chart-->
-	<!--              var ctx = document.getElementById('monthlyExpenditureChart').getContext('2d');-->
-
-	<!--              // Buat Chart-->
-	<!--              var monthlyExpenditureChart = new Chart(ctx, {-->
-	<!--                type: 'bar',-->
-	<!--                data: {-->
-	<!--                  labels: labels,-->
-	<!--                  datasets: [{-->
-	<!--                    label: 'Total Pengeluaran Bulanan',-->
-	<!--                    data: cleanedDataValues,-->
-	<!--                    backgroundColor: [-->
-	<!--                      'rgba(255, 99, 132, 0.2)',-->
-	<!--                      'rgba(54, 162, 235, 0.2)',-->
-	<!--                      'rgba(255, 206, 86, 0.2)',-->
-	<!--                      'rgba(75, 192, 192, 0.2)',-->
-	<!--                      'rgba(153, 102, 255, 0.2)',-->
-	<!--                      'rgba(255, 159, 64, 0.2)'-->
-	<!--                    ],-->
-	<!--                    borderColor: [-->
-	<!--                      'rgba(255, 99, 132, 1)',-->
-	<!--                      'rgba(54, 162, 235, 1)',-->
-	<!--                      'rgba(255, 206, 86, 1)',-->
-	<!--                      'rgba(75, 192, 192, 1)',-->
-	<!--                      'rgba(153, 102, 255, 1)',-->
-	<!--                      'rgba(255, 159, 64, 1)'-->
-	<!--                    ],-->
-	<!--                    borderWidth: 1-->
-	<!--                  }]-->
-	<!--                },-->
-	<!--                options: {-->
-	<!--                  scales: {-->
-	<!--                    y: {-->
-	<!--                      beginAtZero: true-->
-	<!--                    }-->
-	<!--                  }-->
-	<!--                }-->
-	<!--              });-->
-	<!--            })-->
-	<!--            .catch(error => {-->
-	<!--              console.error('Error fetching data:', error);-->
-	<!--            });-->
-	<!--  });-->
-	<!--</script>-->
-	<!--</body>-->
-	<!--</html>-->
+			});
+			/*]]>*/
+		</script>
+	</body>
 </html>
