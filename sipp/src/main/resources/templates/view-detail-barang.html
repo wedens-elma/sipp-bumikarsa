@@ -130,13 +130,30 @@
 									</div>
 								</div>
 							</div>
-							<div class="d-flex justify-content-end">
-								<a
-									type="button"
-									class="btn btn-md btn-primary"
-									th:href="@{/barang/{idBarang}/ubah(idBarang=${barang.kodeBarang})}"
-									>Ubah Detail</a
-								>
+							<br /><br />
+							<div class="container">
+								<div class="row">
+									<div class="col text-start">
+										<!-- align kanan -->
+										<a
+											th:if="${role == 'Manajer' || role == 'Operasional'}"
+											type="button"
+											class="btn btn-md btn-primary"
+											th:href="@{/barang/{id}/update(id=${barang.kodeBarang})}"
+											>Ubah Barang</a
+										>
+									</div>
+									<div class="col text-end">
+										<!-- align kiri -->
+										<a
+											th:if="${barang.stokBarang == 0 && (role == 'Manajer' || role == 'Operasional')}"
+											type="button"
+											class="btn btn-md btn-danger"
+											th:href="@{/barang/{id}/delete(id=${barang.kodeBarang})}"
+											>Hapus</a
+										>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
