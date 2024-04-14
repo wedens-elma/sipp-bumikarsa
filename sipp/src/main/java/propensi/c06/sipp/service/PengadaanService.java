@@ -19,7 +19,7 @@ public interface PengadaanService {
     //void updatePengadaan(UpdatePengadaanRequestDTO pengadaanDto);
     Pengadaan updatePengadaan(Pengadaan pengadaanFromDto);
     void updateStatusPengadaan(Pengadaan pengadaan);
-
+    //void updatePengadaan(String id, PengadaanRequestDTO dto);
 }
 
 
