@@ -1,9 +1,7 @@
 package propensi.c06.sipp.controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -140,7 +138,8 @@ public class RencanaController {
     @PostMapping("/create")
     public String addRencana(
         @Valid @ModelAttribute CreateRencanaRequestDTO rencanaDTO, 
-        BindingResult bindingResult, Model model) {
+        BindingResult bindingResult, Model model,
+        RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> errors = bindingResult.getAllErrors();
             StringBuilder errorMessage = new StringBuilder();
@@ -155,7 +154,8 @@ public class RencanaController {
         if (rencana == null) {
             return "create-rencana-error-view";
         } else {
-            return "view-daftar-rencana";
+            redirectAttributes.addFlashAttribute("listLogRencana", logRencanaService.getAllLogRencana());
+            return "redirect:/rencana/";
         }
     }
 }

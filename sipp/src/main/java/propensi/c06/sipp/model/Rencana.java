@@ -22,7 +22,7 @@ public class Rencana {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRencana;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_vendor", referencedColumnName = "kodeVendor")
     private Vendor vendor;
 

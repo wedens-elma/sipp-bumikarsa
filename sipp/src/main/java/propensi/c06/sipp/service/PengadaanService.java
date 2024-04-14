@@ -1,6 +1,7 @@
 package propensi.c06.sipp.service;
 
 import propensi.c06.sipp.dto.PengadaanRequestDTO;
+import propensi.c06.sipp.dto.request.UpdatePengadaanRequestDTO;
 import propensi.c06.sipp.model.Pengadaan;
 
 import java.util.List;
@@ -14,6 +15,14 @@ public interface PengadaanService {
     Long countPaymentStatus(String status);
     Long countShipmentStatus(String status);
     Long countAllPengadaan();
+    void deletePengadaan(String kodePengadaan);
+    //Pengadaan updatePengadaan(PengadaanRequestDTO pengadaanDto);
+    //void updateStatusShipment(PengadaanRequestDTO pengadaanRequestDTO);
+    //Pengadaan findById(String id);
+    //void updatePengadaan(UpdatePengadaanRequestDTO pengadaanDto);
+    Pengadaan update (Pengadaan pengadaan);
+    void updateStatusPengadaan(Pengadaan pengadaan);
+
 }
 
 

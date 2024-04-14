@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://thymeleaf.org"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <title>SIPP - PRORORO</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!--        <div th:replace=~{"fragments/sidebarf :: sidebar}" class="col-lg-3 col-md-4" ></div>-->
+        <div
+          th:replace="~{fragments/admin-sidebar}"
+          class="col-lg-3 col-md-4"
+        ></div>
+        <div class="col">
+          <div class="card m-4 p-4">
+            <div style="text-align: center">
+              <img
+                src="https://gitlab.cs.ui.ac.id/propensi-2023-2024-genap/kelas-c/c06-prororo/-/raw/main/images/logo.png?ref_type=heads"
+                alt="prororo"
+                style="width: 100px; height: 100px"
+              />
+
+              <br /><br />
+
+              <p>hello world this is prororo hihuhe</p>
+              <br />
+              <p>
+                our amazing sipp information system for pt bumi karsa is coming
+                soon!
+              </p>
+              <a href="/user/add" class="btn btn-primary">Add User</a>
+              <a href="/user" class="btn btn-primary">View All User</a>
+              <a href="/logout" class="btn btn-primary">Logout</a>
+              <p>stay tuned x</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
