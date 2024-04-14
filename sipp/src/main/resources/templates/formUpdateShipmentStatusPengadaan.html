@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Update Shipment Status Pengadaan</title>
+    <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
+    <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <!--        <div th:replace=~{"fragments/sidebarf :: sidebar}" class="col-lg-3 col-md-4" ></div>-->
+        <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+        <div class="col">
+            <div id="formupdatepengadaan">
+                <div class="card mx-lg-5 m-4 p-4">
+                    <h2 class="card-header text-center p-3">Update Shipment Status Pengadaan</h2>
+                    <div class="card-body">
+                        <div class="justify-content-center">
+                            <form method="post" th:action="@{/pengadaan/{id}/updateShipmentStatus(id=${pengadaan.idPengadaan})}">
+                                <div class="mb-3">
+                                    <label for="shipmentStatus" class="form-label">Shipment Status:</label>
+                                    <select class="form-select" id="shipmentStatus" name="shipmentStatus">
+                                        <option value="0">In Progress</option>
+                                        <option value="1">Arrived</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update Status</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+</html>
