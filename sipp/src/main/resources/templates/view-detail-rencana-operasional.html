@@ -63,26 +63,25 @@
 
                         <div class="card bg-warning text-white border-0 rounded p-3 d-inline-flex">
                             <div class="d-flex align-items-center">
-                                <p class="mb-0 mr-3"><b> Tanggal Rencana </b></p>
+                                <p class="mb-0 mr-3"><b> Tanggal Rencana: </b></p>
                                 <span class="font-weight-bold" th:text="${#dates.format(#dates.create(rencana.expectedDate.year, rencana.expectedDate.monthValue, rencana.expectedDate.dayOfMonth), 'dd MMMM yyyy')}"></span>
                             </div>
                             <div th:switch="${rencana.logRencana[rencana.logRencana.size() - 1].status}">
                                 <div class="d-flex align-items-center" th:case="'disetujui'">
-                                    <p class="mb-0 mr-3"><b> Tanggal Disetujui </b></p>
+                                    <p class="mb-0 mr-3"><b> Tanggal Disetujui: </b></p>
                                     <span th:text="${#dates.format(#dates.create(rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.year, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.monthValue, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.dayOfMonth), 'dd MMMM yyyy')}"></span>
                                 </div>
                                 <div class="d-flex align-items-center" th:case="'dibatalkan'">
-                                    <p class="mb-0 mr-3"><b> Tanggal Dibatalkan </b></p>
+                                    <p class="mb-0 mr-3"><b> Tanggal Dibatalkan: </b></p>
                                     <span th:text="${#dates.format(#dates.create(rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.year, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.monthValue, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.dayOfMonth), 'dd MMMM yyyy')}"></span>
                                 </div>
                                 <div class="d-flex align-items-center" th:case="'direalisasikan'">
-                                    <p class="mb-0 mr-3"><b> Tanggal Direalisasikan </b></p>
+                                    <p class="mb-0 mr-3"><b> Tanggal Direalisasikan: </b></p>
                                     <span th:text="${#dates.format(#dates.create(rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.year, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.monthValue, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.dayOfMonth), 'dd MMMM yyyy')}"></span>
                                 </div>
                             </div>
                         </div>
 
-                        <br>
                         <br><br>
                         <div class="row">
                             <div class="col-3">

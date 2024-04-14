@@ -1,102 +1,130 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <title>Tambah Rencana</title>
     <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
     <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
-  </head>
-  <body>
-    <div class="container-fluid">
-      <div class="row">
-          <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
-          <div class="col">
-  
+
+    <style>
+        .custom-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23333" width="18px" height="18px"><path d="M7 10l5 5 5-5H7z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+        <div class="col">
+
             <div class="container py-lg-5">
-              <div class="card mx-lg-5">
-                <form th:action="@{/rencana/create}" th:object="${rencanaDTO}" method="post">
-                  <div class="card-header text-center p-3">
-                    <h2>
-                      Tambah Rencana
-                    </h2>
-                    <input class="form-control" type="date" required="required" th:field="*{expectedDate}" /> 
-                  </div>
-                    <div class="card-body">
-                    <table class="table table-borderless">
-                      <tbody>
-                          <tr>
-                              <td><b>Nama Pengadaan</b></td>
-                              <td><input class="form-control" type="text" required="required" th:field="*{namaRencana}" /></td>
-                          </tr>
-                          <tr>
-                              <td><b>Vendor</b></td>
-                              <td><table class="table">
+                <div class="card mx-lg-5">
+                    <form id="form-rencana" th:action="@{/rencana/create}" th:object="${rencanaDTO}" method="post">
+                        <div class="card-header text-center p-3">
+                            <h2>
+                                Tambah Rencana
+                            </h2>
+                            <input class="form-control" type="date" required="required" th:field="*{expectedDate}" />
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-borderless">
                                 <tbody>
                                 <tr>
-                                  <select class="form-control" name="kodeVendor" id="kodeVendor" th:field="*{vendor.kodeVendor}">
-                                    <option th:each="vendor: ${listVendorExisted}"
-                                            th:value="${vendor.kodeVendor}" th:text="${vendor.namaVendor}"></option>
-                                  </select>
+                                    <td><b>Nama Pengadaan</b></td>
+                                    <td><input class="form-control" type="text" required="required" placeholder="Masukkan nama pengadaan..." th:field="*{namaRencana}" /></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Vendor</b></td>
+                                    <td>
+                                        <select class="form-control custom-select gap-2" name="kodeVendor" id="kodeVendor" th:field="*{vendor.kodeVendor}">
+                                            <option th:each="vendor: ${listVendorExisted}"
+                                                    th:value="${vendor.kodeVendor}" th:text="${vendor.namaVendor}"></option>
+                                        </select>
+                                    </td>
                                 </tr>
                                 </tbody>
-                              </table></td>
-                          </tr>
-                      </tbody>
-                  </table>
-            
-                    <b> Barang Pengadaan </b>
-                    <br> <br>
-                    <table class="table table-bordered text-center">
-            
-                      <thead class="table-dark">
-                        <tr>
-                          <th scope="col">No.</th>
-                          <th scope="col">Nama</th>
-                          <th scope="col">Kuantitas</th>
-                          <th scope="col">Aksi</th>
-                        </tr>
-                      </thead>
-            
-                      <tbody id="container">
-                        <tr th:each="barang, iterationStatus : *{listBarangRencana}">
-                            <td th:text="${iterationStatus.count}">
-                            </td>
-                            <td>
-                                <select
-                                    class="form-control gap-2" th:field="*{listBarangRencana[__${iterationStatus.index}__].barang}">
-                                    <div th:each="barangExisting : ${listBarangExisted}">
-                                        <option th:value="${barangExisting.kodeBarang}" th:text="${barangExisting.namaBarang}">
-                                        </option>
-                                    </div>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="number" 
-                                    class="form-control" min="1" placeholder="Jumlah Barang" th:field="*{listBarangRencana[__${iterationStatus.index}__].kuantitas}" required="required" />
-                            </td>
-                            <td>
-                                <button th:value="${iterationStatus.index}" class="btn btn-danger" type="submit"
-                                    name="deleteRow">
-                                    Hapus
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-        
-                  </table>
-                  
-                  <div class="text-right">
-                    <button class="my-4 ml-2 btn btn-primary" name="addRow">+ Tambah Barang</button>
-                  </div>
-            
-                  <button type="submit">Simpan</button>
-                  </form>
+                            </table>
+                            <b> Barang Pengadaan </b>
+                            <br> <br>
+                            <table class="table table-bordered text-center">
+                                <thead class="table-dark">
+                                <tr>
+                                    <th scope="col">No.</th>
+                                    <th scope="col">Nama</th>
+                                    <th scope="col">Kuantitas</th>
+                                    <th scope="col">Aksi</th>
+                                </tr>
+                                </thead>
+                                <tbody id="container">
+                                <tr th:each="barang, iterationStatus : *{listBarangRencana}">
+                                    <td th:text="${iterationStatus.count}"></td>
+                                    <td>
+                                        <select class="form-control custom-select gap-2" th:field="*{listBarangRencana[__${iterationStatus.index}__].barang}">
+                                            <option th:each="barangExisting : ${listBarangExisted}"
+                                                    th:value="${barangExisting.kodeBarang}" th:text="${barangExisting.namaBarang}"></option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="number"
+                                               class="form-control kuantitas" min="1" placeholder="Masukkan jumlah barang..." th:field="*{listBarangRencana[__${iterationStatus.index}__].kuantitas}" />
+                                    </td>
+                                    <td>
+                                        <button th:value="${iterationStatus.index}" class="btn btn-danger" type="submit"
+                                                name="deleteRow">Hapus</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="text-right">
+                                <button class="my-4 ml-2 btn btn-warning text-white" name="addRow" onclick="return validateTambahBarang()">+ Tambah Barang</button>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" onclick="validateForm()" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-              </div>
             </div>
-  
-          </div>
-      </div>
-  </div>
-  </body>
+
+        </div>
+    </div>
+</div>
+<script>
+  function validateTambahBarang() {
+      var inputs = document.querySelectorAll('.kuantitas');
+      var isValid = true;
+      inputs.forEach(function(input) {
+          if (input.value === "") {
+              isValid = false;
+          }
+      });
+      if (!isValid) {
+          alert("Kuantitas barang wajib diisi.");
+      }
+      return isValid;
+  }
+
+  function validateForm() {
+      var inputs = document.querySelectorAll('.kuantitas');
+      var isValid = true; // Change to true to allow submission if at least one kuantitas field is filled
+      inputs.forEach(function(input) {
+          if (input.value === "") {
+              isValid = false;
+          }
+      });
+      if (!isValid) {
+          alert("Kuantitas barang wajib diisi.");
+      } else {
+          document.getElementById("form-rencana").submit();
+      }
+  }
+</script>
+</body>
 </html>

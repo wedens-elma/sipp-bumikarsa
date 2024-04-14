@@ -20,6 +20,7 @@ import propensi.c06.sipp.dto.request.CreateRencanaRequestDTO;
 import propensi.c06.sipp.dto.request.UpdateStatusRencanaRequestDTO;
 import propensi.c06.sipp.model.LogRencana;
 import propensi.c06.sipp.model.Rencana;
+import propensi.c06.sipp.model.UserModel;
 import propensi.c06.sipp.service.BarangService;
 import propensi.c06.sipp.service.LogRencanaService;
 import propensi.c06.sipp.service.RencanaService;
@@ -48,6 +49,8 @@ public class RencanaController {
     public String daftarRencana(Model model) {
         List<LogRencana> listLogRencana = logRencanaService.getAllLogRencana();
         model.addAttribute("listLogRencana", listLogRencana);
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("username", user.getName());
         if (userService.getCurrentUserRole().equalsIgnoreCase("keuangan")) {
             return "view-daftar-rencana-keuangan";
         } else {
@@ -59,6 +62,8 @@ public class RencanaController {
     public String detailRencana(@PathVariable(value = "id") Long id, Model model, @ModelAttribute UpdateStatusRencanaRequestDTO statusDTO) {
         Rencana rencana = rencanaService.getRencanaById(id);
         model.addAttribute("rencana", rencana);
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("username", user.getName());
         if (userService.getCurrentUserRole().equalsIgnoreCase("manajer")) {
             model.addAttribute("statusDTO", statusDTO);
             return "view-detail-rencana-manajer";
@@ -70,21 +75,26 @@ public class RencanaController {
     }
 
     @GetMapping(value = "/{id}/delete")
-    public String deleteRencana(@PathVariable(value = "id") Long id, RedirectAttributes redirectAttributes) {
+    public String deleteRencana(@PathVariable(value = "id") Long id, RedirectAttributes redirectAttributes, Model model) {
         Rencana rencana = rencanaService.getRencanaById(id);
         rencanaService.deleteRencana(rencana);
         redirectAttributes.addFlashAttribute("deleteSuccessMessage", "Rencana pengadaan telah berhasil dihapus.");
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("username", user.getName());
         return "redirect:/rencana/";
     }
 
     @PostMapping(value = "/detail/{id}", params = {"setujui"})
     public ResponseEntity<String> setujuiRencana( 
         @PathVariable("id") Long id, 
-        @ModelAttribute UpdateStatusRencanaRequestDTO statusDTO
+        @ModelAttribute UpdateStatusRencanaRequestDTO statusDTO,
+        Model model
     ) {
         Rencana rencana = rencanaService.getRencanaById(id);
         if (rencana != null) {
             rencanaService.ubahStatusRencana(rencana, "disetujui", statusDTO.getFeedback());
+            UserModel user = userService.getLoggedInUser();
+            model.addAttribute("username", user.getName());
             return ResponseEntity.ok("Status rencana berhasil diubah menjadi disetujui");
         } else {
             return ResponseEntity.notFound().build();
@@ -94,11 +104,14 @@ public class RencanaController {
     @PostMapping(value = "/detail/{id}", params = {"batalkan"})
     public ResponseEntity<String> batalkanRencana(
         @PathVariable("id") Long id,
-        @ModelAttribute UpdateStatusRencanaRequestDTO statusDTO
+        @ModelAttribute UpdateStatusRencanaRequestDTO statusDTO,
+        Model model
     ) {
         Rencana rencana = rencanaService.getRencanaById(id);
         if (rencana != null) {
             rencanaService.ubahStatusRencana(rencana, "dibatalkan", statusDTO.getFeedback());
+            UserModel user = userService.getLoggedInUser();
+            model.addAttribute("username", user.getName());
             return ResponseEntity.ok("Status rencana berhasil diubah menjadi dibatalkan");
         } else {
             return ResponseEntity.notFound().build();
@@ -110,6 +123,8 @@ public class RencanaController {
         model.addAttribute("rencanaDTO", new CreateRencanaRequestDTO());
         model.addAttribute("listVendorExisted", vendorService.getAllVendors());
         model.addAttribute("listBarangExisted", barangService.getAllBarang());
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("username", user.getName());
         return "form-create-rencana";
     }
 
@@ -122,6 +137,8 @@ public class RencanaController {
         model.addAttribute("rencanaDTO", rencanaDTO);
         model.addAttribute("listVendorExisted", vendorService.getAllVendors());
         model.addAttribute("listBarangExisted", barangService.getAllBarang());
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("username", user.getName());
         return "form-create-rencana";
     }
 
@@ -132,6 +149,8 @@ public class RencanaController {
         model.addAttribute("rencanaDTO", rencanaDTO);
         model.addAttribute("listVendorExisted", vendorService.getAllVendors());
         model.addAttribute("listBarangExisted", barangService.getAllBarang());
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("username", user.getName());
         return "form-create-rencana";
     }
 
@@ -151,6 +170,8 @@ public class RencanaController {
         }
         Rencana rencana = rencanaService.saveRencana(rencanaDTO);
         model.addAttribute("listLogRencana", logRencanaService.getAllLogRencana());
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("username", user.getName());
         if (rencana == null) {
             return "create-rencana-error-view";
         } else {
