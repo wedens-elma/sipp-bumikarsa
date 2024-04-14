@@ -173,10 +173,47 @@ public class PengadaanServiceImpl implements PengadaanService {
         return pengadaan;
     }
 
-    // Total Pengeluaran Perbulan
+    // Total Pengeluaran Perbulan yg biasa
+//    public Map<String, Double> getTotalPengeluaranPerbulan() {
+//        List<Pengadaan> allPengadaans = pengadaanDb.findAll().stream()
+//                .filter(p -> !p.getIsDeleted())
+//                .collect(Collectors.toList());
+//        Map<String, Double> expenditurePerMonth = new HashMap<>();
+//
+//        for (Pengadaan pengadaan : allPengadaans) {
+//            String month = pengadaan.getTanggalPengadaan().format(DateTimeFormatter.ofPattern("yyyy-MM"));
+//            Double total = pengadaan.getListPengadaanBarang().stream()
+//                    .mapToDouble(pb -> pb.getHargaBarang() * pb.getJumlahBarang())
+//                    .sum();
+//            expenditurePerMonth.merge(month, total, Double::sum);
+//        }
+//        System.out.println(expenditurePerMonth);
+//        return expenditurePerMonth;
+//    }
+    @Override
+    public Map<String, Double> getTotalPengeluaranPertahun() {
+        List<Pengadaan> allPengadaans = pengadaanDb.findAll().stream()
+                .filter(p -> !p.getIsDeleted() && p.getPaymentStatus() == 2)
+                .collect(Collectors.toList());
+        Map<String, Double> expenditurePerYear = new HashMap<>();
+
+        for (Pengadaan pengadaan : allPengadaans) {
+            String year = pengadaan.getTanggalPengadaan().format(DateTimeFormatter.ofPattern("yyyy"));
+            if (year.equals("2024")) {
+                Double total = pengadaan.getListPengadaanBarang().stream()
+                        .mapToDouble(pb -> pb.getHargaBarang() * pb.getJumlahBarang())
+                        .sum();
+                expenditurePerYear.merge(year, total, Double::sum);
+            }
+        }
+        System.out.println(expenditurePerYear);
+        return expenditurePerYear;
+    }
+
+    @Override
     public Map<String, Double> getTotalPengeluaranPerbulan() {
         List<Pengadaan> allPengadaans = pengadaanDb.findAll().stream()
-                .filter(p -> !p.getIsDeleted())
+                .filter(p -> !p.getIsDeleted() && p.getPaymentStatus() == 2) // Check if the payment status is 'Paid'
                 .collect(Collectors.toList());
         Map<String, Double> expenditurePerMonth = new HashMap<>();
 
@@ -191,42 +228,31 @@ public class PengadaanServiceImpl implements PengadaanService {
         return expenditurePerMonth;
     }
 
+
+
+
+    // totalpengeluaranpertahun yg biasa
+//    @Override
 //    public Map<String, Double> getTotalPengeluaranPertahun() {
 //        List<Pengadaan> allPengadaans = pengadaanDb.findAll();
 //        Map<String, Double> expenditurePerYear = new HashMap<>();
 //
 //        for (Pengadaan pengadaan : allPengadaans) {
 //            String year = pengadaan.getTanggalPengadaan().format(DateTimeFormatter.ofPattern("yyyy"));
-//            Double total = pengadaan.getListPengadaanBarang().stream()
-//                    .mapToDouble(pb -> pb.getHargaBarang() * pb.getJumlahBarang())
-//                    .sum();
-//            expenditurePerYear.merge(year, total, Double::sum);
+//            if (year.equals("2024")) {
+//                Double total = pengadaan.getListPengadaanBarang().stream()
+//                        .mapToDouble(pb -> pb.getHargaBarang() * pb.getJumlahBarang())
+//                        .sum();
+//                if (total >= 0) {
+//                    expenditurePerYear.merge(year, total, Double::sum);
+//                } else {
+//                    expenditurePerYear.merge(year, 0.0, Double::sum);
+//                }
+//            }
 //        }
-//
+//        System.out.println(expenditurePerYear);
 //        return expenditurePerYear;
 //    }
-
-    @Override
-    public Map<String, Double> getTotalPengeluaranPertahun() {
-        List<Pengadaan> allPengadaans = pengadaanDb.findAll();
-        Map<String, Double> expenditurePerYear = new HashMap<>();
-
-        for (Pengadaan pengadaan : allPengadaans) {
-            String year = pengadaan.getTanggalPengadaan().format(DateTimeFormatter.ofPattern("yyyy"));
-            if (year.equals("2024")) {
-                Double total = pengadaan.getListPengadaanBarang().stream()
-                        .mapToDouble(pb -> pb.getHargaBarang() * pb.getJumlahBarang())
-                        .sum();
-                if (total >= 0) {
-                    expenditurePerYear.merge(year, total, Double::sum);
-                } else {
-                    expenditurePerYear.merge(year, 0.0, Double::sum);
-                }
-            }
-        }
-        System.out.println(expenditurePerYear);
-        return expenditurePerYear;
-    }
 
 
     public int getTotalNumberOfPengadaans() {

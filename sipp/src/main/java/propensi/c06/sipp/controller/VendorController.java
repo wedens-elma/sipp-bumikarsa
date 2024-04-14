@@ -12,6 +12,7 @@ import propensi.c06.sipp.dto.request.CreateVendorRequestDTO;
 import propensi.c06.sipp.dto.request.UpdateVendorRequestDTO;
 import propensi.c06.sipp.model.Vendor;
 import propensi.c06.sipp.service.BarangService;
+import propensi.c06.sipp.service.UserService;
 import propensi.c06.sipp.service.VendorService;
 import org.springframework.validation.BindingResult;
 
@@ -29,10 +30,16 @@ public class VendorController {
 
     @Autowired
     VendorMapper vendorMapper;
+
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/vendor")
     public String daftarVendor(Model model) {
         List<Vendor> listVendor = vendorService.getAllVendors();
         model.addAttribute("vendors", listVendor);
+        String username = userService.getCurrentUserName();
+        model.addAttribute("username", username);
         return "viewall-vendor";
     }
 
@@ -40,6 +47,8 @@ public class VendorController {
     public String formTambahVendor(Model model) {
         model.addAttribute("vendorDTO", new CreateVendorRequestDTO());
         model.addAttribute("listBarang", barangService.getAllBarang());
+        String username = userService.getCurrentUserName();
+        model.addAttribute("username", username);
         return "form-tambah-vendor";
     }
 
@@ -64,6 +73,8 @@ public class VendorController {
             redirectAttributes.addFlashAttribute("errorMessage", "Vendor not found.");
             return "redirect:/vendor";
         }
+        String username = userService.getCurrentUserName();
+        model.addAttribute("username", username);
         model.addAttribute("vendor", vendor);
         return "view-detail-vendor";
     }
@@ -75,35 +86,65 @@ public class VendorController {
             return "redirect:/vendor";
         }
         UpdateVendorRequestDTO vendorDTO = vendorMapper.vendorToUpdateVendorRequestDTO(vendor);
+        String username = userService.getCurrentUserName();
+        model.addAttribute("username", username);
         model.addAttribute("vendorDTO", vendorDTO);
         model.addAttribute("allBarang", barangService.getAllBarang());
         return "form-update-vendor";
     }
 
     @PostMapping("/vendor/{kodeVendor}/update")
-    public String updateVendor(@PathVariable String kodeVendor, @Valid @ModelAttribute("vendorDTO") UpdateVendorRequestDTO vendorDTO, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+    public String updateVendor(@PathVariable String kodeVendor, @Valid @ModelAttribute("vendorDTO") UpdateVendorRequestDTO vendorDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("allBarang", barangService.getAllBarang());
-            model.addAttribute("errorMessage", "Please correct the form fields.");
-            return "form-update-vendor";
+            redirectAttributes.addAttribute("allBarang", barangService.getAllBarang());
+            redirectAttributes.addFlashAttribute("errorMessage", "Please correct the form fields.");
+            return "redirect:/vendor/" + kodeVendor + "/update";
         }
 
         try {
             Vendor updatedVendor = vendorService.updateVendor(vendorDTO);
             redirectAttributes.addFlashAttribute("successMessage", "Vendor '" + updatedVendor.getNamaVendor() + "' successfully updated.");
+            redirectAttributes.addAttribute("kodeVendor", updatedVendor.getKodeVendor()); // Add 'kodeVendor' attribute for use in the success view
+            return "redirect:/success-update-vendor";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/vendor/" + kodeVendor + "/update";
         }
-
-        return "redirect:/vendor";
     }
+
+    @GetMapping("/success-update-vendor")
+    public String showUpdateVendorSuccess(@RequestParam("kodeVendor") String kodeVendor, Model model) {
+        model.addAttribute("kodeVendor", kodeVendor);
+        return "success-update-vendor";
+    }
+
+
+//    @PostMapping("/vendor/{kodeVendor}/update")
+//    public String updateVendor(@PathVariable String kodeVendor, @Valid @ModelAttribute("vendorDTO") UpdateVendorRequestDTO vendorDTO, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+//        if (bindingResult.hasErrors()) {
+//            model.addAttribute("allBarang", barangService.getAllBarang());
+//            model.addAttribute("errorMessage", "Please correct the form fields.");
+//            return "form-update-vendor";
+//        }
+//
+//        try {
+//            Vendor updatedVendor = vendorService.updateVendor(vendorDTO);
+//            redirectAttributes.addFlashAttribute("successMessage", "Vendor '" + updatedVendor.getNamaVendor() + "' successfully updated.");
+//        } catch (IllegalArgumentException e) {
+//            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+//            return "redirect:/vendor/" + kodeVendor + "/update";
+//        }
+//
+//        return "redirect:/vendor";
+//    }
 
 
 
     @GetMapping("/vendor/{kodeVendor}/delete")
     public String softDeleteVendor(@PathVariable("kodeVendor") String kodeVendor, Model model) {
         vendorService.softDeleteVendor(kodeVendor);
+        String username = userService.getCurrentUserName();
+        model.addAttribute("username", username);
         model.addAttribute("kodeVendor", kodeVendor);
         return "success-delete-vendor";
     }

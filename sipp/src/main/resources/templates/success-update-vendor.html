@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Vendor Deletion Success</title>
+  <title>Vendor Update Success</title>
   <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
   <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
 </head>
@@ -16,9 +16,11 @@
     <div class="col">
       <div class="card mx-lg-5 m-4 p-4">
         <div class="card-body text-center">
-          <h2 th:text="'Vendor dengan kode vendor ' + ${kodeVendor} + ' berhasil dihapus.'"></h2>
+          <!-- Success message for vendor update -->
+          <h2 th:text="'Vendor dengan kode vendor ' + ${kodeVendor} + ' berhasil diupdate.'"></h2>
         </div>
         <div class="text-center m-3">
+          <!-- Navigation buttons -->
           <a type="button" class="btn btn-md btn-primary" href="/">Home</a>
           <a type="button" class="btn btn-md btn-primary" href="/vendor">Lihat Semua Vendor</a>
         </div>
