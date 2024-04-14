@@ -1,72 +1,124 @@
 <!DOCTYPE html>
 <html
-  lang="en"
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:th="http://thymeleaf.org"
+	lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://thymeleaf.org"
 >
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.min.js"
-      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-      crossorigin="anonymous"
-    ></script>
-    <title>SIPP - PRORORO</title>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
-  </head>
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+		<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+		<script
+			src="https://code.jquery.com/jquery-3.7.1.min.js"
+			integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+			crossorigin="anonymous"
+		></script>
+		<title>SIPP - PRORORO</title>
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+			integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+			crossorigin="anonymous"
+		/>
+	</head>
 
-  <body>
-    <div class="container-fluid">
-      <div class="row">
-        <!--        <div th:replace=~{"fragments/sidebarf :: sidebar}" class="col-lg-3 col-md-4" ></div>-->
-        <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
-        <div class="col">
-          <div class="card m-4 p-4">
-            <div style="text-align: center">
-              <img
-                src="https://gitlab.cs.ui.ac.id/propensi-2023-2024-genap/kelas-c/c06-prororo/-/raw/main/images/logo.png?ref_type=heads"
-                alt="prororo"
-                style="width: 100px; height: 100px"
-              />
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<!--        <div th:replace=~{"fragments/sidebarf :: sidebar}" class="col-lg-3 col-md-4" ></div>-->
+				<div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+				<div class="col">
+					<div class="card m-4 p-4">
+						<div style="text-align: center">
+							<img
+								src="https://gitlab.cs.ui.ac.id/propensi-2023-2024-genap/kelas-c/c06-prororo/-/raw/main/images/logo.png?ref_type=heads"
+								alt="prororo"
+								style="width: 100px; height: 100px"
+							/>
 
-              <br /><br />
+							<br /><br />
 
-              <p>hello world this is prororo hihuhe</p>
-              <br />
-              <p>
-                our amazing sipp information system for pt bumi karsa is coming
-                soon!
-              </p>
-              <a href="/rencana/" class="btn btn-primary">daftar rencana</a>
-              <a href="/rencana/create" class="btn btn-primary">add rencana</a>
-              <a href="/barang" class="btn btn-primary">Daftar barang</a>
-              <a href="/barang/tambah" class="btn btn-primary">Add barang</a>
-              <a href="/vendor/tambah" class="btn btn-primary">add vendor</a>
-              <a href="/vendor" class="btn btn-primary"> list vendor</a>
-              <a href="/pengadaan" class="btn btn-primary"> Daftar Pengadaan</a>
-              <a href="/pengadaan/tambah" class="btn btn-primary"
-                >Add Pengadaan</a
-              >
-              <a href="/logout" class="btn btn-primary">Logout</a>
-              <!-- <a href="/user" class="btn btn-primary">View All User</a>
+							<p>hello world this is prororo hihuhe</p>
+							<br />
+							<p>
+								our amazing sipp information system for pt bumi karsa is coming
+								soon!
+							</p>
+							<a href="/rencana/" class="btn btn-primary">daftar rencana</a>
+							<a href="/rencana/create" class="btn btn-primary">add rencana</a>
+							<a href="/barang" class="btn btn-primary">Daftar barang</a>
+							<a href="/barang/tambah" class="btn btn-primary">Add barang</a>
+							<a href="/vendor/tambah" class="btn btn-primary">add vendor</a>
+							<a href="/vendor" class="btn btn-primary"> list vendor</a>
+							<a href="/pengadaan" class="btn btn-primary"> Daftar Pengadaan</a>
+							<a href="/pengadaan/tambah" class="btn btn-primary"
+								>Add Pengadaan</a
+							>
+							<a href="/logout" class="btn btn-primary">Logout</a>
+							<!-- <a href="/user" class="btn btn-primary">View All User</a>
               <a href="/user" class="btn btn-primary">View All User</a>
               <a href="/user" class="btn btn-primary">View All User</a>
               <a href="/user" class="btn btn-primary">View All User</a>
               <a href="/user" class="btn btn-primary">View All User</a>
               <a href="/user" class="btn btn-primary">View All User</a>
               <a href="/user" class="btn btn-primary">View All User</a> -->
-              <p>stay tuned x</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
+							<p>stay tuned x</p>
+							<table id="userTable" class="table table-bordered text-center">
+								<thead style="background-color: #ffc023">
+									<tr>
+										<!-- <th>ID Pengadaan</th> -->
+										<th>Nama Pengadaan</th>
+										<th>Tanggal Pengadaan</th>
+										<th>Vendor</th>
+										<th>Shipment Status</th>
+										<th>Payment Status</th>
+										<!-- <th>Detail Pengadaan</th> -->
+									</tr>
+								</thead>
+								<tbody>
+									<th:block th:each="pengadaan : ${top5LatestPengadaan}">
+										<tr>
+											<!-- <td th:text="${pengadaan.idPengadaan}"></td> -->
+											<td>
+												<a
+													th:text="${pengadaan.namaPengadaan}"
+													th:href="@{'/pengadaan/' + ${pengadaan.idPengadaan}}"
+												></a>
+											</td>
+											<td th:text="${pengadaan.tanggalPengadaan}"></td>
+											<td th:text="${pengadaan.vendor.namaVendor}"></td>
+											<td>
+												<span th:if="${pengadaan.shipmentStatus == 0}"
+													>In Progress</span
+												>
+												<span th:if="${pengadaan.shipmentStatus == 1}"
+													>Arrived</span
+												>
+											</td>
+											<td>
+												<span th:if="${pengadaan.paymentStatus == 0}"
+													>Not Paid</span
+												>
+												<span th:if="${pengadaan.paymentStatus == 1}"
+													>In Progress</span
+												>
+												<span th:if="${pengadaan.paymentStatus == 2}"
+													>Paid</span
+												>
+											</td>
+											<!-- <td>
+												<a th:href="@{'/pengadaan/' + ${pengadaan.idPengadaan}}"
+													>Detail</a
+												>
+											</td> -->
+										</tr>
+									</th:block>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
 </html>

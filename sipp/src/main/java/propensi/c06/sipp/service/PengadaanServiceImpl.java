@@ -1,14 +1,15 @@
 package propensi.c06.sipp.service;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import propensi.c06.sipp.dto.PengadaanRequestDTO;
-import propensi.c06.sipp.dto.request.UpdatePengadaanRequestDTO;
 import propensi.c06.sipp.model.Pengadaan;
 import propensi.c06.sipp.model.PengadaanBarang;
 import propensi.c06.sipp.repository.PengadaanBarangDb;
@@ -259,4 +260,8 @@ public class PengadaanServiceImpl implements PengadaanService {
         return pengadaanDb.save(dto);
     }
 
+    @Override
+    public List<Pengadaan> getTop5LatestPengadaan() {
+        return pengadaanDb.findTop5ByOrderByTanggalPengadaanDesc();
+    }
 }

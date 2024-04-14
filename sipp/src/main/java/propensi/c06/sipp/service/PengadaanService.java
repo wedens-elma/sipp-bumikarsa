@@ -1,11 +1,10 @@
 package propensi.c06.sipp.service;
 
-import propensi.c06.sipp.dto.PengadaanRequestDTO;
-import propensi.c06.sipp.dto.request.UpdatePengadaanRequestDTO;
-import propensi.c06.sipp.model.Pengadaan;
-
 import java.util.List;
 import java.util.Map;
+
+import propensi.c06.sipp.dto.PengadaanRequestDTO;
+import propensi.c06.sipp.model.Pengadaan;
 
 public interface PengadaanService {
     List<Pengadaan> getAllPengadaan();
@@ -19,6 +18,7 @@ public interface PengadaanService {
     //void updatePengadaan(UpdatePengadaanRequestDTO pengadaanDto);
     Pengadaan update (Pengadaan pengadaan);
     void updateStatusPengadaan(Pengadaan pengadaan);
+    public List<Pengadaan> getTop5LatestPengadaan();
 
 }
 

@@ -1,6 +1,7 @@
 package propensi.c06.sipp.model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -30,6 +31,9 @@ import lombok.Setter;
 @Table(name = "user_model")
 public class UserModel implements Serializable {
     @Id
+    @Column(name = "id", nullable = false, unique = true)
+    private UUID id = UUID.randomUUID();
+
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
