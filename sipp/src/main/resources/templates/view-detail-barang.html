@@ -1,76 +1,153 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<html
+ lang="en"
+ xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:th="http://thymeleaf.org"
+>
+ <head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <title>View Detail Barang</title>
 
-<head>
-    <meta charset="UTF-8" />
-    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
-    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
-    <title>View Detail Barang</title>
-</head>
+  <style></style>
+ </head>
 
-
-<body>
-    <div class="container-fluid">
+ <body>
+  <div class="container-fluid">
+   <div class="row">
+    <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+    <div class="col">
+     <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+       <li class="breadcrumb-item"><a href="/">Home</a></li>
+       <li class="breadcrumb-item">
+        <a href="/barang">Daftar Barang</a>
+       </li>
+       <li class="breadcrumb-item" aria-current="page">Detail Barang</li>
+      </ol>
+     </nav>
+     <div class="card m-4 p-4">
+      <div class="card-body">
+       <div class="row align-items-center">
+        <div class="col-md-6">
+         <img
+          th:src="'data:image/jpeg;base64,' + ${base64Image}"
+          alt="Foto Barang"
+          style="
+           max-width: 100%;
+           display: block;
+           margin: 0 auto;
+           box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+          "
+         />
+        </div>
+        <div class="col-md-6">
+         <h1
+          style="font-weight: bold"
+          th:text="${barang.namaBarang}"
+         ></h1>
+         <h4 style="color: #999" th:text="${barang.kodeBarang}"></h4>
+         <br />
+         <h4><b>Deskripsi</b></h4>
+         <p
+          style="text-align: left"
+          th:text="${barang.deskripsiBarang}"
+         ></p>
+         <br />
+         <h4 style="margin-bottom: 20px"><b>Spesifikasi</b></h4>
+         <div class="row">
+          <div class="col-md-12">
+           <div class="row">
+            <div class="col-md-4">
+             <h6 style="text-align: left" class="card-text m-0">
+              <b>Tipe Barang</b>
+             </h6>
+            </div>
+            <div class="col-md-8">
+             <p
+              th:text="' : ' + ${barang.tipeBarang == 1 ? 'Alat' : 'Material'}"
+             ></p>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="row">
+          <div class="col-md-12">
+           <div class="row">
+            <div class="col-md-4">
+             <h6 style="text-align: left" class="card-text m-0">
+              <b>Stok</b>
+             </h6>
+            </div>
+            <div class="col-md-8">
+             <p th:text="' : ' + ${barang.stokBarang}"></p>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="row">
+          <div class="col-md-12">
+           <div class="row">
+            <div class="col-md-4">
+             <h6 style="text-align: left" class="card-text m-0">
+              <b>Dimensi</b>
+             </h6>
+            </div>
+            <div class="col-md-8">
+             <p
+              th:if="${barang.dimensiBarang == ''}"
+              th:text="' : NaN'"
+             ></p>
+             <p
+              th:unless="${barang.dimensiBarang == ''}"
+              th:text="' : ' + ${barang.dimensiBarang}"
+             ></p>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="row">
+          <div class="col-md-12">
+           <div class="row">
+            <div class="col-md-4">
+             <h6 style="text-align: left" class="card-text m-0">
+              <b>Berat</b>
+             </h6>
+            </div>
+            <div class="col-md-8">
+             <p
+              th:if="${barang.beratBarang == ''}"
+              th:text="' : NaN'"
+             ></p>
+             <p
+              th:unless="${barang.beratBarang == ''}"
+              th:text="' : ' + ${barang.beratBarang}"
+             ></p>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <br><br>
+       <div class="container">
         <div class="row">
-            <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
-            <div class="col">
-                <div class="container">
-                    <div class="card m-4 p-4 shadow-lg p-3 mb-5 bg-white rounded">
-                        <div class="card-body text-center">
-
-
-                            <br>
-
-                            <!-- Aku ingin menampilkkan foto barang disini -->
-                            <img th:src="'data:image/jpeg;base64,' + ${base64Image}" alt="Foto Barang"
-                                style="max-width: 300px;" />
-
-                            <p style="font-size:60px; font-weight:600;" th:text="${barang.namaBarang}"></p>
-                            <p style="text-align: center;" th:text="${barang.deskripsiBarang}"></p>
-
-                            <br><br>
-                            <br><br>
-
-                            <h3> Spesifikasi </h3>
-
-                            <p th:if="${barang.dimensiBarang == ''}" th:text="'Dimensi: NaN'"></p>
-                            <p th:unless="${barang.dimensiBarang == ''}"
-                                th:text="'Dimensi: ' + ${barang.dimensiBarang}"></p>
-
-                            <p th:if="${barang.beratBarang == ''}" th:text="'Berat barang: NaN'"></p>
-                            <p th:unless="${barang.beratBarang == ''}"
-                                th:text="'Berat barang: ' + ${barang.beratBarang}"></p>
-
-                            <p th:text="'Tipe Barang: ' + ${barang.tipeBarang == 1 ? 'Alat' : 'Material'}"></p>
-                            <p th:text="'Stok barang: ' + ${barang.stokBarang}"></p>
-                            <br><br>
-
-
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col text-start"> <!-- align kanan -->
-                                        <a type="button" class="btn btn-md btn-secondary" href="/barang">Kembali</a>
-                                    </div>
-                                    <div class="col text-center"> <!-- align kanan -->
-                                        <a type="button" class="btn btn-md btn-primary" th:href="@{/barang/{id}/update(id=${barang.kodeBarang})}">Update</a>
-                                    </div>
-                                    <div class="col text-end"> <!-- align kiri -->
-                                        <a th:if="${barang.stokBarang == 0}" type="button" class="btn btn-md btn-danger" th:href="@{/barang/{id}/delete(id=${barang.kodeBarang})}">Hapus</a>
-                                    </div>
-                                </div>
-                            </div>
-                </div>
+            <div class="col text-start"> <!-- align kanan -->
+                <a type="button" class="btn btn-md btn-secondary" href="/barang">Kembali</a>
+            </div>
+            <div class="col text-center"> <!-- align kanan -->
+                <a th:if="${role == 'Manajer' || role == 'Operasional'}" type="button" class="btn btn-md btn-primary" th:href="@{/barang/{id}/update(id=${barang.kodeBarang})}">Ubah Barang</a>
+            </div>
+            <div class="col text-end"> <!-- align kiri -->
+                <a th:if="${barang.stokBarang == 0 && (role == 'Manajer' || role == 'Operasional')}" type="button" class="btn btn-md btn-danger" th:href="@{/barang/{id}/delete(id=${barang.kodeBarang})}">Hapus</a>
             </div>
         </div>
     </div>
+      </div>
+     </div>
     </div>
-    </div>
-</body>
-
-<script>
-    $(document).ready(function () {
-        $('#table').DataTable();
-    });
-</script>
-
+   </div>
+  </div>
+ </body>
 </html>
