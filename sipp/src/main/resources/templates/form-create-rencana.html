@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>Add Schedule</title>
+    <title>Tambah Rencana</title>
     <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
     <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
   </head>
@@ -17,7 +17,7 @@
                 <form th:action="@{/rencana/create}" th:object="${rencanaDTO}" method="post">
                   <div class="card-header text-center p-3">
                     <h2>
-                      Add Schedule
+                      Tambah Rencana
                     </h2>
                     <input class="form-control" type="date" required="required" th:field="*{expectedDate}" /> 
                   </div>
@@ -25,11 +25,11 @@
                     <table class="table table-borderless">
                       <tbody>
                           <tr>
-                              <td><b>Procurement Name</b></td>
+                              <td><b>Nama Pengadaan</b></td>
                               <td><input class="form-control" type="text" required="required" th:field="*{namaRencana}" /></td>
                           </tr>
                           <tr>
-                              <td><b>Vendor Name</b></td>
+                              <td><b>Vendor</b></td>
                               <td><table class="table">
                                 <tbody>
                                 <tr>
@@ -44,16 +44,16 @@
                       </tbody>
                   </table>
             
-                    <b> Procurement Items</b>
+                    <b> Barang Pengadaan </b>
                     <br> <br>
                     <table class="table table-bordered text-center">
             
                       <thead class="table-dark">
                         <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Name</th>
-                          <th scope="col">Quantity</th>
-                          <th scope="col">Action</th>
+                          <th scope="col">No.</th>
+                          <th scope="col">Nama</th>
+                          <th scope="col">Kuantitas</th>
+                          <th scope="col">Aksi</th>
                         </tr>
                       </thead>
             
@@ -86,10 +86,10 @@
                   </table>
                   
                   <div class="text-right">
-                    <button class="my-4 ml-2 btn btn-primary" name="addRow">+ Add Item</button>
+                    <button class="my-4 ml-2 btn btn-primary" name="addRow">+ Tambah Barang</button>
                   </div>
             
-                  <button type="submit">Submit</button>
+                  <button type="submit">Simpan</button>
                   </form>
                 </div>
               </div>

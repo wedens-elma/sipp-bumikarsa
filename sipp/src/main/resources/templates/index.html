@@ -1,74 +1,280 @@
 <!DOCTYPE html>
-<html
-  lang="en"
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:th="http://thymeleaf.org"
->
-  <head>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.min.js"
-      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
     <title>SIPP - PRORORO</title>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
-  </head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <style>
+        .chart-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-  <body>
-  <div class="container-fluid">
-    <div class="row">
-      <!--        <div th:replace=~{"fragments/sidebarf :: sidebar}" class="col-lg-3 col-md-4" ></div>-->
-      <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
-      <div class="col">
-          <div class="card m-4 p-4">
-            <div style="text-align: center">
-              <img
-                      src="https://gitlab.cs.ui.ac.id/propensi-2023-2024-genap/kelas-c/c06-prororo/-/raw/main/images/logo.png?ref_type=heads"
-                      alt="prororo"
-                      style="width: 100px; height: 100px"
-              />
+        .legend-container {
+            display: flex;
+            flex-direction: column;
+        }
 
-              <br /><br />
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
 
-              <p>hello world this is prororo hihuhe</p>
-              <br />
-              <p>
-                our amazing sipp information system for pt bumi karsa is coming soon!
-              </p>
-              <a href="/user/add" class="btn btn-primary">Add User</a>
-              <a href="/user" class="btn btn-primary">View All User</a>
-              <a href="/rencana/" class="btn btn-primary">daftar rencana</a>
-              <a href="/rencana/create" class="btn btn-primary">add rencana</a>
-              <a href="/barang" class="btn btn-primary">Daftar barang</a>
-              <a href="/barang/tambah" class="btn btn-primary">Add barang</a>
-              <a href="/vendor/tambah" class="btn btn-primary">add vendor</a>
-              <a href="/vendor" class="btn btn-primary"> list vendor</a>
-              <a href="/pengadaan" class="btn btn-primary"> Daftar Pengadaan</a>
-              <a href="/pengadaan/tambah" class="btn btn-primary">Add Pengadaan</a>
-              <a href="/logout" class="btn btn-primary">Logout</a>
-              <!-- <a href="/user" class="btn btn-primary">View All User</a>
-              <a href="/user" class="btn btn-primary">View All User</a>
-              <a href="/user" class="btn btn-primary">View All User</a>
-              <a href="/user" class="btn btn-primary">View All User</a>
-              <a href="/user" class="btn btn-primary">View All User</a>
-              <a href="/user" class="btn btn-primary">View All User</a>
-              <a href="/user" class="btn btn-primary">View All User</a> -->
-              <p>stay tuned x</p>
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .legend-text {
+            font-size: 14px;
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!--        <div th:replace=~{"fragments/sidebarf :: sidebar}" class="col-lg-3 col-md-4" ></div>-->
+            <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+            <div class="col">
+                <div class="card m-4 p-4">
+                    <div style="text-align: center">
+                        <img src="https://gitlab.cs.ui.ac.id/propensi-2023-2024-genap/kelas-c/c06-prororo/-/raw/main/images/logo.png?ref_type=heads"
+                            alt="prororo" style="width: 100px; height: 100px" />
+
+                        <br /><br />
+
+                        <p>hello world this is prororo hihuhe</p>
+                        <br />
+                        <p>
+                            our amazing sipp information system for pt bumi karsa is coming soon!
+                        </p>
+                        <a href="/user/add" class="btn btn-primary">Add User</a>
+                        <a href="/user" class="btn btn-primary">View All User</a>
+                        <a href="/rencana/" class="btn btn-primary">daftar rencana</a>
+                        <a href="/rencana/create" class="btn btn-primary">add rencana</a>
+                        <a href="/barang" class="btn btn-primary">Daftar barang</a>
+                        <a href="/barang/tambah" class="btn btn-primary">Add barang</a>
+                        <a href="/vendor/tambah" class="btn btn-primary">add vendor</a>
+                        <a href="/vendor" class="btn btn-primary"> list vendor</a>
+                        <a href="/pengadaan" class="btn btn-primary"> Daftar Pengadaan</a>
+                        <a href="/pengadaan/tambah" class="btn btn-primary">Add Pengadaan</a>
+                        <a href="/logout" class="btn btn-primary">Logout</a>
+                        <!-- <a href="/user" class="btn btn-primary">View All User</a>
+                  <a href="/user" class="btn btn-primary">View All User</a>
+                  <a href="/user" class="btn btn-primary">View All User</a>
+                  <a href="/user" class="btn btn-primary">View All User</a>
+                  <a href="/user" class="btn btn-primary">View All User</a>
+                  <a href="/user" class="btn btn-primary">View All User</a>
+                  <a href="/user" class="btn btn-primary">View All User</a> -->
+                        <p>stay tuned x</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="card m-4 p-4">
+                            <h5 class="card-title">Status Pembayaran</h5>
+                            <div class="row">
+                              <div class="col">
+                                <div class="chart-container">
+                                  <canvas id="paymentChart" width="100" height="100"></canvas>
+                                </div>
+                              </div>
+                              <div class="col align-self-center">
+                                <div class="legend-container">
+                                    <div class="legend-item">
+                                        <div class="legend-color" style="background-color: rgba(255, 99, 132, 0.5);"></div>
+                                        <div class="legend-text">Belum Dibayar: [[${countPaymentBelumDibayar}]]/[[${countAllPengadaan}]]</div>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color" style="background-color: rgba(54, 162, 235, 0.5);"></div>
+                                        <div class="legend-text">Sudah Dibayar: [[${countPaymentSudahDibayar}]]/[[${countAllPengadaan}]]</div>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color" style="background-color: rgba(255, 205, 86, 0.5);"></div>
+                                        <div class="legend-text">Sedang Diproses: [[${countPaymentSedangDiproses}]]/[[${countAllPengadaan}]]</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                      <div class="card m-4 p-4">
+                          <h5 class="card-title">Status Pengiriman</h5>
+                          <div class="row">
+                            <div class="col">
+                              <div class="chart-container">
+                                <canvas id="shipmentChart" width="100" height="100"></canvas>
+                              </div>
+                            </div>
+                            <div class="col align-self-center">
+                              <div class="legend-container">
+                                  <div class="legend-item">
+                                      <div class="legend-color" style="background-color: rgba(255, 99, 132, 0.5);"></div>
+                                      <div class="legend-text">Sedang Diproses: [[${countShipmentSedangDiproses}]]/[[${countAllPengadaan}]]</div>
+                                  </div>
+                                  <div class="legend-item">
+                                      <div class="legend-color" style="background-color: rgba(54, 162, 235, 0.5);"></div>
+                                      <div class="legend-text">Sudah Sampai: [[${countShipmentSudahSampai}]]/[[${countAllPengadaan}]]</div>
+                                  </div>
+                              </div>
+                          </div>
+
+                          </div>
+                      </div>
+                  </div>
+
+                </div>
+
             </div>
-          </div>
-      </div>
+
+        </div>
     </div>
-  </div>
 
-  </body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Script to render the donut charts -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        document.addEventListener('DOMContentLoaded', function () {
+            var paymentCtx = document.getElementById('paymentChart').getContext('2d');
+            var shipmentCtx = document.getElementById('shipmentChart').getContext('2d');
+
+            var paymentCounts = [
+                [[${countPaymentBelumDibayar}]],
+                [[${countPaymentSudahDibayar}]],
+                [[${countPaymentSedangDiproses}]]
+            ];
+
+            var shipmentCounts = [
+                [[${countShipmentSedangDiproses}]],
+                [[${countShipmentSudahSampai}]]
+            ];
+
+            var totalPengadaan = [[${countAllPengadaan}]];
+
+            var paymentChart = new Chart(paymentCtx, {
+              type: 'doughnut',
+              data: {
+                  datasets: [{
+                      label: 'Total',
+                      data: paymentCounts,
+                      backgroundColor: [
+                          'rgba(255, 99, 132, 0.5)',
+                          'rgba(54, 162, 235, 0.5)',
+                          'rgba(255, 205, 86, 0.5)'
+                      ],
+                      borderColor: [
+                          'rgba(255, 99, 132, 1)',
+                          'rgba(54, 162, 235, 1)',
+                          'rgba(255, 205, 86, 1)'
+                      ],
+                      borderWidth: 1
+                  }]
+              },
+              options: {
+                  aspectRatio: 1, 
+                  responsive: true,
+                  title: {
+                      display: true,
+                      text: 'Payment Status'
+                  },
+                  animation: {
+                      animateScale: true,
+                      animateRotate: true
+                  },
+                  plugins: {
+                      tooltip: {
+                          callbacks: {
+                              label: function(context) {
+                                  var label = '';
+                                  switch (context.dataIndex) {
+                                      case 0:
+                                          label = 'Belum Dibayar';
+                                          break;
+                                      case 1:
+                                          label = 'Sudah Dibayar';
+                                          break;
+                                      case 2:
+                                          label = 'Sedang Diproses';
+                                          break;
+                                      default:
+                                          label = '';
+                                  }
+                                  return label;
+                              }
+                          }
+                      }
+                  },
+              }
+          });
+
+            var shipmentChart = new Chart(shipmentCtx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        label: 'Total',
+                        data: shipmentCounts,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(54, 162, 235, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    aspectRatio: 1, 
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Shipment Status'
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    },
+                    plugins: {
+                      tooltip: {
+                          callbacks: {
+                              label: function(context) {
+                                  var label = '';
+                                  switch (context.dataIndex) {
+                                      case 0:
+                                          label = 'Sedang Diproses';
+                                          break;
+                                      case 1:
+                                          label = 'Sudah Sampai';
+                                          break;
+                                  }
+                                  return label;
+                              }
+                          }
+                      }
+                  },
+                }
+            });
+        });
+        /*]]>*/
+    </script>
+
+</body>
+
 </html>
-
-

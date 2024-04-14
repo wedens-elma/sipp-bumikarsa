@@ -195,7 +195,7 @@
                                     <b>Status Pengiriman</b>
                                 </div>
                                 <div class="col-2">
-                                    <span th:if="${pengadaan.shipmentStatus == 0}">: Dalam proses</span>
+                                    <span th:if="${pengadaan.shipmentStatus == 0}">: Sedang diproses</span>
                                     <span th:if="${pengadaan.shipmentStatus == 1}">: Sudah sampai</span>
                                 </div>
                             </div>
@@ -212,7 +212,7 @@
                                 </div>
                                 <div class="col-2">
                                     <span th:if="${pengadaan.paymentStatus == 0}">: Belum dibayar</span>
-                                    <span th:if="${pengadaan.paymentStatus == 1}">: Dalam proses</span>
+                                    <span th:if="${pengadaan.paymentStatus == 1}">: Sedang diproses</span>
                                     <span th:if="${pengadaan.paymentStatus == 2}">: Sudah dibayar</span>
                                 </div>
                             </div>

@@ -32,7 +32,7 @@
                           type="text"
                           required="required"
                           th:field="*{namaPengadaan}"
-                          th:value="*{namaPengadaan}"
+                          th:value="${dto != null} ? ${dto.namaPengadaan} : ''"
                         />
                         <br><br>
 
@@ -54,12 +54,12 @@
                                 name="kodeVendor"
                                 id="kodeVendor"
                                 th:field="*{vendor.kodeVendor}"
-                                th:value="*{vendor.kodeVendor}"
                               >
                                 <option
                                   th:each="vendor: ${listVendor}"
                                   th:value="${vendor.kodeVendor}"
                                   th:text="${vendor.namaVendor}"
+                                  th:selected="${dto != null && dto.vendor != null && dto.vendor.kodeVendor == vendor.kodeVendor}"
                                 ></option>
                               </select>
                             </tr>
@@ -104,6 +104,7 @@
                                 <option
                                   th:value="${barangExisting.kodeBarang}"
                                   th:text="${barangExisting.namaBarang}"
+                                  th:selected="${dto != null && dto.listBarang != null && dto.listBarang[__${iterationStatus.index}__].barang != null && dto.listBarang[__${iterationStatus.index}__].barang.kodeBarang == barangExisting.kodeBarang}"
                                 ></option>
                               </th:block>
                             </select>
