@@ -196,30 +196,29 @@
 					</div>
 					<div class="row text-center flex-center justify-content-center flex">
 						<div class="col-md-6">
-							<div class="card mb-4">
+							<div class="card mx-4 p-4">
 								<div class="card-body">
-									<h2 class="text-center">Grafik Pengeluaran Perbulan</h2>
+									<h3 class="text-center">Grafik Pengeluaran Per Bulan</h3>
 									<canvas id="monthlyExpenditureChart"></canvas>
 								</div>
 							</div>
 						</div>
 
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="row">
 								<div class="col-md-12">
-									<div class="card mb-custom">
+									<div class="card mx-4 p-4">
 										<div class="card-body text-center">
 											<h4>Total Pengadaan</h4>
-											<p class="card-text">
-												<span th:text="${totalPengadaan}">0</span> unit
-											</p>
+											<h3 class="card-text" th:text="${totalPengadaan}"></h3>
+											<p class="mb-0">unit</p>
 										</div>
 									</div>
 								</div>
 								<div class="col-md-12">
-									<div class="card">
+									<div class="card mx-4 p-4">
 										<div class="card-body text-center">
-											<h4>Total Pengeluaran Pertahun</h4>
+											<h4>Total Pengeluaran Per Tahun</h4>
 											<p class="card-text">
 												<span th:text="${totalPengeluaranTahunan}">0</span>
 											</p>
@@ -417,16 +416,13 @@
 					}]
 				},
 				options: {
-					aspectRatio: 1,
+
 					responsive: true,
 					title: {
 						display: true,
 						text: 'Payment Status'
 					},
-					animation: {
-						animateScale: true,
-						animateRotate: true
-					},
+
 					plugins: {
 						tooltip: {
 							callbacks: {
@@ -471,16 +467,13 @@
 						}]
 					},
 					options: {
-						aspectRatio: 1,
+
 						responsive: true,
 						title: {
 							display: true,
 							text: 'Shipment Status'
 						},
-						animation: {
-							animateScale: true,
-							animateRotate: true
-						},
+
 						plugins: {
 						tooltip: {
 							callbacks: {
