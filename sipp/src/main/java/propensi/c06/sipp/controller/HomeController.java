@@ -30,6 +30,7 @@ public class HomeController {
 
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("user", user);
+        model.addAttribute("username", user.getName());
 
         List<Pengadaan> top5LatestPengadaan = pengadaanService.getTop5LatestPengadaan();
         System.out.println(top5LatestPengadaan);

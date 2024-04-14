@@ -40,6 +40,9 @@ public class UserController {
         model.addAttribute("userDTO", createUserRequestDTO);
         model.addAttribute("listRole", roleService.getAllList());
         model.addAttribute("user", user);
+        UserModel loggedInUser = userService.getLoggedInUser();
+        model.addAttribute("loggedInUser", loggedInUser);
+        model.addAttribute("username", loggedInUser.getName());
         return "form-create-user";
     }
 
@@ -79,6 +82,9 @@ public class UserController {
         // }
 
         userService.addUser(userModel, createUserRequestDTO);
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("user", user);
+        model.addAttribute("username", user.getName());
         return "redirect:/user";
     }
 
@@ -86,12 +92,18 @@ public class UserController {
     public String viewAllUsers(Model model) {
         List<UserModel> users = userService.getActiveUsers();
         model.addAttribute("users", users);
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("user", user);
+        model.addAttribute("username", user.getName());
         return "viewall-user";
     }
 
     @GetMapping("/user/soft-delete/{email}")
     private String softDeleteUser(@PathVariable String email, Model model) {
         UserModel userModel = userService.getUserByEmail(email);
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("user", user);
+        model.addAttribute("username", user.getName());
         model.addAttribute("email", userModel.getEmail());
         if (userModel.getRole().getRole().equals("Admin")){
             return "failed-delete-admin";
@@ -104,11 +116,17 @@ public class UserController {
     @GetMapping("/user/soft-delete/{email}/confirm")
     private String confirmDeleteUser(@PathVariable String email, Model model) {
         userService.softDeleteUser(email);
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("user", user);
+        model.addAttribute("username", user.getName());
         return "redirect:/user";
     }
 
     @GetMapping("/logout-confirm")
-    public String showLogoutConfirmation() {
+    public String showLogoutConfirmation(Model model) {
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("user", user);
+        model.addAttribute("username", user.getName());
         return "logout-confirm";
     }
 
@@ -116,6 +134,7 @@ public class UserController {
     public String getProfile(Model model, Principal principal) {
         UserModel loggedInUser = userService.getLoggedInUser();
         model.addAttribute("user", loggedInUser);
+        model.addAttribute("username", loggedInUser.getName());
 
         if (userService.getCurrentUserRole().equalsIgnoreCase("admin")) {
             return "profile-admin.html";
@@ -129,6 +148,7 @@ public class UserController {
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("user", user);
         model.addAttribute("dto", dto);
+        model.addAttribute("username", user.getName());
         if (userService.getCurrentUserRole().equalsIgnoreCase("admin")) {
             return "form-update-password-admin.html";
         }
@@ -189,6 +209,9 @@ public class UserController {
         profileDTO.setRole(user.getRole().getRole());
 
         model.addAttribute("user", user);
+        model.addAttribute("username", user.getName());
+
+        model.addAttribute("user", user);
         model.addAttribute("dto", profileDTO);
         if (userService.getCurrentUserRole().equalsIgnoreCase("admin")) {
             return "form-update-profile-admin.html";
@@ -205,6 +228,7 @@ public class UserController {
         System.out.println("!!!!!!!!!!!!!!!!!!!UDAH SAVED");
         System.out.println(user.getEmail());
 
+        model.addAttribute("username", user.getName());
         model.addAttribute("user", user);
 
         // if (userService.getCurrentUserRole().equalsIgnoreCase("admin")) {

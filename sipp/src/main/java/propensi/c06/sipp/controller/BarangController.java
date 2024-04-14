@@ -120,6 +120,9 @@ public class BarangController {
         barangService.addBarang(barang);
 
         model.addAttribute("kodeBarang", barang.getKodeBarang());
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("user", user);
+        model.addAttribute("username", user.getName());
 
         return "success-tambah-barang.html";
     }
@@ -187,7 +190,9 @@ public class BarangController {
 
 
         model.addAttribute("kodeBarang", barang.getKodeBarang());
-        
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("user", user);
+        model.addAttribute("username", user.getName());        
 
         return "success-update-barang";
     }
