@@ -223,7 +223,7 @@ public class PengadaanController {
                 barangPengadaan.setJumlahBarang(barangRencana.getKuantitas());
                 dtoPengadaan.getListBarang().add(barangPengadaan);
             }
-            rencanaService.ubahStatusRencana(rencana, "direalisasikan", rencana.getLogRencana().get(rencana.getLogRencana().size()-1).getFeedback());
+            model.addAttribute("idRencana", idRencana);
         }
 
         model.addAttribute("dto", dtoPengadaan);
@@ -239,13 +239,13 @@ public class PengadaanController {
 
 
     @PostMapping(value = "/pengadaan/tambah", params = {"addRow"})
-    public String addRowTambahBarang(@ModelAttribute PengadaanRequestDTO dto, Model model) {
+    public String addRowTambahBarang(@ModelAttribute PengadaanRequestDTO dto, Model model, @RequestParam("idRencana") Long idRencana) {
         if (dto.getListBarang() == null || dto.getListBarang().size() == 0) {
             dto.setListBarang(new ArrayList<>());
         }
         dto.getListBarang().add(new PengadaanBarang());
         model.addAttribute("dto", dto);
-
+        model.addAttribute("idRencana", idRencana);
         model.addAttribute("listVendor", vendorService.getAllVendors());
         model.addAttribute("listBarang", barangService.getAllBarang());
         return "formAddPengadaan";
@@ -253,9 +253,10 @@ public class PengadaanController {
 
 
     @PostMapping(value = "/pengadaan/tambah", params = {"deleteRow"})
-    public String deleteRowTambahBarang(Model model, @ModelAttribute PengadaanRequestDTO dto, @RequestParam("deleteRow") int row){
+    public String deleteRowTambahBarang(Model model, @ModelAttribute PengadaanRequestDTO dto, @RequestParam("deleteRow") int row, @RequestParam("idRencana") Long idRencana){
         dto.getListBarang().remove(row);
         model.addAttribute("dto", dto);
+        model.addAttribute("idRencana", idRencana);
         model.addAttribute("listBarang", barangService.getAllBarang());
         model.addAttribute("listVendor", vendorService.getAllVendors());
 
@@ -264,7 +265,7 @@ public class PengadaanController {
     }
 
     @PostMapping("/pengadaan/tambah")
-    public String addPengadaan(@Valid @ModelAttribute PengadaanRequestDTO dto, Model model){
+    public String addPengadaan(@Valid @ModelAttribute PengadaanRequestDTO dto, @RequestParam("idRencana") Long idRencana, Model model){
 
 //        Map<String, Integer> totalHargaMap = pengadaanService.hitungTotalHarga(dto);
 //
@@ -274,6 +275,9 @@ public class PengadaanController {
         dto.setPaymentStatus(0);
         dto.setShipmentStatus(0);
         String id = dto.getIdPengadaan();
+
+        Rencana rencana = rencanaService.getRencanaById(idRencana);
+        rencanaService.ubahStatusRencana(rencana, "direalisasikan", rencana.getLogRencana().get(rencana.getLogRencana().size()-1).getFeedback());
 
         Pengadaan pengadaan = pengadaanService.addPengadaan(dto);
         model.addAttribute("idPengadaan", id);
