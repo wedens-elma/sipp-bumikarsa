@@ -187,7 +187,7 @@ public class PengadaanServiceImpl implements PengadaanService {
                     .sum();
             expenditurePerMonth.merge(month, total, Double::sum);
         }
-
+        System.out.println(expenditurePerMonth);
         return expenditurePerMonth;
     }
 
@@ -231,6 +231,7 @@ public class PengadaanServiceImpl implements PengadaanService {
 
     public int getTotalNumberOfPengadaans() {
         List<Pengadaan> allPengadaans = pengadaanDb.findAll();
+        System.out.println(allPengadaans.size());
         return allPengadaans.size();
     }
 

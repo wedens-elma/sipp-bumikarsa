@@ -22,10 +22,9 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        // Assuming admin has a different index page logic
+        addDashboardDataToModel(model);
         if (userService.getCurrentUserRole().equalsIgnoreCase("admin")) {
-            addDashboardDataToModel(model);
-            return "index-admin.html"; // Assuming admin might have a different page
+            return "index-admin.html";
         }
         return "index.html";
     }
