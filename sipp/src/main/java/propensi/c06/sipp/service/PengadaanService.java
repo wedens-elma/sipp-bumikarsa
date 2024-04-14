@@ -17,7 +17,7 @@ public interface PengadaanService {
     //void updateStatusShipment(PengadaanRequestDTO pengadaanRequestDTO);
     //Pengadaan findById(String id);
     //void updatePengadaan(UpdatePengadaanRequestDTO pengadaanDto);
-    Pengadaan updatePengadaan(Pengadaan pengadaanFromDto);
+    Pengadaan updatePengadaan(UpdatePengadaanRequestDTO pengadaanFromDto);
     void updateStatusPengadaan(Pengadaan pengadaan);
     //void updatePengadaan(String id, PengadaanRequestDTO dto);
 }

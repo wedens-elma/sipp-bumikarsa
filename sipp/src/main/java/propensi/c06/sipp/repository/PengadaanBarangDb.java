@@ -8,4 +8,5 @@ import propensi.c06.sipp.model.PengadaanBarang;
 
 @Repository
 public interface PengadaanBarangDb extends JpaRepository<PengadaanBarang, Long>  {
+
 }

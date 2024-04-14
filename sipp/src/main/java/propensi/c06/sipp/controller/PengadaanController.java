@@ -184,8 +184,8 @@ public class PengadaanController {
             return "updateForm";
 
         } else{
-            var pengadaanFromDto = pengadaanMapper.updatePengadaanRequestDTOToPengadaan(dto);
-            var pengadaan = pengadaanService.updatePengadaan(pengadaanFromDto);
+            //var pengadaanFromDto = pengadaanMapper.updatePengadaanRequestDTOToPengadaan(dto);
+            var pengadaan = pengadaanService.updatePengadaan(dto);
             model.addAttribute("idPengadaan", pengadaan.getIdPengadaan());
             System.out.println("ini idnyaa"+pengadaan.getIdPengadaan());
             String username = userService.getCurrentUserName();

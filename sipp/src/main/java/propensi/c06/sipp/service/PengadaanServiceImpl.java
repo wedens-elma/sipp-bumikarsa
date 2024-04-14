@@ -101,6 +101,8 @@ public class PengadaanServiceImpl implements PengadaanService {
 
     }
 
+
+
     @Override
     public Map<String, Float> hitungTotalHarga(Pengadaan dto) {
         float totalHargaAwal = 0.0f;
@@ -156,57 +158,65 @@ public class PengadaanServiceImpl implements PengadaanService {
         pengadaanDb.save(pengadaan);
     }
 
-
-
-//    @Override
-//    public Pengadaan updatePengadaan(Pengadaan pengadaanFromDto){
-//        Pengadaan pengadaan = getPengadaanDetail(pengadaanFromDto.getIdPengadaan());
-//
-//        if(pengadaan != null){
-//            //pengadaan.setIdPengadaan(pengadaanFromDto.getIdPengadaan());
-//            pengadaan.setIdPengadaan(pengadaanFromDto.getIdPengadaan());
-//            pengadaan.setNamaPengadaan(pengadaanFromDto.getNamaPengadaan());
-//            pengadaan.setVendor(pengadaanFromDto.getVendor());
-//            pengadaan.setListPengadaanBarang(pengadaanFromDto.getListPengadaanBarang());
-//            pengadaan.setDiskonKeseluruhan(pengadaanFromDto.getDiskonKeseluruhan());
-//            pengadaan.setShipmentStatus(pengadaanFromDto.getShipmentStatus());
-//            pengadaan.setPaymentStatus(pengadaanFromDto.getPaymentStatus());
-//            pengadaanDb.save(pengadaan);
-//        }
-//        return pengadaan;
-//    }
-
-
     @Override
-    public Pengadaan updatePengadaan(Pengadaan pengadaanFromDto) {
+    public Pengadaan updatePengadaan(UpdatePengadaanRequestDTO pengadaanFromDto) {
         Pengadaan pengadaan = getPengadaanDetail(pengadaanFromDto.getIdPengadaan());
-        if (pengadaan != null) {
-            // Memperbarui atribut Pengadaan dari DTO
-            pengadaan.setNamaPengadaan(pengadaanFromDto.getNamaPengadaan());
-            pengadaan.setTanggalPengadaan(pengadaanFromDto.getTanggalPengadaan());
-            pengadaan.setVendor(pengadaanFromDto.getVendor());
-            pengadaan.setDiskonKeseluruhan(pengadaanFromDto.getDiskonKeseluruhan());
-            pengadaan.setShipmentStatus(pengadaanFromDto.getShipmentStatus());
-            pengadaan.setPaymentStatus(pengadaanFromDto.getPaymentStatus());
 
-            // Memperbarui list pengadaan barang
-            List<PengadaanBarang> updatedListPengadaanBarang = new ArrayList<>();
-            if (pengadaanFromDto.getListPengadaanBarang() != null) {
-                for (PengadaanBarang barangDTO : pengadaanFromDto.getListPengadaanBarang()) {
-                    PengadaanBarang pengadaanBarang = new PengadaanBarang();
-                    pengadaanBarang.setJumlahBarang(barangDTO.getJumlahBarang());
-                    pengadaanBarang.setHargaBarang(barangDTO.getHargaBarang());
-                    pengadaanBarang.setDiskonSatuan(barangDTO.getDiskonSatuan());
-                    pengadaanBarang.setBarang(barangDTO.getBarang());
-                    updatedListPengadaanBarang.add(pengadaanBarang);
+        pengadaan.setNamaPengadaan(pengadaanFromDto.getNamaPengadaan());
+        pengadaan.setTanggalPengadaan(LocalDate.parse(pengadaanFromDto.getTanggalPengadaan()));
+        pengadaan.setVendor(pengadaanFromDto.getVendor());
+        pengadaan.setDiskonKeseluruhan(pengadaanFromDto.getDiskonKeseluruhan());
+        pengadaanDb.save(pengadaan);
+
+
+        List<PengadaanBarang> existingPengadaanBarangs = pengadaan.getListPengadaanBarang();
+        List<PengadaanBarang> updatedPengadaanBarangs = new ArrayList<>();
+
+        for (PengadaanBarang pengadaanBarangDTO : pengadaanFromDto.getListBarang()) {
+            PengadaanBarang pengadaanBarang = new PengadaanBarang();
+            Barang barang = barangService.getBarangById(pengadaanBarangDTO.getBarang().getKodeBarang());
+
+            pengadaanBarang.setJumlahBarang(pengadaanBarangDTO.getJumlahBarang());
+            pengadaanBarang.setHargaBarang(pengadaanBarangDTO.getHargaBarang());
+            pengadaanBarang.setDiskonSatuan(pengadaanBarangDTO.getDiskonSatuan());
+            pengadaanBarang.setBarang(barang);
+            pengadaanBarang.setPengadaan(pengadaan);
+            pengadaanBarang.setNamaBarang(barang.getNamaBarang());
+
+            boolean isExisting = false;
+            for (int i = 0; i < existingPengadaanBarangs.size(); i++) {
+                PengadaanBarang existingPengadaanBarang = existingPengadaanBarangs.get(i);
+                if (existingPengadaanBarang.getIdPengadaanBarang().equals(pengadaanBarangDTO.getIdPengadaanBarang())) {
+                    existingPengadaanBarang.setJumlahBarang(pengadaanBarangDTO.getJumlahBarang());
+                    existingPengadaanBarang.setHargaBarang(pengadaanBarangDTO.getHargaBarang());
+                    existingPengadaanBarang.setDiskonSatuan(pengadaanBarangDTO.getDiskonSatuan());
+                    existingPengadaanBarang.setBarang(barang);
+                    existingPengadaanBarang.setNamaBarang(barang.getNamaBarang());
+
+                    updatedPengadaanBarangs.add(existingPengadaanBarang);
+                    isExisting = true;
+                    break;
                 }
             }
-            pengadaan.setListPengadaanBarang(updatedListPengadaanBarang);
 
-            // Simpan perubahan pada pengadaan
-            return pengadaanDb.save(pengadaan);
+            if (!isExisting) {
+                updatedPengadaanBarangs.add(pengadaanBarang);
+            }
         }
-        return null; // Atau lakukan penanganan kesalahan lainnya sesuai kebutuhan aplikasi Anda
+
+        for (PengadaanBarang existingPengadaanBarang : existingPengadaanBarangs) {
+            if (!updatedPengadaanBarangs.contains(existingPengadaanBarang)) {
+                pengadaanBarangDb.delete(existingPengadaanBarang);
+            }
+        }
+
+        pengadaan.setListPengadaanBarang(new ArrayList<>());
+
+        pengadaan.setListPengadaanBarang(updatedPengadaanBarangs);
+        pengadaanDb.save(pengadaan);
+
+        return pengadaan;
     }
+
 
 }
