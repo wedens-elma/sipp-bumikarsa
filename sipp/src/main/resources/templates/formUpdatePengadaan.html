@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <title>Update Pengadaan</title>
+    <title>Buat Pengadaan</title>
     <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
     <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
 </head>
@@ -15,15 +15,19 @@
         <div class="col">
             <div id="updatepengadaan">
                 <div class="card mx-lg-5 m-4 p-4">
-                    <h2 class="card-header text-center p-3">Update Pengadaan</h2>
+                    <h2 class="card-header text-center p-3">Buat Pengadaan</h2>
                     <div class="card-body">
                         <div class="justify-content-center">
                             <form
-                                    th:action="@{'/pengadaan/{pengadaan.idPengadaan}/update/'}"
-                                    th:object="${pengadaan}"
+                                    th:action="@{/pengadaan/{id}/update(id=${dto.idPengadaan})}"
+                                    th:object="${dto}"
                                     method="POST"
                                     class="mx-4"
                             >
+                                <!--                                <input type="hidden" name="addRow" th:value="*{true}" />-->
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <!--                                <input type="hidden" name="addRow" th:if="${not #lists.isEmpty(pengadaanDTO.listBarang)}" />-->
+                                <!--                                <input type="hidden" name="deleteRow" th:if="${not #lists.isEmpty(pengadaanDTO.listBarang)}" />-->
                                 <div class="row">
                                     <div class="col">
                                         <label> <b style="font-size:24px"> Nama Pengadaan: </b><span style="color: red;">*</span> </label>
@@ -32,7 +36,6 @@
                                                 type="text"
                                                 required="required"
                                                 th:field="*{namaPengadaan}"
-<!--                                                th:value="${pengadaan.namaPengadaan}"-->
                                         />
                                         <br><br>
 
@@ -42,7 +45,6 @@
                                                 type="date"
                                                 required="required"
                                                 th:field="*{tanggalPengadaan}"
-
                                         />
                                         <br><br>
 
@@ -55,7 +57,6 @@
                                                         name="kodeVendor"
                                                         id="kodeVendor"
                                                         th:field="*{vendor.kodeVendor}"
-
                                                 >
                                                     <option
                                                             th:each="vendor: ${listVendor}"
@@ -74,6 +75,7 @@
                                 <div class="text-right">
                                     <!--                        <button type="submit" class="my-4 ml-2 btn btn-primary" id="add-row" name="addRow">+ Tambah Row</button>-->
                                     <button type="submit" class="btn btn-primary btn-lg px-5" name="addRow">+ Tambah Barang</button>
+
                                 </div>
                                 <br><br>
 
@@ -89,7 +91,7 @@
                                     </tr>
                                     </thead>
 
-                                    <tbody>
+                                    <tbody id="barangRows">
                                     <tr th:each="barang, iterationStatus : *{listBarang}">
                                         <td th:text="${iterationStatus.count}"></td>
                                         <td>
@@ -105,6 +107,7 @@
                                                     <option
                                                             th:value="${barangExisting.kodeBarang}"
                                                             th:text="${barangExisting.namaBarang}"
+                                                            th:selected="${barang.barang.kodeBarang == barangExisting.kodeBarang}"
                                                     ></option>
                                                 </th:block>
                                             </select>
@@ -172,7 +175,7 @@
                                 </div>
 
                                 <div class="d-flex justify-content-center">
-                                    <a class="btn btn-danger btn-lg me-4 px-5" href="/">Batal</a>
+                                    <a class="btn btn-danger btn-lg me-4 px-5" href="/pengadaan">Batal</a>
                                     <!-- me-4 untuk memberikan margin kanan sebesar 20px -->
                                     <button class="btn btn-primary btn-lg px-5"
                                             type="submit">Simpan</button>
@@ -193,8 +196,9 @@
                       var inputNamaBarang = document.createElement("input");
                       inputNamaBarang.type = "text";
                       inputNamaBarang.placeholder = "Nama Barang";
-                      inputNamaBarang.name =
-                        "listBarang[" + barangRows.childElementCount + "].namaBarang"; // Sesuaikan dengan atribut lain yang dibutuhkan
+<!--                      inputNamaBarang.name =-->
+<!--                        "listBarang[" + barangRows.childElementCount + "].namaBarang"; // Sesuaikan dengan atribut lain yang dibutuhkan-->
+                      inputNamaBarang.th:field="*{listPengadaanBarang[__${barangRows.childElementCount}__].namaBarang}"; // Bind to the array property
                       newBarangRow.appendChild(inputNamaBarang);
 
                       // Tambahkan tombol untuk menghapus baris
@@ -220,7 +224,6 @@
                       // Hapus baris dari kontainer
                       barangRows.removeChild(rowToRemove);
                     }
-
                   </script>
                         </div>
                     </div>

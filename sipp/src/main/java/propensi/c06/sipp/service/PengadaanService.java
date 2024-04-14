@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import propensi.c06.sipp.dto.PengadaanRequestDTO;
+import propensi.c06.sipp.dto.request.UpdatePengadaanRequestDTO;
 import propensi.c06.sipp.model.Pengadaan;
 
 public interface PengadaanService {
@@ -19,7 +20,7 @@ public interface PengadaanService {
     //void updateStatusShipment(PengadaanRequestDTO pengadaanRequestDTO);
     //Pengadaan findById(String id);
     //void updatePengadaan(UpdatePengadaanRequestDTO pengadaanDto);
-    Pengadaan updatePengadaan(Pengadaan pengadaanFromDto);
+    Pengadaan updatePengadaan(UpdatePengadaanRequestDTO pengadaanFromDto);
     void updateStatusPengadaan(Pengadaan pengadaan);
     public List<Pengadaan> getTop5LatestPengadaan();
 
@@ -27,6 +28,7 @@ public interface PengadaanService {
 
     Map<String, Double> getTotalPengeluaranPertahun();
     int getTotalNumberOfPengadaans();
+    //void updatePengadaan(String id, PengadaanRequestDTO dto);
 }
 
 

@@ -18,13 +18,21 @@ import java.util.List;
 @Setter
 
 public class PengadaanRequestDTO {
+
     private String idPengadaan;
+
     private String namaPengadaan;
+
     private String tanggalPengadaan;
+
     private Vendor vendor;
+
     private int diskonKeseluruhan;
+
     private int shipmentStatus = 0;
+
     private int paymentStatus = 0;
+
     private List<PengadaanBarang> listBarang;
 
     @AllArgsConstructor
@@ -32,6 +40,7 @@ public class PengadaanRequestDTO {
     @Data
     public static class PengadaanBarangDTO{
 
+        private Long idPengadaanBarang;
         private int jumlahBarang;
 
         private int hargaBarang;
