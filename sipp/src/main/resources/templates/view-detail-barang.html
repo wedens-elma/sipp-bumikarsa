@@ -134,9 +134,6 @@
        <div class="container">
         <div class="row">
             <div class="col text-start"> <!-- align kanan -->
-                <a type="button" class="btn btn-md btn-secondary" href="/barang">Kembali</a>
-            </div>
-            <div class="col text-center"> <!-- align kanan -->
                 <a th:if="${role == 'Manajer' || role == 'Operasional'}" type="button" class="btn btn-md btn-primary" th:href="@{/barang/{id}/update(id=${barang.kodeBarang})}">Ubah Barang</a>
             </div>
             <div class="col text-end"> <!-- align kiri -->
