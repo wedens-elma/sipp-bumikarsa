@@ -33,6 +33,7 @@ import propensi.c06.sipp.service.RencanaService;
 
 import propensi.c06.sipp.service.VendorService;
 
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
@@ -207,6 +208,7 @@ public class PengadaanController {
             Rencana rencana = rencanaService.getRencanaById(idRencana);
             dtoPengadaan.setNamaPengadaan(rencana.getNamaRencana());
             dtoPengadaan.setVendor(rencana.getVendor());
+            dtoPengadaan.setTanggalPengadaan(rencana.getExpectedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             dtoPengadaan.setListBarang(new ArrayList<>());
             for (BarangRencana barangRencana : rencana.getListBarangRencana()) {
                 PengadaanBarang barangPengadaan = new PengadaanBarang();
@@ -214,12 +216,13 @@ public class PengadaanController {
                 barangPengadaan.setJumlahBarang(barangRencana.getKuantitas());
                 dtoPengadaan.getListBarang().add(barangPengadaan);
             }
-            rencanaService.ubahStatusRencana(rencana, "direalisasikan", rencana.getLogRencana().get(rencana.getLogRencana().size()-1).getFeedback());
+            model.addAttribute("idRencana", idRencana);
         }
 
         model.addAttribute("dto", dtoPengadaan);
         model.addAttribute("listVendor", vendorService.getAllVendors());
         model.addAttribute("listBarang", barangService.getAllBarang());
+
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
 
@@ -229,7 +232,7 @@ public class PengadaanController {
 
 
     @PostMapping(value = "/pengadaan/tambah", params = {"addRow"})
-    public String addRowTambahBarang(@ModelAttribute PengadaanRequestDTO dto, Model model) {
+    public String addRowTambahBarang(@ModelAttribute PengadaanRequestDTO dto, Model model, @RequestParam(required = false) Long idRencana) {
         if (dto.getListBarang() == null || dto.getListBarang().size() == 0) {
             dto.setListBarang(new ArrayList<>());
         }
@@ -246,7 +249,7 @@ public class PengadaanController {
 
 
     @PostMapping(value = "/pengadaan/tambah", params = {"deleteRow"})
-    public String deleteRowTambahBarang(Model model, @ModelAttribute PengadaanRequestDTO dto, @RequestParam("deleteRow") int row){
+    public String deleteRowTambahBarang(Model model, @ModelAttribute PengadaanRequestDTO dto, @RequestParam("deleteRow") int row, @RequestParam(required = false) Long idRencana){
         dto.getListBarang().remove(row);
         model.addAttribute("dto", dto);
         model.addAttribute("listBarang", barangService.getAllBarang());
@@ -259,7 +262,7 @@ public class PengadaanController {
     }
 
     @PostMapping("/pengadaan/tambah")
-    public String addPengadaan(@Valid @ModelAttribute PengadaanRequestDTO dto, Model model){
+    public String addPengadaan(@Valid @ModelAttribute PengadaanRequestDTO dto, Model model, @RequestParam(required = false) Long idRencana){
 
 //        Map<String, Integer> totalHargaMap = pengadaanService.hitungTotalHarga(dto);
 //
@@ -269,6 +272,11 @@ public class PengadaanController {
         dto.setPaymentStatus(0);
         dto.setShipmentStatus(0);
         String id = dto.getIdPengadaan();
+
+        if (idRencana != null) {
+            Rencana rencana = rencanaService.getRencanaById(idRencana);
+            rencanaService.ubahStatusRencana(rencana, "direalisasikan", rencana.getLogRencana().get(rencana.getLogRencana().size()-1).getFeedback());
+        }
 
         Pengadaan pengadaan = pengadaanService.addPengadaan(dto);
         model.addAttribute("idPengadaan", id);

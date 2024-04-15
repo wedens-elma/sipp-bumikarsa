@@ -18,7 +18,7 @@
                     <h2 class="card-header text-center p-3">Buat Pengadaan</h2>
                     <div class="card-body">
                         <div class="justify-content-center">
-                            <form
+                            <form id="form-pengadaan-update"
                                     th:action="@{'/pengadaan/' + ${pengadaanDTO.idPengadaan} + '/update'}"
                                     th:object="${pengadaanDTO}"
                                     method="POST"
@@ -76,7 +76,7 @@
 
                                 <div class="text-right">
                                     <!--                        <button type="submit" class="my-4 ml-2 btn btn-primary" id="add-row" name="addRow">+ Tambah Row</button>-->
-                                    <button type="submit" class="btn btn-primary btn-lg px-5" name="tambahRow" value="true">+ Tambah Barang</button>
+                                    <button type="submit" class="btn btn-primary btn-lg px-5" name="tambahRow" value="true" onclick="return validateTambahBarang()">+ Tambah Barang</button>
 
                                 </div>
                                 <br><br>
@@ -119,10 +119,11 @@
                                             <input
                                                     type="number"
                                                     th:field="*{listBarang[__${iterationStatus.index}__].jumlahBarang}"
-                                                    class="form-control"
+                                                    class="form-control jumlahBarang"
                                                     min="1"
                                                     step="1"
                                                     placeholder="Jumlah Barang"
+
                                             />
                                         </td>
                                         <td>
@@ -180,12 +181,43 @@
                                     <a class="btn btn-danger btn-lg me-4 px-5" href="/">Batal</a>
                                     <!-- me-4 untuk memberikan margin kanan sebesar 20px -->
                                     <button class="btn btn-primary btn-lg px-5"
-                                            type="submit">Simpan</button>
+                                            type="submit" onclick="return validateForm()">Simpan</button>
                                 </div>
 
                             </form>
 
                             <script>
+                            // Function to validate each kuantitas field
+                    function validateTambahBarang() {
+                        var inputs = document.querySelectorAll('.jumlahBarang');
+                        var isValid = true;
+                        inputs.forEach(function(input) {
+                            if (input.value === "") {
+                                isValid = false;
+                            }
+                        });
+                        if (!isValid) {
+                            alert("Jumlah barang wajib diisi.");
+                        }
+                        return isValid;
+                    }
+
+                    // Function to validate the whole form before submission
+                    function validateForm() {
+                        var inputs = document.querySelectorAll('.jumlahBarang');
+                        var isValid = true;
+                        inputs.forEach(function(input) {
+                            if (input.value === "") {
+                                isValid = false;
+                            }
+                        });
+                        if (!isValid) {
+                            alert("jumlah barang wajib diisi.");
+                        } else {
+                            document.getElementById("form-pengadaan-update").submit();
+                        }
+                    }
+
                     function addRow() {
                       // Dapatkan div kontainer untuk baris-baris barang
                       var barangRows = document.getElementById("barangRows");
@@ -225,6 +257,50 @@
                       // Hapus baris dari kontainer
                       barangRows.removeChild(rowToRemove);
                     }
+
+                    function validateForm() {
+                    // Ambil semua input dalam form
+                    var inputs = document.querySelectorAll('input, select');
+                    var isValid = true;
+
+                    // Loop melalui setiap input
+                    inputs.forEach(function(input) {
+                        // Jika input kosong dan required, tandai sebagai tidak valid
+                        if (input.required && !input.value.trim()) {
+                            isValid = false;
+                            // Tambahkan class 'is-invalid' untuk menandai input yang tidak valid
+                            input.classList.add('is-invalid');
+                        }
+                    });
+
+                    // Jika ada field yang tidak diisi, tampilkan pesan kesalahan
+                    if (!isValid) {
+                        alert("Mohon lengkapi semua field yang dibutuhkan.");
+                    }
+
+                    return isValid;
+                }
+
+                function validateForm() {
+                        // Ambil semua select dalam form
+                        var selectInputs = document.querySelectorAll('select');
+
+                        // Loop melalui setiap select
+                        for (var i = 0; i < selectInputs.length; i++) {
+                            // Periksa apakah select tidak memiliki nilai
+                            if (!selectInputs[i].value) {
+                                // Tampilkan peringatan kepada pengguna
+                                alert("Mohon pilih barang untuk setiap baris.");
+
+                                // Berhenti validasi dan mencegah pengiriman form
+                                return false;
+                            }
+                        }
+
+                        // Jika semua select memiliki nilai, form bisa disubmit
+                        return true;
+                    }
+
                   </script>
                         </div>
                     </div>
