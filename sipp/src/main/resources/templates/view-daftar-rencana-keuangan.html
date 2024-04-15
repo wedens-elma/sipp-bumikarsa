@@ -114,35 +114,71 @@
     </div>
 
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-    <script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales/id.js"></script> 
 
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             fetch('/api/rencana/view-all')
                 .then(response => response.json())
                 .then(data => {
-                    const events = data.map(item => ({
-                        title: item.namaRencana,
-                        start: item.expectedDate,
-                        url: '/rencana/detail/' + item.idRencana 
-                    }));
+                    const promises = data.map(item => 
+                        fetch(`/api/rencana/${item.idRencana}`)
+                            .then(response => response.json())
+                            .then(detail => ({
+                                id: item.idRencana,
+                                title: item.namaRencana,
+                                start: item.expectedDate,
+                                url: '/rencana/detail/' + item.idRencana,
+                                status: detail.latestStatus
+                            }))
+                    );
 
-                    var calendarEl = document.getElementById('calendar');
-                    var calendar = new FullCalendar.Calendar(calendarEl, {
-                        initialView: 'dayGridMonth',
-                        events: events, 
-                        eventClick: function(info) {
-                            if (info.event.url) {
-                                window.location.href = info.event.url; 
-                            }
-                        }
-                    });
-                    calendar.render();
+                    Promise.all(promises)
+                        .then(events => {
+                            events.forEach(event => {
+                                const status = event.status;
+
+                                let color;
+                                switch (status) {
+                                    case 'disetujui':
+                                        color = '#88bb64'; // Green
+                                        break;
+                                    case 'dibatalkan':
+                                        color = '#fb5b44'; // Red
+                                        break;
+                                    case 'dibuat':
+                                        color = '#0491d0'; // Blue
+                                        break;
+                                    case 'direalisasikan':
+                                        color = '#f2ce3f'; // Yellow
+                                        break;
+                                    default:
+                                        color = '#000000'; // Black (default)
+                                        break;
+                                }
+
+                                event.color = color;
+                            });
+
+                            var calendarEl = document.getElementById('calendar');
+                            var calendar = new FullCalendar.Calendar(calendarEl, {
+                                initialView: 'dayGridMonth',
+                                locale: 'id',
+                                events: events,
+                                eventClick: function(info) {
+                                    if (info.event.url) {
+                                        window.location.href = info.event.url;
+                                    }
+                                }
+                            });
+                            calendar.render();
+                        });
                 })
                 .catch(error => {
                     console.error('Error fetching event data:', error);
                 });
         });
-
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>

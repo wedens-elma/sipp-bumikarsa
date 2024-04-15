@@ -21,11 +21,11 @@
                             <form id="form-update-vendor" th:action="@{/vendor/{kodeVendor}/update(kodeVendor=${vendorDTO.kodeVendor})}" th:object="${vendorDTO}" method="POST">
                                 <input type="hidden" th:field="*{kodeVendor}" />
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Vendor Email<span style="color: red;">*</span></label>
+                                    <label for="email" class="form-label">Email Vendor<span style="color: red;">*</span></label>
                                     <input type="email" class="form-control" id="email" th:field="*{emailVendor}" placeholder="Masukkan Email Vendor" required />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="noTelp" class="form-label">Vendor Phone Number<span style="color: red;">*</span></label>
+                                    <label for="noTelp" class="form-label">Nomor Handphone Vendor<span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" id="noTelp" th:field="*{nomorHandphoneVendor}" placeholder="Masukkan Nomor Handphone Vendor" required />
                                 </div>
                                 <div class="mb-3">

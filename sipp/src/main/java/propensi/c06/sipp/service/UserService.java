@@ -31,4 +31,10 @@ public interface UserService {
     UserModel getLoggedInUser();
     
     String getCurrentUserName();
+
+    Boolean getPassChecker(String raw, String encoded);
+    
+    void updatePass(UserModel user, String passBaruEncode);
+
+    void updateProfile(UserModel user, String email);
 }

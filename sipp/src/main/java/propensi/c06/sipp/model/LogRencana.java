@@ -19,7 +19,7 @@ public class LogRencana {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idLogRencana;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rencana", referencedColumnName = "idRencana")
     private Rencana rencana;
 

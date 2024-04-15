@@ -1,22 +1,22 @@
 package propensi.c06.sipp.service;
 
 import java.time.LocalDate;
-import java.util.*;
-import java.util.function.Function;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import propensi.c06.sipp.dto.PengadaanRequestDTO;
-import propensi.c06.sipp.dto.request.PengadaanBarangDTO;
 import propensi.c06.sipp.dto.request.UpdatePengadaanRequestDTO;
 import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.model.Pengadaan;
 import propensi.c06.sipp.model.PengadaanBarang;
-import propensi.c06.sipp.model.Vendor;
 import propensi.c06.sipp.repository.BarangDb;
 import propensi.c06.sipp.repository.PengadaanBarangDb;
 import propensi.c06.sipp.repository.PengadaanDb;
@@ -134,6 +134,55 @@ public class PengadaanServiceImpl implements PengadaanService {
     }
 
     @Override
+    public Long countPaymentStatus(String status) {
+        List<Pengadaan> listPengadaan = pengadaanDb.findAll();
+        Long count = 0L;
+        int statusInt;
+        
+        if (status.equalsIgnoreCase("belum dibayar")) {
+            statusInt = 0;
+        } else if (status.equalsIgnoreCase("sudah dibayar")) {
+            statusInt = 2;
+        } else {
+            statusInt = 1;
+        }
+
+        for (Pengadaan pengadaan : listPengadaan) {
+            if (pengadaan.getPaymentStatus() == statusInt) {
+                count += 1;
+            }
+        }
+
+        return count;
+    }
+
+    @Override
+    public Long countShipmentStatus(String status) {
+        List<Pengadaan> listPengadaan = pengadaanDb.findAll();
+        Long count = 0L;
+        int statusInt;
+        
+        if (status.equalsIgnoreCase("sedang diproses")) {
+            statusInt = 0;
+        } else {
+            statusInt = 1;
+        }
+
+        for (Pengadaan pengadaan : listPengadaan) {
+            if (pengadaan.getShipmentStatus() == statusInt) {
+                count += 1;
+            }
+        }
+
+        return count;
+    }
+
+    @Override
+    public Long countAllPengadaan() {
+        return pengadaanDb.count();
+    }
+
+    @Override
     public void deletePengadaan(String kodePengadaan){
         Pengadaan pengadaan= pengadaanDb.getReferenceById(kodePengadaan);
         pengadaan.setIsDeleted(true);
@@ -218,5 +267,52 @@ public class PengadaanServiceImpl implements PengadaanService {
         return pengadaan;
     }
 
+    @Override
+    public Map<String, Double> getTotalPengeluaranPertahun() {
+        List<Pengadaan> allPengadaans = pengadaanDb.findAll().stream()
+                .filter(p -> !p.getIsDeleted() && p.getPaymentStatus() == 2)
+                .collect(Collectors.toList());
+        Map<String, Double> expenditurePerYear = new HashMap<>();
 
+        for (Pengadaan pengadaan : allPengadaans) {
+            String year = pengadaan.getTanggalPengadaan().format(DateTimeFormatter.ofPattern("yyyy"));
+            if (year.equals("2024")) {
+                Double total = pengadaan.getListPengadaanBarang().stream()
+                        .mapToDouble(pb -> pb.getHargaBarang() * pb.getJumlahBarang())
+                        .sum();
+                expenditurePerYear.merge(year, total, Double::sum);
+            }
+        }
+        System.out.println(expenditurePerYear);
+        return expenditurePerYear;
+    }
+
+    @Override
+    public Map<String, Double> getTotalPengeluaranPerbulan() {
+        List<Pengadaan> allPengadaans = pengadaanDb.findAll().stream()
+                .filter(p -> !p.getIsDeleted() && p.getPaymentStatus() == 2) // Check if the payment status is 'Paid'
+                .collect(Collectors.toList());
+        Map<String, Double> expenditurePerMonth = new HashMap<>();
+
+        for (Pengadaan pengadaan : allPengadaans) {
+            String month = pengadaan.getTanggalPengadaan().format(DateTimeFormatter.ofPattern("yyyy-MM"));
+            Double total = pengadaan.getListPengadaanBarang().stream()
+                    .mapToDouble(pb -> pb.getHargaBarang() * pb.getJumlahBarang())
+                    .sum();
+            expenditurePerMonth.merge(month, total, Double::sum);
+        }
+        System.out.println(expenditurePerMonth);
+        return expenditurePerMonth;
+    }
+
+    public int getTotalNumberOfPengadaans() {
+        List<Pengadaan> allPengadaans = pengadaanDb.findAll();
+        System.out.println(allPengadaans.size());
+        return allPengadaans.size();
+    }
+
+    @Override
+    public List<Pengadaan> getTop5LatestPengadaan() {
+        return pengadaanDb.findTop5ByOrderByTanggalPengadaanDesc();
+    }
 }

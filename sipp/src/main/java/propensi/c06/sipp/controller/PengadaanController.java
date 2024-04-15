@@ -1,40 +1,39 @@
 package propensi.c06.sipp.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import propensi.c06.sipp.dto.PengadaanMapper;
 import propensi.c06.sipp.dto.PengadaanRequestDTO;
-import propensi.c06.sipp.dto.request.CreateTambahBarangRequestDTO;
-import propensi.c06.sipp.dto.request.PengadaanBarangDTO;
 import propensi.c06.sipp.dto.request.UpdatePengadaanRequestDTO;
-import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.model.BarangRencana;
 import propensi.c06.sipp.model.Pengadaan;
 import propensi.c06.sipp.model.PengadaanBarang;
 import propensi.c06.sipp.model.Rencana;
-import propensi.c06.sipp.model.Vendor;
 import propensi.c06.sipp.repository.PengadaanDb;
 import propensi.c06.sipp.service.BarangService;
 import propensi.c06.sipp.service.PengadaanService;
-
-import propensi.c06.sipp.service.UserService;
-
 import propensi.c06.sipp.service.RencanaService;
-
+import propensi.c06.sipp.service.UserService;
 import propensi.c06.sipp.service.VendorService;
-
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
 
 @Controller
 public class PengadaanController {
@@ -55,13 +54,11 @@ public class PengadaanController {
     @Autowired
     private PengadaanDb pengadaanDb;
 
+    @Autowired
+    private RencanaService rencanaService;
 
     @Autowired
     private UserService userService;
-
-
-    private RencanaService rencanaService;
-
 
     @GetMapping("/pengadaan")
     public String listPengadaan(Model model){
@@ -225,7 +222,6 @@ public class PengadaanController {
 
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
-
         return "formAddPengadaan";
     }
 
@@ -233,12 +229,13 @@ public class PengadaanController {
 
     @PostMapping(value = "/pengadaan/tambah", params = {"addRow"})
     public String addRowTambahBarang(@ModelAttribute PengadaanRequestDTO dto, Model model, @RequestParam(required = false) Long idRencana) {
+
         if (dto.getListBarang() == null || dto.getListBarang().size() == 0) {
             dto.setListBarang(new ArrayList<>());
         }
         dto.getListBarang().add(new PengadaanBarang());
         model.addAttribute("dto", dto);
-
+        model.addAttribute("idRencana", idRencana);
         model.addAttribute("listVendor", vendorService.getAllVendors());
         model.addAttribute("listBarang", barangService.getAllBarang());
         String username = userService.getCurrentUserName();
@@ -250,8 +247,10 @@ public class PengadaanController {
 
     @PostMapping(value = "/pengadaan/tambah", params = {"deleteRow"})
     public String deleteRowTambahBarang(Model model, @ModelAttribute PengadaanRequestDTO dto, @RequestParam("deleteRow") int row, @RequestParam(required = false) Long idRencana){
+
         dto.getListBarang().remove(row);
         model.addAttribute("dto", dto);
+        model.addAttribute("idRencana", idRencana);
         model.addAttribute("listBarang", barangService.getAllBarang());
         model.addAttribute("listVendor", vendorService.getAllVendors());
         String username = userService.getCurrentUserName();
@@ -263,7 +262,6 @@ public class PengadaanController {
 
     @PostMapping("/pengadaan/tambah")
     public String addPengadaan(@Valid @ModelAttribute PengadaanRequestDTO dto, Model model, @RequestParam(required = false) Long idRencana){
-
 //        Map<String, Integer> totalHargaMap = pengadaanService.hitungTotalHarga(dto);
 //
 //        int totalHargaAwal = totalHargaMap.get("totalHargaAwal");
@@ -277,6 +275,7 @@ public class PengadaanController {
             Rencana rencana = rencanaService.getRencanaById(idRencana);
             rencanaService.ubahStatusRencana(rencana, "direalisasikan", rencana.getLogRencana().get(rencana.getLogRencana().size()-1).getFeedback());
         }
+
 
         Pengadaan pengadaan = pengadaanService.addPengadaan(dto);
         model.addAttribute("idPengadaan", id);

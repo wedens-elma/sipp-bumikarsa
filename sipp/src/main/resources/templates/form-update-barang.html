@@ -22,7 +22,7 @@
 
                                 <div class="container">
                                     <form th:action="@{/barang/update}" th:object="${barangDTO}" method="POST"
-                                        enctype="multipart/form-data" onsubmit="return validateForm()">
+                                        enctype="multipart/form-data" onsubmit="return validForm()">
                                         <div class="row">
                                             <div class="col">
 
@@ -133,13 +133,16 @@
         </div>
     </div>
     </div>
+    
     <script>
-        function validateForm() {
+        function validForm() {
             var stokAwal = document.getElementById("stokAwal").value;
             var standarStok = document.getElementById("standarStok").value;
             var tipeBarang = document.getElementById("tipeBarang").value;
             var fileInput = document.getElementById("customFile");
             var fileSize = fileInput.files[0].size;
+
+            console.log("Nilai stokAwal:", stokAwal);
 
             if (tipeBarang == 0) {
                 alert("Pilih tipe barang kamu!");
