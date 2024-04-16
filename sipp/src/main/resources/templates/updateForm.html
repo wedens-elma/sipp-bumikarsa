@@ -24,6 +24,10 @@
                                     method="POST"
                                     class="mx-4"
                             >
+                                <input t ype="hidden" name="idPengadaan" th:field="*{idPengadaan}" />
+                                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                                <!--                                <input type="hidden" name="addRow" th:value="*{true}" />-->
+<!--                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
 <!--                                <input type="hidden" name="addRow" th:if="${not #lists.isEmpty(pengadaanDTO.listBarang)}" />-->
 <!--                                <input type="hidden" name="deleteRow" th:if="${not #lists.isEmpty(pengadaanDTO.listBarang)}" />-->
                                 <div class="row">
@@ -72,11 +76,12 @@
 
                                 <div class="text-right">
                                     <!--                        <button type="submit" class="my-4 ml-2 btn btn-primary" id="add-row" name="addRow">+ Tambah Row</button>-->
-                                    <button type="submit" class="btn btn-primary btn-lg px-5" name="addRow">+ Tambah Barang</button>
+                                    <button type="submit" class="btn btn-primary btn-lg px-5" name="tambahRow" value="true">+ Tambah Barang</button>
+
                                 </div>
                                 <br><br>
 
-                                <table class="table table-bordered">
+                                <table class="table table-bordered" >
                                     <thead class="thead-dark">
                                     <tr>
                                         <th scope="col">No</th>
@@ -88,9 +93,10 @@
                                     </tr>
                                     </thead>
 
-                                    <tbody>
+                                    <tbody id="barangRows">
                                     <tr th:each="barang, iterationStatus : *{listBarang}">
                                         <td th:text="${iterationStatus.count}"></td>
+
                                         <td>
                                             <select
                                                     th:field="*{listBarang[__${iterationStatus.index}__].barang.kodeBarang}"
@@ -145,7 +151,7 @@
                                                     th:value="${iterationStatus.index}"
                                                     class="btn btn-danger"
                                                     type="submit"
-                                                    name="deleteRow"
+                                                    name="hapusRow"
                                             >
                                                 Hapus
                                             </button>
@@ -219,7 +225,6 @@
                       // Hapus baris dari kontainer
                       barangRows.removeChild(rowToRemove);
                     }
-
                   </script>
                         </div>
                     </div>

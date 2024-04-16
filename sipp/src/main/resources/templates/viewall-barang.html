@@ -22,7 +22,7 @@
                             <div class="text-center">
                                 <h2> Daftar Barang</h2>
                                 <div class="text-center m-3">
-                                    <a type="button" class="btn btn-md btn-primary" href="/barang/tambah">+ Tambah
+                                    <a th:if="${role == 'Manajer' || role == 'Operasional'}" type="button" class="btn btn-md btn-primary" href="/barang/tambah">+ Tambah
                                         Barang</a>
                                 </div>
                             </div>
@@ -30,7 +30,7 @@
                             <br>
 
                             <!-- Penambahan card jika ada barang dengan stok kurang dari standar -->
-                            <div th:if="${adaBarangDenganStokKurangDariStandar}">
+                            <div th:if="${adaBarangDenganStokKurangDariStandar && (role == 'Manajer' || role == 'Keuangan') && listBarangStokKurang.size() != 0}">
                                 <div class="card border-warning mb-3" style="max-width: 22rem;">
 
                                     <div class="card-body">
@@ -129,7 +129,7 @@
 
                                         <td>
                                             <a type="button" class="btn btn-sm btn-secondary"
-                                                th:href="@{/barang/{idBarang}(idBarang=${barang.kodeBarang})}">Detail</a>
+                                                th:href="@{/barang/{idBarang} (idBarang=${barang.kodeBarang})}">Detail</a>
                                         </td>
 
                                     </tr>

@@ -9,26 +9,39 @@ import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.model.PengadaanBarang;
 import propensi.c06.sipp.model.Vendor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdatePengadaanRequestDTO extends PengadaanRequestDTO{
+public class UpdatePengadaanRequestDTO{
+    @NotNull
     private String idPengadaan;
+    @NotNull
     private String namaPengadaan;
+    @NotNull
     private String tanggalPengadaan;
+    @NotNull
     private Vendor vendor;
+
+    @NotNull
     private int diskonKeseluruhan;
     //DTO diakhir dihapus
-    private List<PengadaanBarang> listBarang;
+    @NotNull
+    private List<PengadaanBarang> listBarang = new ArrayList<>();
 
-//    @Data
-//    public static class PengadaanBarangDTO {
-//        private Long idPengadaanBarang;
-//        private int jumlahBarang;
-//        private int hargaBarang;
-//        private int diskonSatuan;
-//        private Barang barang;
-//    }
+    @Data
+    public static class PengadaanBarangDTO {
+        @NotNull
+        private Long idPengadaanBarang;
+        @NotNull
+        private int jumlahBarang;
+        @NotNull
+        private int hargaBarang;
+        @NotNull
+        private int diskonSatuan;
+        @NotNull
+        private Barang barang;
+    }
 }

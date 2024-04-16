@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html
+	lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://thymeleaf.org"
+>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Daftar Pengguna</title>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css"
+			rel="stylesheet"
+		/>
+	</head>
+
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+				<div class="col">
+					<div id="user">
+						<div class="card m-3 p-2">
+							<div class="card-body">
+								<div class="text-center">
+									<h2>Profile</h2>
+									<div class="text-center m-3">
+										<h3 th:text="'Halo, ' + ${user.name} + '!'"></h3>
+									</div>
+								</div>
+								<br />
+
+								<!-- data -->
+
+								<div class="row">
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-4">
+												<h6 style="text-align: left" class="card-text m-0">
+													<b>Nama</b>
+												</h6>
+											</div>
+											<div class="col-md-8">
+												<p th:text="' : ' + ${dto.name}"></p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<form
+									th:action="@{/update-profile}"
+									th:object="${dto}"
+									method="post"
+								>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="row">
+												<div class="col-md-4">
+													<h6 style="text-align: left" class="card-text m-0">
+														<b>Email</b>
+													</h6>
+												</div>
+												<div class="col-md-4">
+													<input
+														type="email"
+														class="form-control"
+														id="email"
+														name="email"
+														th:field="*{email}"
+													/>
+												</div>
+												<div class="col-md-4">
+													<button type="submit" class="btn btn-primary">
+														Save
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-4">
+												<h6 style="text-align: left" class="card-text m-0">
+													<b>Role</b>
+												</h6>
+											</div>
+											<div class="col-md-8">
+												<p th:text="' : ' + ${dto.role}"></p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$("#userTable").DataTable();
+		});
+	</script>
+</html>

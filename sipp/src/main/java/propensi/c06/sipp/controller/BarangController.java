@@ -26,8 +26,10 @@ import propensi.c06.sipp.dto.BarangMapper;
 import propensi.c06.sipp.dto.request.CreateTambahBarangRequestDTO;
 import propensi.c06.sipp.dto.request.UpdateBarangRequestDTO;
 import propensi.c06.sipp.model.Barang;
+import propensi.c06.sipp.model.UserModel;
 import propensi.c06.sipp.repository.BarangDb;
 import propensi.c06.sipp.service.BarangService;
+import propensi.c06.sipp.service.UserService;
 
 @Controller
 public class BarangController {
@@ -40,33 +42,49 @@ public class BarangController {
     @Autowired
     private BarangService barangService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/barang")
     public String daftarBarang(Model model) {
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("username", user.getName());
+        
         List<Barang> listBarang = barangService.getAllBarang();
 
         // Membuat daftar barang yang stokBarang-nya kurang dari standarStokBarang
         List<Barang> listBarangStokKurang = new ArrayList<>();
         for (Barang barang : listBarang) {
-            if (barang.getStokBarang() < barang.getStandarStokBarang()) {
+            if (barang.getStokBarang() < barang.getStandarStokBarang() && barang.getIsDeleted() == false) {
                 listBarangStokKurang.add(barang);
             }
         }
 
         // Mengecek apakah ada barang dengan stok kurang dari standar
         boolean adaBarangDenganStokKurangDariStandar = listBarang.stream()
-                .anyMatch(barang -> barang.getStokBarang() < barang.getStandarStokBarang());
+                .anyMatch(barang -> (barang.getStokBarang() < barang.getStandarStokBarang()));
+
+        // Mengecek apakah ada barang dengan stok kurang dari standar
+        boolean isDeleted = listBarang.stream()
+                .anyMatch(barang -> barang.getIsDeleted() == true);
+
+        String role = userService.getCurrentUserRole();
 
         model.addAttribute("listBarang", listBarang);
-        
+
         model.addAttribute("listBarangStokKurang", listBarangStokKurang);
 
         model.addAttribute("adaBarangDenganStokKurangDariStandar", adaBarangDenganStokKurangDariStandar);
+
+        model.addAttribute("role", role);
 
         return "viewall-barang.html";
     }
 
     @GetMapping("/barang/tambah")
     public String formTambahBarang(Model model) {
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("username", user.getName());
 
         var barangDTO = new CreateTambahBarangRequestDTO();
 
@@ -102,16 +120,25 @@ public class BarangController {
         barangService.addBarang(barang);
 
         model.addAttribute("kodeBarang", barang.getKodeBarang());
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("user", user);
+        model.addAttribute("username", user.getName());
 
         return "success-tambah-barang.html";
     }
 
     @GetMapping("/barang/{idBarang}")
     public String detailBarang(@PathVariable(value = "idBarang") String kodeBarang, Model model) {
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("username", user.getName());
+
         var barang = barangService.getBarangById(kodeBarang);
 
         // Encode byte array image to Base64 string
         String base64Image = Base64.getEncoder().encodeToString(barang.getImage());
+
+        String role = userService.getCurrentUserRole();
+        model.addAttribute("role", role);
 
         model.addAttribute("barang", barang);
         model.addAttribute("base64Image", base64Image);
@@ -121,6 +148,10 @@ public class BarangController {
 
     @GetMapping(value = "/barang/{kodeBarang}/update")
     public String formUpdateBuku(@PathVariable(value = "kodeBarang") String kodeBarang, Model model) {
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("username", user.getName());
+
+
         // Mendapatkan buku dengan id tersebut
 
         var barang = barangService.getBarangById(kodeBarang);
@@ -147,17 +178,29 @@ public class BarangController {
             return "error-view";
         }
 
+
+        if (barangDTO.getStokBarang() < 0 || barangDTO.getStandarStokBarang() < 0){
+            model.addAttribute("kode", barangDTO.getKodeBarang());
+            return "failed-update-barang";
+        }
+
+
         var barangFromDto = barangMapper.updateBarangRequestDTOToBarang(barangDTO);
-        // Memanggil Service addBuku
         var barang = barangService.updateBarang(barangFromDto);
-        // Add variabel kode buku ke 'kode' untuk dirender di thymeleaf
+
+
         model.addAttribute("kodeBarang", barang.getKodeBarang());
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("user", user);
+        model.addAttribute("username", user.getName());        
 
         return "success-update-barang";
     }
 
     @GetMapping("/barang/{kodeBarang}/delete")
     public String softDeleteBuku(@PathVariable("kodeBarang") String kodeBarang, Model model) {
+        UserModel user = userService.getLoggedInUser();
+        model.addAttribute("username", user.getName());
 
         barangService.softDeleteBarang(kodeBarang);
         model.addAttribute("kodeBarang", kodeBarang);
