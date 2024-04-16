@@ -215,7 +215,7 @@ public class PengadaanController {
             Rencana rencana = rencanaService.getRencanaById(idRencana);
             dtoPengadaan.setNamaPengadaan(rencana.getNamaRencana());
             dtoPengadaan.setVendor(rencana.getVendor());
-            dtoPengadaan.setTanggalPengadaan(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            dtoPengadaan.setTanggalPengadaan(rencana.getExpectedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             dtoPengadaan.setListBarang(new ArrayList<>());
             for (BarangRencana barangRencana : rencana.getListBarangRencana()) {
                 PengadaanBarang barangPengadaan = new PengadaanBarang();
@@ -239,7 +239,7 @@ public class PengadaanController {
 
 
     @PostMapping(value = "/pengadaan/tambah", params = {"addRow"})
-    public String addRowTambahBarang(@ModelAttribute PengadaanRequestDTO dto, Model model, @RequestParam("idRencana") Long idRencana) {
+    public String addRowTambahBarang(@ModelAttribute PengadaanRequestDTO dto, Model model, @RequestParam(required=false) Long idRencana) {
         if (dto.getListBarang() == null || dto.getListBarang().size() == 0) {
             dto.setListBarang(new ArrayList<>());
         }
@@ -253,7 +253,7 @@ public class PengadaanController {
 
 
     @PostMapping(value = "/pengadaan/tambah", params = {"deleteRow"})
-    public String deleteRowTambahBarang(Model model, @ModelAttribute PengadaanRequestDTO dto, @RequestParam("deleteRow") int row, @RequestParam("idRencana") Long idRencana){
+    public String deleteRowTambahBarang(Model model, @ModelAttribute PengadaanRequestDTO dto, @RequestParam("deleteRow") int row, @RequestParam(required=false) Long idRencana){
         dto.getListBarang().remove(row);
         model.addAttribute("dto", dto);
         model.addAttribute("idRencana", idRencana);
@@ -265,7 +265,7 @@ public class PengadaanController {
     }
 
     @PostMapping("/pengadaan/tambah")
-    public String addPengadaan(@Valid @ModelAttribute PengadaanRequestDTO dto, @RequestParam("idRencana") Long idRencana, Model model){
+    public String addPengadaan(@Valid @ModelAttribute PengadaanRequestDTO dto, @RequestParam(required=false) Long idRencana, Model model){
 
 //        Map<String, Integer> totalHargaMap = pengadaanService.hitungTotalHarga(dto);
 //
@@ -276,8 +276,10 @@ public class PengadaanController {
         dto.setShipmentStatus(0);
         String id = dto.getIdPengadaan();
 
-        Rencana rencana = rencanaService.getRencanaById(idRencana);
-        rencanaService.ubahStatusRencana(rencana, "direalisasikan", rencana.getLogRencana().get(rencana.getLogRencana().size()-1).getFeedback());
+        if (idRencana != null) {
+            Rencana rencana = rencanaService.getRencanaById(idRencana);
+            rencanaService.ubahStatusRencana(rencana, "direalisasikan", rencana.getLogRencana().get(rencana.getLogRencana().size()-1).getFeedback());
+        }
 
         Pengadaan pengadaan = pengadaanService.addPengadaan(dto);
         model.addAttribute("idPengadaan", id);

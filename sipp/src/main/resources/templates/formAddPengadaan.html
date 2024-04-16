@@ -184,6 +184,9 @@
 
                   <script>
                     function addRow() {
+
+                      document.getElementById("idRencana").value = "${idRencana}";
+
                       // Dapatkan div kontainer untuk baris-baris barang
                       var barangRows = document.getElementById("barangRows");
 
@@ -213,6 +216,9 @@
                     }
 
                     function removeRow(button) {
+
+                      document.getElementById("idRencana").value = "${idRencana}";
+
                       // Dapatkan elemen div baris yang berisi tombol yang diklik
                       var rowToRemove = button.parentNode;
 
