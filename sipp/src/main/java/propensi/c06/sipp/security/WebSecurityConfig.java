@@ -37,6 +37,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers("/api/user/add").hasAuthority("Admin")
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/rencana/view-all").permitAll()
+                        .requestMatchers("/api/pengadaan/view-all").permitAll()
                         .requestMatchers("/api/rencana/**").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -70,6 +72,9 @@ public class WebSecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/pengadaan")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")
                         .requestMatchers(new AntPathRequestMatcher("/pengadaan/tambah")).hasAnyAuthority("Manajer", "Keuangan")
                         .requestMatchers(new AntPathRequestMatcher("/pengadaan/detail/**")).hasAnyAuthority("Manajer", "Operasional", "Keuangan")
+                        .requestMatchers(new AntPathRequestMatcher("/profile")).hasAnyAuthority("Manajer", "Operasional", "Admin", "Keuangan")
+                        .requestMatchers(new AntPathRequestMatcher("/update-password")).hasAnyAuthority("Manajer", "Operasional", "Admin", "Keuangan")
+                        .requestMatchers(new AntPathRequestMatcher("/update-profile")).hasAnyAuthority("Manajer", "Operasional", "Admin", "Keuangan")
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

@@ -18,13 +18,6 @@ import propensi.c06.sipp.model.UserModel;
 import propensi.c06.sipp.repository.UserDb;
 import propensi.c06.sipp.security.jwt.JwtUtils;
 
-// import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
 @Service
 public class UserServiceImpl implements UserService{
     @Autowired
@@ -173,4 +166,23 @@ public class UserServiceImpl implements UserService{
         return null;
     }
 
+    @Override
+    public Boolean getPassChecker(String raw, String encoded) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        return passwordEncoder.matches(raw, encoded);
+    }
+
+    @Override
+    public void updatePass(UserModel user, String passBaruEncode) {
+        user.setPassword(passBaruEncode);
+        userDb.save(user);
+    }
+
+    @Override
+    public void updateProfile(UserModel user, String email) {
+        user.setEmail(email);
+        String newToken = jwtUtils.generateJwtToken(email);
+        userDb.save(user);
+    }
 }

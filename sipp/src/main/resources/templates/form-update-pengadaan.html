@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <title>Buat Pengadaan</title>
+    <title>Update Pengadaan</title>
     <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
     <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
 </head>
@@ -13,29 +13,26 @@
         <!--        <div th:replace=~{"fragments/sidebarf :: sidebar}" class="col-lg-3 col-md-4" ></div>-->
         <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
         <div class="col">
-            <div id="updatepengadaan">
+            <div id="addpengadaan">
                 <div class="card mx-lg-5 m-4 p-4">
-                    <h2 class="card-header text-center p-3">Buat Pengadaan</h2>
+                    <h2 class="card-header text-center p-3">Update Pengadaan</h2>
                     <div class="card-body">
                         <div class="justify-content-center">
                             <form
-                                    th:action="@{/pengadaan/{id}/update(id=${dto.idPengadaan})}"
-                                    th:object="${dto}"
+                                    th:action="@{/pengadaan/{pengadaan.idPengadaan}/update}"
+                                    th:object="${pengadaanDTO}"
                                     method="POST"
                                     class="mx-4"
                             >
-                                <!--                                <input type="hidden" name="addRow" th:value="*{true}" />-->
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <!--                                <input type="hidden" name="addRow" th:if="${not #lists.isEmpty(pengadaanDTO.listBarang)}" />-->
-                                <!--                                <input type="hidden" name="deleteRow" th:if="${not #lists.isEmpty(pengadaanDTO.listBarang)}" />-->
                                 <div class="row">
                                     <div class="col">
+                                        <input class="form=control" type="hidden" th:field="*{idPengadaan}" />
                                         <label> <b style="font-size:24px"> Nama Pengadaan: </b><span style="color: red;">*</span> </label>
                                         <input
                                                 class="form-control"
                                                 type="text"
                                                 required="required"
-                                                th:field="*{namaPengadaan}"
+                                                th:field="*{namaPengadaan}" readonly
                                         />
                                         <br><br>
 
@@ -44,7 +41,7 @@
                                                 class="form-control"
                                                 type="date"
                                                 required="required"
-                                                th:field="*{tanggalPengadaan}"
+                                                th:field="*{tanggalPengadaan}" readonly
                                         />
                                         <br><br>
 
@@ -75,7 +72,6 @@
                                 <div class="text-right">
                                     <!--                        <button type="submit" class="my-4 ml-2 btn btn-primary" id="add-row" name="addRow">+ Tambah Row</button>-->
                                     <button type="submit" class="btn btn-primary btn-lg px-5" name="addRow">+ Tambah Barang</button>
-
                                 </div>
                                 <br><br>
 
@@ -91,7 +87,7 @@
                                     </tr>
                                     </thead>
 
-                                    <tbody id="barangRows">
+                                    <tbody>
                                     <tr th:each="barang, iterationStatus : *{listBarang}">
                                         <td th:text="${iterationStatus.count}"></td>
                                         <td>
@@ -107,7 +103,6 @@
                                                     <option
                                                             th:value="${barangExisting.kodeBarang}"
                                                             th:text="${barangExisting.namaBarang}"
-                                                            th:selected="${barang.barang.kodeBarang == barangExisting.kodeBarang}"
                                                     ></option>
                                                 </th:block>
                                             </select>
@@ -175,56 +170,91 @@
                                 </div>
 
                                 <div class="d-flex justify-content-center">
-                                    <a class="btn btn-danger btn-lg me-4 px-5" href="/pengadaan">Batal</a>
+                                    <a class="btn btn-danger btn-lg me-4 px-5" href="/">Batal</a>
                                     <!-- me-4 untuk memberikan margin kanan sebesar 20px -->
                                     <button class="btn btn-primary btn-lg px-5"
                                             type="submit">Simpan</button>
                                 </div>
 
                             </form>
+                            <script th:inline="javascript">
+                                 /*<![CDATA[*/
+                                function addRow() {
+                                    // Dapatkan elemen tbody dari tabel
+                                    var tbody = document.getElementById("table-body");
 
-                            <script>
-                    function addRow() {
-                      // Dapatkan div kontainer untuk baris-baris barang
-                      var barangRows = document.getElementById("barangRows");
+                                    // Buat elemen baris baru
+                                    var newRow = document.createElement("tr");
 
-                      // Buat elemen div baru untuk baris barang
-                      var newBarangRow = document.createElement("div");
-                      newBarangRow.className = "barangRow";
+                                    // Isi baris baru dengan sel data
+                                    newRow.innerHTML = `
+                                        <td><select class="form-control" name="listBarang[0].barang.kodeBarang">
+                                                <option value="">Pilih Barang</option>
+                                                <option th:each="barang : ${listBarang}" th:value="${barang.kodeBarang}" th:text="${barang.namaBarang}"></option>
+                                            </select>
+                                        </td>
+                                        <td><input type="number" class="form-control" name="listBarang[0].jumlahBarang" min="1" step="1" placeholder="Jumlah Barang"/></td>
+                                        <td><input type="number" class="form-control" name="listBarang[0].hargaBarang" min="0" step="1" placeholder="Harga Barang"/></td>
+                                        <td><input type="number" class="form-control" name="listBarang[0].diskonSatuan" min="0" max="100" step="1" placeholder="Diskon Satuan (%)"/></td>
+                                        <td><button type="button" class="btn btn-danger" onclick="deleteRow(this)">Hapus</button></td>
+                                    `;
 
-                      // Tambahkan input namaBarang pada baris baru
-                      var inputNamaBarang = document.createElement("input");
-                      inputNamaBarang.type = "text";
-                      inputNamaBarang.placeholder = "Nama Barang";
+                                    // Tambahkan baris baru ke dalam tabel
+                                    tbody.appendChild(newRow);
+                                }
+
+                                function deleteRow(button) {
+                                    // Dapatkan elemen tr (baris) yang mengandung tombol hapus
+                                    var row = button.parentNode.parentNode;
+
+                                    // Hapus baris dari tabel
+                                    row.parentNode.removeChild(row);
+                                }
+                                /*]]>*/
+                            </script>
+
+<!--                            <script>-->
+<!--                    function addRow() {-->
+<!--                      // Dapatkan div kontainer untuk baris-baris barang-->
+<!--                      var barangRows = document.getElementById("barangRows");-->
+
+<!--                      // Buat elemen div baru untuk baris barang-->
+<!--                      var newBarangRow = document.createElement("div");-->
+<!--                      newBarangRow.className = "barangRow";-->
+
+<!--                      // Tambahkan input namaBarang pada baris baru-->
+<!--                      var inputNamaBarang = document.createElement("input");-->
+<!--                      inputNamaBarang.type = "text";-->
+<!--                      inputNamaBarang.placeholder = "Nama Barang";-->
 <!--                      inputNamaBarang.name =-->
 <!--                        "listBarang[" + barangRows.childElementCount + "].namaBarang"; // Sesuaikan dengan atribut lain yang dibutuhkan-->
-                      inputNamaBarang.th:field="*{listPengadaanBarang[__${barangRows.childElementCount}__].namaBarang}"; // Bind to the array property
-                      newBarangRow.appendChild(inputNamaBarang);
+<!--                      newBarangRow.appendChild(inputNamaBarang);-->
 
-                      // Tambahkan tombol untuk menghapus baris
-                      var deleteButton = document.createElement("button");
-                      deleteButton.type = "button";
-                      deleteButton.textContent = "Hapus Baris";
-                      deleteButton.onclick = function () {
-                        removeRow(this);
-                      };
-                      newBarangRow.appendChild(deleteButton);
+<!--                      // Tambahkan tombol untuk menghapus baris-->
+<!--                      var deleteButton = document.createElement("button");-->
+<!--                      deleteButton.type = "button";-->
+<!--                      deleteButton.textContent = "Hapus Baris";-->
+<!--                      deleteButton.onclick = function () {-->
+<!--                        removeRow(this);-->
+<!--                      };-->
+<!--                      newBarangRow.appendChild(deleteButton);-->
 
-                      // Tambahkan baris baru ke dalam kontainer
-                      barangRows.appendChild(newBarangRow);
-                    }
+<!--                      // Tambahkan baris baru ke dalam kontainer-->
+<!--                      barangRows.appendChild(newBarangRow);-->
+<!--                    }-->
 
-                    function removeRow(button) {
-                      // Dapatkan elemen div baris yang berisi tombol yang diklik
-                      var rowToRemove = button.parentNode;
+<!--                    function removeRow(button) {-->
+<!--                      // Dapatkan elemen div baris yang berisi tombol yang diklik-->
+<!--                      var rowToRemove = button.parentNode;-->
 
-                      // Dapatkan elemen div kontainer untuk baris-baris barang
-                      var barangRows = document.getElementById("barangRows");
+<!--                      // Dapatkan elemen div kontainer untuk baris-baris barang-->
+<!--                      var barangRows = document.getElementById("barangRows");-->
 
-                      // Hapus baris dari kontainer
-                      barangRows.removeChild(rowToRemove);
-                    }
-                  </script>
+<!--                      // Hapus baris dari kontainer-->
+<!--                      barangRows.removeChild(rowToRemove);-->
+<!--                    }-->
+
+<!--                  </script>-->
                         </div>
                     </div>
                 </div>

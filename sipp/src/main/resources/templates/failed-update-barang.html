@@ -17,15 +17,20 @@
                     <div class="card m-4 p-4">
                         <div class="card-body">
                             <div class="text-center">
-                                <h2 th:text="'Barang dengan SKU ' + ${kodeBarang} + ' berhasil diupdate.'"></h2>
+                                <h2> Nilai stok yang anda update tidak boleh negatif </h2>
+                            </div>
+                            <div class="text-center m-3">
                                 <a type="button" class="btn btn-md btn-danger" href="/">Home</a>
-                                <a type="button" class="btn btn-md btn-primary" href="/barang">Lihat Semua Barang</a>
+                                <a type="button" class="btn btn-md btn-primary"
+                                    th:href="@{/barang/{idBarang}/update (idBarang=${kode})}">Kembali ke halaman update
+                                    barang</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </body>
 

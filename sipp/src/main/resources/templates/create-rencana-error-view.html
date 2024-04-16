@@ -8,19 +8,27 @@
     <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
 </head>
 
-<body>  
-    <div class="container">
-        <div class="card m-4 p-4">
-          <div class="card-body">
-            <div class="text-center">
-                <h2>Sorry, your schedule isn't saved. You have to add items to the schedule.</h2>
-            </div>
-            <div class="text-center m-3">
-                <a type="button" class="btn btn-md btn-secondary" href="/rencana/">Kembali</a>
-            </div>
-          </div>
-        </div>
+<body>
+  <div class="container-fluid">
+   <div class="row">
+    <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+    <div class="col">
+     <div id="pengadaan">
+      <div class="card m-4 p-4">
+       <div class="card-body">
+        <div class="text-center">
+          <h4>Maaf, rencana tidak tersimpan.</h4>
+          <h4>Mohon mengisi barang untuk rencana pengadaan.</h4>
       </div>
-</body>
+      <div class="text-center m-3">
+          <a type="button" class="btn btn-md btn-secondary" href="/rencana/">Kembali</a>
+      </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </body>
 
 </html>
