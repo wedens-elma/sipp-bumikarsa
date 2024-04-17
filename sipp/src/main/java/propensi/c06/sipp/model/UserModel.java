@@ -34,7 +34,7 @@ public class UserModel implements Serializable {
     @Column(name = "id", nullable = false, unique = true)
     private UUID id = UUID.randomUUID();
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false)
     private String email;
 
     @NotNull

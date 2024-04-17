@@ -142,7 +142,7 @@ public class UserController {
         return "profile.html";
     }
 
-    @GetMapping("/update-password")
+    @GetMapping("/profile/update-password")
     public String getFormUpdatePassword(Model model) {
         UpdatePasswordRequestDTO dto = new UpdatePasswordRequestDTO();
         UserModel user = userService.getLoggedInUser();
@@ -155,7 +155,7 @@ public class UserController {
         return "form-update-password";
     }
 
-    @PostMapping("/update-password")
+    @PostMapping("/profile/update-password")
     public String updatePassword(UpdatePasswordRequestDTO dto,
                                 Model model, Principal principal) {
 
@@ -184,11 +184,17 @@ public class UserController {
             }
             else {
                 model.addAttribute("error", "Konfirmasi password belum sesuai");
+                if (userService.getCurrentUserRole().equalsIgnoreCase("admin")) {
+                    return "failed-update-password-admin.html";
+                }
                 return "failed-update-password";
             }
         }
         else {
             model.addAttribute("error", "Password Lama belum tepat");
+            if (userService.getCurrentUserRole().equalsIgnoreCase("admin")) {
+                return "failed-update-password-admin.html";
+            }
             return "failed-update-password";
         }
         
@@ -198,7 +204,7 @@ public class UserController {
         // return "form-update-password";
     }
 
-    @GetMapping("/update-profile")
+    @GetMapping("/profile/update-profile")
     public String getFormUpdateProfile(Model model) {
 
         UserModel user = userService.getLoggedInUser();
@@ -219,7 +225,7 @@ public class UserController {
         return "form-update-profile";
     }
 
-    @PostMapping("/update-profile")
+    @PostMapping("/profile/update-profile")
     public String updateProfile(Model model, UpdateProfileRequestDTO profileDTO) {
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!MASUK CONTROLLER");
         UserModel user = userService.getLoggedInUser();
@@ -231,9 +237,9 @@ public class UserController {
         model.addAttribute("username", user.getName());
         model.addAttribute("user", user);
 
-        // if (userService.getCurrentUserRole().equalsIgnoreCase("admin")) {
-        //     return "success-update-email-admin.html";
-        // }
+        if (userService.getCurrentUserRole().equalsIgnoreCase("admin")) {
+            return "success-update-email-admin.html";
+        }
         
         return "success-update-email";
     }

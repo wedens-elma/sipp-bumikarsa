@@ -9,13 +9,10 @@ import jakarta.transaction.Transactional;
 import propensi.c06.sipp.dto.BarangMapper;
 import propensi.c06.sipp.dto.UserMapper;
 import propensi.c06.sipp.dto.VendorMapper;
-import propensi.c06.sipp.dto.request.CreateTambahBarangRequestDTO;
 import propensi.c06.sipp.dto.request.CreateUserRequestDTO;
 import propensi.c06.sipp.dto.request.CreateVendorRequestDTO;
-import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.model.Role;
 import propensi.c06.sipp.model.UserModel;
-import propensi.c06.sipp.model.Vendor;
 import propensi.c06.sipp.repository.RoleDb;
 import propensi.c06.sipp.service.BarangService;
 import propensi.c06.sipp.service.PengadaanService;
@@ -92,16 +89,16 @@ public class SippApplication {
 
 			}
 
-			if (barangService.getAllBarang().isEmpty()) {
-				var barang = new CreateTambahBarangRequestDTO();
-				barang.setNamaBarang("Barang 1");
-				barang.setDeskripsiBarang("Ini adalah Barang 1");
-				barang.setTipeBarang(1);
-				barang.setStokBarang(50);
-				barang.setStandarStokBarang(5);
-				Barang barangSave = barangMapper.createTambahBarangRequestDTO(barang);
-				barangService.addBarang(barangSave);
-			}
+			// if (barangService.getAllBarang().isEmpty()) {
+			// 	var barang = new CreateTambahBarangRequestDTO();
+			// 	barang.setNamaBarang("Barang 1");
+			// 	barang.setDeskripsiBarang("Ini adalah Barang 1");
+			// 	barang.setTipeBarang(1);
+			// 	barang.setStokBarang(50);
+			// 	barang.setStandarStokBarang(5);
+			// 	Barang barangSave = barangMapper.createTambahBarangRequestDTO(barang);
+			// 	barangService.addBarang(barangSave);
+			// }
 
 			if (vendorService.getAllVendors().isEmpty()) {
 				var vendor = new CreateVendorRequestDTO();

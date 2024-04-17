@@ -129,11 +129,13 @@ public class RencanaController {
     }
 
     @PostMapping(value = "/create", params = {"addRow"})
-    public String addRowRencana(@ModelAttribute CreateRencanaRequestDTO rencanaDTO, Model model) {
+    public String addRowRencana(@ModelAttribute CreateRencanaRequestDTO rencanaDTO, @RequestParam("kodeVendor") String kodeVendor, Model model) {
         if (rencanaDTO.getListBarangRencana() == null || rencanaDTO.getListBarangRencana().size() == 0) {
             rencanaDTO.setListBarangRencana(new ArrayList<>());        
         }
         rencanaDTO.getListBarangRencana().add(new CreateRencanaRequestDTO.BarangRencanaDTO());
+
+        model.addAttribute("kodeVendor", kodeVendor);
         model.addAttribute("rencanaDTO", rencanaDTO);
         model.addAttribute("listVendorExisted", vendorService.getAllVendors());
         model.addAttribute("listBarangExisted", barangService.getAllBarang());
@@ -144,8 +146,11 @@ public class RencanaController {
 
     @PostMapping(value = "/create", params = {"deleteRow"})
     public String deleteRowRencana(
-        @ModelAttribute CreateRencanaRequestDTO rencanaDTO, @RequestParam("deleteRow") int row, Model model) {
+        @ModelAttribute CreateRencanaRequestDTO rencanaDTO, @RequestParam("deleteRow") int row, @RequestParam("kodeVendor") String kodeVendor, Model model) {
         rencanaDTO.getListBarangRencana().remove(row);
+
+        model.addAttribute("kodeVendor", kodeVendor);
+        System.out.println("KODEHAPUS " + kodeVendor + " sdad");
         model.addAttribute("rencanaDTO", rencanaDTO);
         model.addAttribute("listVendorExisted", vendorService.getAllVendors());
         model.addAttribute("listBarangExisted", barangService.getAllBarang());

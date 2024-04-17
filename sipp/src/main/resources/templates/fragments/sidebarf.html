@@ -250,9 +250,9 @@
 <body>
 <!--<div class="wrapper" id="wrapper">-->
 
-    <aside id="sidebar" class="js-sidebar col-lg-3">
+    <aside id="sidebar" class="js-sidebar col-lg-3 px-0">
         <!-- Content For Sidebar -->
-        <div class="h-100">
+        <div class="h-100 mx-0 mt-4">
             <div class="sidebar-logo">
                 <a href="/">SIPP</a>
             </div>
@@ -273,7 +273,7 @@
                             <a href="/barang" class="sidebar-link"> <i class="fa-solid fa-list pe-2"></i> Daftar Barang</a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="/barang/tambah" class="sidebar-link"> <i class="fa-regular fa-square-plus pe-2"></i>Add Barang</a>
+                            <a href="/barang/tambah" class="sidebar-link"> <i class="fa-regular fa-square-plus pe-2"></i>Tambah Barang</a>
                         </li>
                     </ul>
                 </li>
@@ -287,7 +287,7 @@
                             <a href="/vendor" class="sidebar-link"> <i class="fa-solid fa-list pe-2"></i> Daftar Vendor</a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="/vendor/tambah" class="sidebar-link"> <i class="fa-regular fa-square-plus pe-2"></i> Add Vendor</a>
+                            <a href="/vendor/tambah" class="sidebar-link"> <i class="fa-regular fa-square-plus pe-2"></i> Tambah Vendor</a>
                         </li>
                     </ul>
                 </li>
@@ -301,7 +301,7 @@
                             <a href="/rencana/" class="sidebar-link"> <i class="fa-solid fa-list pe-2"></i> Daftar Rencana Pengadaan</a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="/rencana/create" class="sidebar-link"> <i class="fa-regular fa-square-plus pe-2"></i> Add Rencana Pengadaan</a>
+                            <a href="/rencana/create" class="sidebar-link"> <i class="fa-regular fa-square-plus pe-2"></i> Tambah Rencana Pengadaan</a>
                         </li>
                     </ul>
                 </li>
@@ -332,7 +332,7 @@
 
 
     <div class="main" id="main" >
-        <nav class="navbar navbar-expand px-3" style="border-bottom: 1px solid #ced4da;">
+        <nav class="navbar navbar-expand px-3 mt-0 pt-0" style="border-bottom: 1px solid #ced4da;">
             <button class="btn" id="sidebar-toggle" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -446,14 +446,17 @@
         const pageBreadcrumbs = {
             "/": ["Home"],
             "/pengadaan": ["Home", "Pengadaan", "Daftar Pengadaan"],
-            "/pengadaan/tambah": ["Home","Pengadaan", "Add Pengadaan"],
+            "/pengadaan/tambah": ["Home","Pengadaan", "Tambah Pengadaan"],
             "/pengadaan/{id}": ["Home","Pengadaan", "Daftar Pengadaan", "Detail Pengadaan"],
             "/barang": ["Home", "Barang", "Daftar Barang"],
-            "/barang/tambah": ["Home","Barang", "Add Barang"],
+            "/barang/tambah": ["Home","Barang", "Tambah Barang"],
             "/vendor": ["Home", "Vendor", "Daftar Vendor"],
-            "/vendor/tambah": ["Home","Vendor", "Add Vendor"],
+            "/vendor/tambah": ["Home","Vendor", "Tambah Vendor"],
             "/rencana/": ["Home", "Rencana", "Daftar Rencana Pengadaan"],
-            "/rencana/create": ["Home","Rencana", "Add Rencana Pengadaan"],
+            "/rencana/create": ["Home","Rencana", "Tambah Rencana Pengadaan"],
+            "/profile": ["Home", "Profile"],
+            "/profile/update-password": ["Home", "Profile", "Edit Password"],
+            "/profile/update-profile": ["Home", "Profile", "Edit Email"],
             // Tambahkan halaman dan breadcrumbs lainnya di sini
         };
 
@@ -487,6 +490,8 @@
                 link.href = "/barang";
                 } else if(breadcrumb === "Rencana") {
                 link.href = "/rencana/";
+                } else if(breadcrumb === "Profile") {
+                link.href = "/profile";
                 }
                 listItem.appendChild(link);
             }

@@ -5,7 +5,6 @@
 		<object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
 		<object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
 	</head>
-
 	<body>
 		<!--<nav th:replace="~{fragments/fragment :: navbar('permintaan-pengiriman')}"></nav>-->
 		<div class="container-fluid">
@@ -19,6 +18,7 @@
 							<div class="card-body">
 								<div class="justify-content-center">
 									<form
+										id="form-pengadaan"
 										th:action="@{/pengadaan/tambah}"
 										th:object="${dto}"
 										method="POST"
@@ -80,7 +80,6 @@
 														</tr>
 													</tbody>
 												</table>
-
 												<br /><br />
 											</div>
 										</div>
@@ -116,6 +115,7 @@
 														<select
 															th:field="*{listBarang[__${iterationStatus.index}__].barang.kodeBarang}"
 															class="form-control"
+															required="required"
 														>
 															<option value="">Pilih Barang</option>
 															<th:block
@@ -135,7 +135,7 @@
 														<input
 															type="number"
 															th:field="*{listBarang[__${iterationStatus.index}__].jumlahBarang}"
-															class="form-control"
+															class="form-control jumlahBarang"
 															min="1"
 															step="1"
 															placeholder="Jumlah Barang"
@@ -159,6 +159,7 @@
 															min="0"
 															max="100"
 															step="1"
+															required="required"
 															placeholder="Diskon Satuan (%)"
 														/>
 													</td>
@@ -206,9 +207,40 @@
 											</button>
 										</div>
 									</form>
-
 									<script>
+										// Function to validate each kuantitas field
+										function validateTambahBarang() {
+											var inputs = document.querySelectorAll(".jumlahBarang");
+											var isValid = true;
+											inputs.forEach(function (input) {
+												if (input.value === "") {
+													isValid = false;
+												}
+											});
+											if (!isValid) {
+												alert("Jumlah barang wajib diisi.");
+											}
+											return isValid;
+										}
+
+										// Function to validate the whole form before submission
+										function validateForm() {
+											var inputs = document.querySelectorAll(".jumlahBarang");
+											var isValid = true;
+											inputs.forEach(function (input) {
+												if (input.value === "") {
+													isValid = false;
+												}
+											});
+											if (!isValid) {
+												alert("jumlah barang wajib diisi.");
+											} else {
+												document.getElementById("form-pengadaan").submit();
+											}
+										}
 										function addRow() {
+											document.getElementById("idRencana").value =
+												"${idRencana}";
 											// Dapatkan div kontainer untuk baris-baris barang
 											var barangRows = document.getElementById("barangRows");
 
@@ -240,6 +272,8 @@
 										}
 
 										function removeRow(button) {
+											document.getElementById("idRencana").value =
+												"${idRencana}";
 											// Dapatkan elemen div baris yang berisi tombol yang diklik
 											var rowToRemove = button.parentNode;
 
@@ -248,6 +282,29 @@
 
 											// Hapus baris dari kontainer
 											barangRows.removeChild(rowToRemove);
+										}
+
+										function validateForm() {
+											// Ambil semua input dalam form
+											var inputs = document.querySelectorAll("input, select");
+											var isValid = true;
+
+											// Loop melalui setiap input
+											inputs.forEach(function (input) {
+												// Jika input kosong dan required, tandai sebagai tidak valid
+												if (input.required && !input.value.trim()) {
+													isValid = false;
+													// Tambahkan class 'is-invalid' untuk menandai input yang tidak valid
+													input.classList.add("is-invalid");
+												}
+											});
+
+											// Jika ada field yang tidak diisi, tampilkan pesan kesalahan
+											if (!isValid) {
+												alert("Mohon lengkapi semua field yang dibutuhkan.");
+											}
+
+											return isValid;
 										}
 									</script>
 								</div>
