@@ -1,6 +1,5 @@
 package propensi.c06.sipp.controller;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +30,7 @@ import propensi.c06.sipp.service.PengadaanService;
 import propensi.c06.sipp.service.RencanaService;
 import propensi.c06.sipp.service.UserService;
 import propensi.c06.sipp.service.VendorService;
+
 
 @Controller
 public class PengadaanController {
@@ -216,6 +216,7 @@ public class PengadaanController {
         model.addAttribute("dto", dtoPengadaan);
         model.addAttribute("listVendor", vendorService.getAllVendors());
         model.addAttribute("listBarang", barangService.getAllBarang());
+
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
         return "formAddPengadaan";
@@ -224,7 +225,8 @@ public class PengadaanController {
 
 
     @PostMapping(value = "/pengadaan/tambah", params = {"addRow"})
-    public String addRowTambahBarang(@ModelAttribute PengadaanRequestDTO dto, Model model, @RequestParam(required=false) Long idRencana) {
+    public String addRowTambahBarang(@ModelAttribute PengadaanRequestDTO dto, Model model, @RequestParam(required = false) Long idRencana) {
+
         if (dto.getListBarang() == null || dto.getListBarang().size() == 0) {
             dto.setListBarang(new ArrayList<>());
         }
@@ -241,7 +243,8 @@ public class PengadaanController {
 
 
     @PostMapping(value = "/pengadaan/tambah", params = {"deleteRow"})
-    public String deleteRowTambahBarang(Model model, @ModelAttribute PengadaanRequestDTO dto, @RequestParam("deleteRow") int row, @RequestParam(required=false) Long idRencana){
+    public String deleteRowTambahBarang(Model model, @ModelAttribute PengadaanRequestDTO dto, @RequestParam("deleteRow") int row, @RequestParam(required = false) Long idRencana){
+
         dto.getListBarang().remove(row);
         model.addAttribute("dto", dto);
         model.addAttribute("idRencana", idRencana);
@@ -255,8 +258,7 @@ public class PengadaanController {
     }
 
     @PostMapping("/pengadaan/tambah")
-    public String addPengadaan(@Valid @ModelAttribute PengadaanRequestDTO dto, @RequestParam(required=false) Long idRencana, Model model){
-
+    public String addPengadaan(@Valid @ModelAttribute PengadaanRequestDTO dto, Model model, @RequestParam(required = false) Long idRencana){
 //        Map<String, Integer> totalHargaMap = pengadaanService.hitungTotalHarga(dto);
 //
 //        int totalHargaAwal = totalHargaMap.get("totalHargaAwal");

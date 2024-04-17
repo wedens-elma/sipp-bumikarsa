@@ -1,32 +1,37 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
-  <title>Vendor Update Success</title>
+  <title>
+    Pengadaan berhasil dibuat
+  </title>
   <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
   <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
 </head>
+
 <body>
+<!--<nav th:replace="~{fragments/fragment :: navbar('permintaan-pengiriman')}"></nav>-->
 <div class="container-fluid">
   <div class="row">
-    <!-- Sidebar placeholder -->
+    <!--        <div th:replace=~{"fragments/sidebarf :: sidebar}" class="col-lg-3 col-md-4" ></div>-->
     <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
-
-    <!-- Main content area -->
     <div class="col">
       <div class="card mx-lg-5 m-4 p-4">
         <div class="card-body text-center">
-          <!-- Success message for vendor update -->
-          <h2 th:text="'Vendor dengan kode vendor ' + ${kodeVendor} + ' berhasil diupdate.'"></h2>
-        </div>
-        <div class="text-center m-3">
-          <!-- Navigation buttons -->
-          <a type="button" class="btn btn-md btn-primary" href="/">Home</a>
-          <a type="button" class="btn btn-md btn-primary" href="/vendor">Lihat Semua Vendor</a>
+          <h4 class="py-3"
+              th:text="'Pengadaan berhasil diperbarui'">
+          </h4>
+          <a class="btn btn-primary m-3" th:href="@{/pengadaan}">Lihat daftar pengadaan</a>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
+
 </body>
+
 </html>
+
