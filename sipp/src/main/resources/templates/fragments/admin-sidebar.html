@@ -172,6 +172,22 @@
             width: 100vw;
         }
 
+        .navbar-nav .dropdown {
+            margin: 10px;
+            padding: 10px;
+        }
+<!--        .navbar .dropdown-menu {-->
+<!--            left: 40%; /* Geser menu dropdown ke tengah */-->
+
+<!--            width: 50px;-->
+<!--        }-->
+        .dropdown-menu {
+            right: auto; /* Reset posisi dropdown-menu ke kiri */
+            left: 0; /* Letakkan dropdown-menu di sebelah kiri */
+            transform: translateX(0); /* Reset transformasi horizontal */
+            min-width: auto; /* Hilangkan batasan lebar minimum */
+        }
+
         @media (min-width:768px) {
             .content {
                 max-width: auto;
@@ -228,9 +244,9 @@
 <body>
 <!--<div class="wrapper" id="wrapper">-->
 
-    <aside id="sidebar" class="js-sidebar col-lg-3">
+    <aside id="sidebar" class="js-sidebar col-lg-3 px-0">
         <!-- Content For Sidebar -->
-        <div class="h-100">
+        <div class="h-100 mx-0 mt-4">
             <div class="sidebar-logo">
                 <a href="/">SIPP</a>
             </div>
@@ -244,11 +260,11 @@
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link collapsed" data-bs-target="#user" data-bs-toggle="collapse"
                        aria-expanded="false"><i class="fa-solid fa-file-lines pe-2"></i>
-                        user
+                        User
                     </a>
                     <ul id="user" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" style="padding-left: 20px;">
                         <li class="sidebar-item">
-                            <a href="/user" class="sidebar-link"> <i class="fa-solid fa-list pe-2"></i> Daftar user</a>
+                            <a href="/user" class="sidebar-link"> <i class="fa-solid fa-list pe-2"></i>Daftar user</a>
                         </li>
                         <li class="sidebar-item">
                             <a href="/user/add" class="sidebar-link"> <i class="fa-regular fa-square-plus pe-2"></i>Add user</a>
@@ -267,24 +283,25 @@
 
 
     <div class="main" id="main" >
-        <nav class="navbar navbar-expand px-3" style="border-bottom: 1px solid #ced4da;">
+        <nav class="navbar navbar-expand px-3 mt-0 pt-0" style="border-bottom: 1px solid #ced4da;">
             <button class="btn" id="sidebar-toggle" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-brand" style="margin-left: 30px;">
-                <a class="navbar-brand-text" >Hello, (user)</a>
+                <a class="navbar-brand-text" >Hello, [[${username}]]</a>
             </div>
             <div class="navbar-collapse navbar" id="navbar-dropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0 dropdown-toggle">
+                        <a href="#" class="nav-icon pe-md-0 dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user" style="font-size: 1.5em;"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end">
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <a href="/profile" class="dropdown-item">Profile</a>
                             <a href="/logout" class="dropdown-item">Logout</a>
                         </div>
                     </li>
+
                 </ul>
             </div>
         </nav>
@@ -297,8 +314,8 @@
 
 
 
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
     const sidebarToggle = document.querySelector("#sidebar-toggle");
     sidebarToggle.addEventListener("click",function(){
@@ -314,6 +331,7 @@
             }
         });
     });
+
 
 
 
@@ -381,12 +399,17 @@
             "/pengadaan": ["Home", "Pengadaan", "Daftar Pengadaan"],
             "/pengadaan/tambah": ["Home","Pengadaan", "Add Pengadaan"],
             "/pengadaan/{id}": ["Home","Pengadaan", "Daftar Pengadaan", "Detail Pengadaan"],
-            "/user": ["Home", "user", "Daftar user"],
-            "/user/add": ["Home","user", "Add user"],
+            "/barang": ["Home", "Barang", "Daftar Barang"],
+            "/barang/tambah": ["Home","Barang", "Add Barang"],
             "/vendor": ["Home", "Vendor", "Daftar Vendor"],
             "/vendor/tambah": ["Home","Vendor", "Add Vendor"],
-            "/rencana": ["Home", "Rencana", "Daftar Rencana Pengadaan"],
+            "/rencana/": ["Home", "Rencana", "Daftar Rencana Pengadaan"],
             "/rencana/create": ["Home","Rencana", "Add Rencana Pengadaan"],
+            "/user": ["Home", "User", "Daftar User"],
+            "/user/add": ["Home","User", "Add User"],
+            "/profile": ["Home", "Profile"],
+            "/profile/update-password": ["Home", "Profile", "Edit Password"],
+            "/profile/update-profile": ["Home", "Profile", "Edit Email"],
             // Tambahkan halaman dan breadcrumbs lainnya di sini
         };
 
@@ -412,8 +435,18 @@
 
                 link.textContent = breadcrumb;
 
-                if (breadcrumb === "user" ) {
+                if (breadcrumb === "Pengadaan" ) {
+                link.href = "/pengadaan";
+                } else if(breadcrumb === "Vendor") {
+                link.href = "/vendor";
+                } else if(breadcrumb === "Barang") {
+                link.href = "/barang";
+                } else if(breadcrumb === "Rencana") {
+                link.href = "/rencana/";
+                } else if (breadcrumb === "User" ) {
                 link.href = "/user";
+                } else if(breadcrumb === "Profile") {
+                link.href = "/profile";
                 }
                 listItem.appendChild(link);
             }
