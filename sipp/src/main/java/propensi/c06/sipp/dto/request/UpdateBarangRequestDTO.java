@@ -14,6 +14,9 @@ import java.util.UUID;
 @Data
 public class UpdateBarangRequestDTO extends CreateTambahBarangRequestDTO {
     private String kodeBarang;
+    
+    private String dimensiBarang;
+    private String beratBarang;
 
     
     private Integer stokBarang;
