@@ -148,7 +148,7 @@ public class PengadaanController {
             return "updateForm";
         } else {
             // Tampilkan pesan bahwa pengadaan tidak dapat diperbarui
-            model.addAttribute("errorMessage", "Pengadaan tidak memenuhi syarat untuk diperbarui.");
+            model.addAttribute("errorMessage", "Pengadaan tidak memnuhi syarat untuk diupdate. Pengadaan hanya dapat diupdate jika Shipment Status = In Progress dan Payment Status = Not Paid");
             return "error-view"; // Ganti dengan halaman atau tindakan yang sesuai
         }
     }
@@ -286,11 +286,18 @@ public class PengadaanController {
 
     @GetMapping("/pengadaan/{id}/delete")
     public String deletePengadaanBarang(@PathVariable("id") String id, Model model){
-        pengadaanService.deletePengadaan(id);
-        model.addAttribute("id", id);
+        Pengadaan pengadaan = pengadaanDb.getReferenceById(id);
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
-        return "successDeletePengadaan";
+        if(pengadaan.getShipmentStatus()==0 && pengadaan.getPaymentStatus()==0){
+            pengadaanService.deletePengadaan(id);
+            model.addAttribute("id", id);
+            return "successDeletePengadaan";
+        } else{
+            model.addAttribute("errorMessage", "Pengadaan gagal di hapus. Pengadaan hanya dapat dihapus jika Shipment Status = In Progress dan Payment Status = Not Paid");
+            return "error-view";
+        }
+
     }
 
 }

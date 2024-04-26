@@ -203,6 +203,17 @@ public class PengadaanServiceImpl implements PengadaanService {
                 // Simpan perubahan pada barang
                 barangDb.save(barang);
             }
+        }else{
+            List<PengadaanBarang> listPengadaanBarang = pengadaan.getListPengadaanBarang();
+            // Iterasi melalui setiap PengadaanBarang dalam daftar
+            for (PengadaanBarang pengadaanBarang : listPengadaanBarang) {
+                Barang barang = pengadaanBarang.getBarang();
+                int jumlahBarang = pengadaanBarang.getJumlahBarang();
+                // Tambahkan jumlah barang ke stok barang terkait
+                barang.setStokBarang(barang.getStokBarang() - jumlahBarang);
+                // Simpan perubahan pada barang
+                barangDb.save(barang);
+            }
         }
         pengadaanDb.save(pengadaan);
     }
