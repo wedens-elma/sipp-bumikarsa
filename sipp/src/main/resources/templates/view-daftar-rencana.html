@@ -218,14 +218,23 @@
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <script>
         $(document).ready(function() {
-            var table = $('#table').DataTable();
-
+            var table = $('#table').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                // columnDefs: [
+                //     { type: 'num', targets: [0] } // Change 0 to the index of the column containing numeric values
+                // ]
+            });
+    
             $('#statusFilter').on('change', function() {
                 var status = $(this).val();
                 table.column(3).search(status).draw();
             });       
         });
     </script>
+    
     
     <script th:if="${deleteSuccessMessage != null}">
         $(document).ready(function() {            
