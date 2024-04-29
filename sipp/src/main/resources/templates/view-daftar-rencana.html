@@ -75,15 +75,29 @@
                             <h2><b> Log Rencana Pengadaan </b></h2>
                         </div>
                         <br>
+
+                        <div class="mb-2 row">
+                            <label for="statusFilter" class="ps-0 pe-0 col-sm-10 col-form-label text-end">Filter by Status:</label>
+                            <div class="col-sm-2">
+                                <select id="statusFilter" class="form-select">
+                                    <option value="">All</option>
+                                    <option value="disetujui">Disetujui</option>
+                                    <option value="dibatalkan">Dibatalkan</option>
+                                    <option value="dibuat">Dibuat</option>
+                                    <option value="direalisasikan">Direalisasikan</option>
+                                    <option value="dihapus">Dihapus</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <table id="table" class="table table-bordered text-center">
                             <thead style="background-color: #ffc023">
                                 <tr>
-                                    <th scope="col">No.</th>
+                                    <th scope="col">ID</th>
                                     <th scope="col">Nama Pengadaan</th>
                                     <th scope="col">Vendor</th>
-                                    <!-- <th scope="col">Jumlah Barang</th> -->
                                     <th scope="col">Status</th>
-                                    <!-- <th scope="col">Tanggal Rencana</th> -->
+                                    <th scope="col">Tanggal Rencana</th>
                                     <th scope="col">Pengubah</th>
                                     <th scope="col">Waktu Diubah</th>
                                 </tr>
@@ -96,9 +110,8 @@
                                         <span th:if="${log.rencana.logRencana[log.rencana.logRencana.size() - 1].status == 'dihapus'}" th:text="${log.rencana.namaRencana}"></span>
                                     </td>                                        
                                     <td style="text-transform: capitalize;" th:text="${log.rencana.vendor.namaVendor}"></td>
-                                    <!-- <td style="text-transform: capitalize;" th:text="${log.rencana.listBarangRencana.size()}"></td> -->
                                     <td style="text-transform: capitalize;" th:text="${log.status}"></td>
-                                    <!-- <td th:text="${#dates.format(log.rencana.expectedDate, 'dd/MM/yyyy')}"></td> -->
+                                    <td th:text="${#dates.format(#dates.create(log.rencana.expectedDate.year, log.rencana.expectedDate.monthValue, log.rencana.expectedDate.dayOfMonth), 'dd/MM/yyyy')}"></td>
                                     <td style="text-transform: capitalize;" th:text="${log.changedBy}"></td>
                                     <td style="text-transform: capitalize;" th:text="${#dates.format(#dates.create(log.tanggalWaktu.year, log.tanggalWaktu.monthValue, log.tanggalWaktu.dayOfMonth), 'dd/MM/yyyy') + ', ' + #dates.format(#dates.create(log.tanggalWaktu.year, log.tanggalWaktu.monthValue, log.tanggalWaktu.dayOfMonth, log.tanggalWaktu.hour, log.tanggalWaktu.minute, log.tanggalWaktu.second), 'HH:mm')}"></td>
                                 </tr>
@@ -205,13 +218,15 @@
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <script>
         $(document).ready(function() {
-            $("#table").DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/Indonesian.json"
-                }
-            });        
+            var table = $('#table').DataTable();
+
+            $('#statusFilter').on('change', function() {
+                var status = $(this).val();
+                table.column(3).search(status).draw();
+            });       
         });
     </script>
+    
     <script th:if="${deleteSuccessMessage != null}">
         $(document).ready(function() {            
             $('#successModal').modal('show');
