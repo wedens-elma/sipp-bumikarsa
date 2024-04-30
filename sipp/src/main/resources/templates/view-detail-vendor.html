@@ -1,155 +1,148 @@
 <!DOCTYPE html>
 <html
-		lang="en"
-		xmlns="http://www.w3.org/1999/xhtml"
-		xmlns:th="http://thymeleaf.org"
+	lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://thymeleaf.org"
 >
-<head>
-	<meta charset="UTF-8" />
-	<link
+	<head>
+		<meta charset="UTF-8" />
+		<link
 			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
 			rel="stylesheet"
-	/>
-	<link
+		/>
+		<link
 			href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css"
 			rel="stylesheet"
-	/>
-	<title>Detail Vendor</title>
-	<style>
-		.detail-label {
-			font-weight: bold;
-		}
-		.detail-value {
-			text-align: left;
-			margin-left: 10px;
-		}
-		.card-container {
-			margin: 2rem auto;
-			padding: 4rem;
-		}
-		thead {
-			background-color: #ffc023;
-		}
-	</style>
-</head>
-<body>
-<div class="container-fluid">
-	<div class="row">
-		<div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
-		<div class="col">
-			<div class="container">
-				<nav aria-label="breadcrumb">
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="/">Home</a></li>
-						<li class="breadcrumb-item">
-							<a href="/vendor">Daftar Vendor</a>
-						</li>
-						<li class="breadcrumb-item active" aria-current="page">
-							Detail Vendor
-						</li>
-					</ol>
-				</nav>
-				<!-- Search Form -->
-				<form method="get" action="/vendor" class="mb-4">
-					<div class="input-group">
-						<input type="text" class="form-control" id="search" name="search" placeholder="Search by vendor name or code">
-						<button class="btn btn-outline-primary" type="submit">Search</button>
-					</div>
-				</form>
-				<div class="card-container">
-					<div class="card shadow-lg bg-white rounded">
-						<div class="card-body">
-							<h1
-									class="card-title text-center"
-									th:text="${vendor.namaVendor}"
-							>
-								Nama Vendor
-							</h1>
-							<h6
-									class="card-subtitle mb-2 text-muted text-center"
-									th:text="${vendor.kodeVendor}"
-							>
-								Kode Vendor
-							</h6>
-							<div class="row">
-								<label class="col-sm-2 col-form-label detail-label"
-								>Email:</label
-								>
-								<div class="col-sm-10">
-									<p
-											class="form-control-plaintext detail-value"
-											th:text="${vendor.emailVendor} ?: 'Tidak tersedia'"
+		/>
+		<title>Detail Vendor</title>
+		<style>
+			.detail-label {
+				font-weight: bold;
+			}
+			.detail-value {
+				text-align: left;
+				margin-left: 10px;
+			}
+			.card-container {
+				margin: 2rem auto;
+				padding: 4rem;
+			}
+			thead {
+				background-color: #ffc023;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+				<div class="col">
+					<div class="container">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="/">Home</a></li>
+								<li class="breadcrumb-item">
+									<a href="/vendor">Daftar Vendor</a>
+								</li>
+								<li class="breadcrumb-item active" aria-current="page">
+									Detail Vendor
+								</li>
+							</ol>
+						</nav>
+						<div class="card-container">
+							<div class="card shadow-lg bg-white rounded">
+								<div class="card-body">
+									<h1
+										class="card-title text-center"
+										th:text="${vendor.namaVendor}"
 									>
-										Email Vendor
-									</p>
-								</div>
-							</div>
-							<div class="mb-3 row">
-								<label class="col-sm-2 col-form-label detail-label"
-								>No. Telp:</label
-								>
-								<div class="col-sm-10">
-									<p
-											class="form-control-plaintext detail-value"
-											th:text="${vendor.nomorHandphoneVendor} ?: 'Tidak tersedia'"
+										Nama Vendor
+									</h1>
+									<h6
+										class="card-subtitle mb-2 text-muted text-center"
+										th:text="${vendor.kodeVendor}"
 									>
-										Nomor Telepon
-									</p>
+										Kode Vendor
+									</h6>
+									<div class="row">
+										<label class="col-sm-2 col-form-label detail-label"
+											>Email:</label
+										>
+										<div class="col-sm-10">
+											<p
+												class="form-control-plaintext detail-value"
+												th:text="${vendor.emailVendor} ?: 'Tidak tersedia'"
+											>
+												Email Vendor
+											</p>
+										</div>
+									</div>
+									<div class="mb-3 row">
+										<label class="col-sm-2 col-form-label detail-label"
+											>No. Telp:</label
+										>
+										<div class="col-sm-10">
+											<p
+												class="form-control-plaintext detail-value"
+												th:text="${vendor.nomorHandphoneVendor} ?: 'Tidak tersedia'"
+											>
+												Nomor Telepon
+											</p>
+										</div>
+									</div>
+									<h5 class="mt-4">Daftar Barang</h5>
+									<table
+										id="barangTable"
+										class="table table-bordered text-center"
+									>
+										<thead>
+											<tr>
+												<th>No.</th>
+												<th>Nama Barang</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="barang, stat : ${vendor.barangList}">
+												<td th:text="${stat.index + 1}">1</td>
+												<td th:text="${barang.namaBarang}">Nama Barang</td>
+											</tr>
+										</tbody>
+									</table>
+									<div class="mt-4 text-center">
+										<a href="/vendor" class="btn btn-secondary"
+											>Kembali ke Daftar</a
+										>
+										<a
+											th:href="@{/vendor/{kodeVendor}/update(kodeVendor=${vendor.kodeVendor})}"
+											class="btn btn-primary"
+											>Update Vendor</a
+										>
+										<a
+											class="btn btn-md btn-danger"
+											th:href="@{/vendor/{kodeVendor}/delete(kodeVendor=${vendor.kodeVendor})}"
+											>Hapus Vendor</a
+										>
+									</div>
 								</div>
-							</div>
-							<h5 class="mt-4">Daftar Barang</h5>
-							<table
-									id="barangTable"
-									class="table table-bordered text-center"
-							>
-								<thead>
-								<tr>
-									<th>No.</th>
-									<th>Nama Barang</th>
-								</tr>
-								</thead>
-								<tbody>
-								<tr th:each="barang, stat : ${vendor.barangList}">
-									<td th:text="${stat.index + 1}">1</td>
-									<td th:text="${barang.namaBarang}">Nama Barang</td>
-								</tr>
-								</tbody>
-							</table>
-							<div class="mt-4 text-center">
-								<a href="/vendor" class="btn btn-secondary"
-								>Kembali ke Daftar</a
-								>
-								<a
-										th:href="@{/vendor/{kodeVendor}/update(kodeVendor=${vendor.kodeVendor})}"
-										class="btn btn-primary"
-								>Update Vendor</a
-								>
-								<a
-										class="btn btn-md btn-danger"
-										th:href="@{/vendor/{kodeVendor}/delete(kodeVendor=${vendor.kodeVendor})}"
-								>Hapus Vendor</a
-								>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-<script>
-	$(document).ready(function () {
-		$("#barangTable").DataTable({
-			paging: true,
-			searching: true,
-			ordering: true,
-			info: true,
-		});
-	});
-</script>
-</body>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+		<script>
+			$(document).ready(function () {
+				$("#barangTable").DataTable({
+					paging: true,
+					searching: true,
+					ordering: true,
+					info: true,
+				});
+			});
+		</script>
+	</body>
 </html>
