@@ -35,13 +35,20 @@ public class VendorController {
     private UserService userService;
 
     @GetMapping("/vendor")
-    public String daftarVendor(Model model) {
-        List<Vendor> listVendor = vendorService.getAllVendors();
+    public String daftarVendor(Model model, @RequestParam(value = "search", required = false) String search) {
+        List<Vendor> listVendor;
+        if (search != null && !search.isEmpty()) {
+            listVendor = vendorService.searchVendors(search);
+        } else {
+            listVendor = vendorService.getAllVendors();
+        }
         model.addAttribute("vendors", listVendor);
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
         return "viewall-vendor";
     }
+
+
 
     @GetMapping("/vendor/tambah")
     public String formTambahVendor(Model model) {
