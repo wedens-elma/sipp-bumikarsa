@@ -21,4 +21,7 @@ public interface BarangService {
     void softDeleteBarang(String kodeBarang);
 
     Barang updateBarang(Barang barang);
+
+    List<Barang> searchBarangByName(String name);
+
 }

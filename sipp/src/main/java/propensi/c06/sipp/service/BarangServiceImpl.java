@@ -111,7 +111,8 @@ public class BarangServiceImpl implements BarangService {
         return barang;
     }
 
-
-
+    public List<Barang> searchBarangByName(String name) {
+        return barangDb.findByNamaBarangContainingIgnoreCase(name);
+    }
 }
 

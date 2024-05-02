@@ -163,6 +163,8 @@ public class VendorServiceImpl implements VendorService {
         }
     }
 
+
+
     @Override
     public boolean isVendorExistsAndNotDeleted(String namaVendor) {
         return vendorDb.existsByNamaVendorAndIsDeleted(namaVendor, false);

@@ -10,6 +10,7 @@ import propensi.c06.sipp.dto.BarangMapper;
 import propensi.c06.sipp.dto.VendorMapper;
 import propensi.c06.sipp.dto.request.CreateVendorRequestDTO;
 import propensi.c06.sipp.dto.request.UpdateVendorRequestDTO;
+import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.model.Vendor;
 import propensi.c06.sipp.service.BarangService;
 import propensi.c06.sipp.service.UserService;
@@ -73,18 +74,34 @@ public class VendorController {
     }
 
 
+//    @GetMapping("/vendor/{kodeVendor}")
+//    public String detailVendor(@PathVariable("kodeVendor") String kodeVendor, Model model, RedirectAttributes redirectAttributes) {
+//        Vendor vendor = vendorService.getVendorDetail(kodeVendor);
+//        if (vendor == null) {
+//            redirectAttributes.addFlashAttribute("errorMessage", "Vendor not found.");
+//            return "redirect:/vendor";
+//        }
+//        String username = userService.getCurrentUserName();
+//        model.addAttribute("username", username);
+//        model.addAttribute("vendor", vendor);
+//        return "view-detail-vendor";
+//    }
+
     @GetMapping("/vendor/{kodeVendor}")
-    public String detailVendor(@PathVariable("kodeVendor") String kodeVendor, Model model, RedirectAttributes redirectAttributes) {
+    public String detailVendor(@PathVariable("kodeVendor") String kodeVendor, Model model, RedirectAttributes redirectAttributes, @RequestParam(value = "search", required = false) String search) {
         Vendor vendor = vendorService.getVendorDetail(kodeVendor);
         if (vendor == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Vendor not found.");
             return "redirect:/vendor";
         }
-        String username = userService.getCurrentUserName();
-        model.addAttribute("username", username);
+        List<Barang> barangList = (search == null || search.isEmpty()) ? vendor.getBarangList() : barangService.searchBarangByName(search);
+        model.addAttribute("username", userService.getCurrentUserName());
         model.addAttribute("vendor", vendor);
+        model.addAttribute("barangList", barangList);
         return "view-detail-vendor";
     }
+
+
     @GetMapping("/vendor/{kodeVendor}/update")
     public String formUpdateVendor(@PathVariable String kodeVendor, Model model, RedirectAttributes redirectAttributes) {
         Vendor vendor = vendorService.getVendorDetail(kodeVendor);
@@ -145,15 +162,22 @@ public class VendorController {
 //        return "redirect:/vendor";
 //    }
 
-
+//
+//
 
     @GetMapping("/vendor/{kodeVendor}/delete")
     public String softDeleteVendor(@PathVariable("kodeVendor") String kodeVendor, Model model) {
-        vendorService.softDeleteVendor(kodeVendor);
-        String username = userService.getCurrentUserName();
-        model.addAttribute("username", username);
-        model.addAttribute("kodeVendor", kodeVendor);
-        return "success-delete-vendor";
+        Vendor vendor = vendorService.getVendorDetail(kodeVendor);
+        if (vendor != null) {
+            vendorService.softDeleteVendor(kodeVendor);
+            model.addAttribute("namaVendor", vendor.getNamaVendor());
+            model.addAttribute("kodeVendor", kodeVendor);
+            String username = userService.getCurrentUserName();
+            model.addAttribute("username", username);
+            return "success-delete-vendor";
+        } else {
+            return "redirect:/vendor";
+        }
     }
 
 }
