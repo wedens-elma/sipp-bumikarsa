@@ -69,6 +69,37 @@
                             </tr>
                             </tbody>
                         </table>
+
+                        <div class="text-center">
+                            <h2> Daftar Log Pengadaan</h2>
+                        </div>
+
+                        <br>
+
+                        <table id="logPengadaanTable" class="table table-bordered text-center">
+                            <thead style="background-color: #ffc023">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Code Pengadaan</th>
+                                <th scope="col">Diubah Oleh</th>
+                                <th scope="col">Status yang diubah</th>
+                                <th scope="col">Feedback</th>
+                                <th scope="col">Tanggal dan Waktu</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- Thymeleaf untuk iterasi daftar pengadaan -->
+                            <tr th:each="logPengadaan, iterStat : ${listLogPengadaan}">
+                                <td th:text="${iterStat.index + 1}"></td>
+                                <td th:text="${logPengadaan.pengadaan.idPengadaan}"></td>
+                                <td th:text="${logPengadaan.changedBy}"></td>
+                                <td th:text="${logPengadaan.status}"></td>
+                                <td th:text="${logPengadaan.feedback}"></td>
+                                <td th:text="${#dates.format(#dates.create(logPengadaan.tanggalWaktu.year, logPengadaan.tanggalWaktu.monthValue, logPengadaan.tanggalWaktu.dayOfMonth), 'dd/MM/yyyy') + ', ' + #dates.format(#dates.create(logPengadaan.tanggalWaktu.year, logPengadaan.tanggalWaktu.monthValue, logPengadaan.tanggalWaktu.dayOfMonth, logPengadaan.tanggalWaktu.hour, logPengadaan.tanggalWaktu.minute, logPengadaan.tanggalWaktu.second), 'HH:mm')}"></td>
+
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -86,6 +117,7 @@
 <script>
     $(document).ready(function () {
         $('#pengadaanTable').DataTable();
+        $('#logPengadaanTable').DataTable();
     });
 </script>
 

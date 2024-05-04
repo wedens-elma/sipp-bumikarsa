@@ -67,5 +67,8 @@ public class Pengadaan {
     @Column(name="isDeleted", nullable=false)
     private Boolean isDeleted = false;
 
+    @OneToMany(mappedBy = "pengadaan", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<LogPengadaan> logPengadan;
+
 
 }

@@ -29,7 +29,7 @@ public class UpdatePengadaanRequestDTO{
     private int diskonKeseluruhan;
     //DTO diakhir dihapus
     @NotNull
-    private List<PengadaanBarang> listBarang = new ArrayList<>();
+    private List<PengadaanBarang> listPengadaanBarang;
 
     @Data
     public static class PengadaanBarangDTO {

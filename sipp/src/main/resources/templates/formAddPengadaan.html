@@ -90,6 +90,7 @@
 											type="submit"
 											class="btn btn-primary btn-lg px-5"
 											name="addRow"
+											onclick="return validateTambahBarang()"
 									>
 										+ Tambah Barang
 									</button>
@@ -108,23 +109,21 @@
 									</tr>
 									</thead>
 
-									<tbody>
-									<tr th:each="barang, iterationStatus : *{listBarang}">
+									<tbody id="container">
+									<tr th:each="barang, iterationStatus : *{listPengadaanBarang}">
 										<td th:text="${iterationStatus.count}"></td>
 										<td>
 											<select
-													th:field="*{listBarang[__${iterationStatus.index}__].barang.kodeBarang}"
-													class="form-control" required="required"
+													th:field="*{listPengadaanBarang[__${iterationStatus.index}__].barang}"
+													class="form-control custom-select gap-2" required="required"
 											>
 												<option value="">Pilih Barang</option>
-												<th:block
-														th:each="barangExisting : ${listBarang}"
-														th:remove="tag"
-												>
+												<th:block th:each="barangExisting : ${listBarang}">
 													<option
+															th:if="${barangExisting.vendorList.![kodeVendor].contains(dto.vendor.kodeVendor)}"
 															th:value="${barangExisting.kodeBarang}"
 															th:text="${barangExisting.namaBarang}"
-															th:selected="${dto != null && dto.listBarang != null && dto.listBarang[__${iterationStatus.index}__].barang != null && dto.listBarang[__${iterationStatus.index}__].barang.kodeBarang == barangExisting.kodeBarang}"
+															th:selected="${dto != null && dto.listPengadaanBarang != null && dto.listPengadaanBarang[__${iterationStatus.index}__].barang != null && dto.listPengadaanBarang[__${iterationStatus.index}__].barang.kodeBarang == barangExisting.kodeBarang}"
 													></option>
 												</th:block>
 											</select>
@@ -133,7 +132,7 @@
 										<td>
 											<input
 													type="number"
-													th:field="*{listBarang[__${iterationStatus.index}__].jumlahBarang}"
+													th:field="*{listPengadaanBarang[__${iterationStatus.index}__].jumlahBarang}"
 													class="form-control jumlahBarang"
 													min="1"
 													step="1"
@@ -143,7 +142,7 @@
 										<td>
 											<input
 													type="number"
-													th:field="*{listBarang[__${iterationStatus.index}__].hargaBarang}"
+													th:field="*{listPengadaanBarang[__${iterationStatus.index}__].hargaBarang}"
 													class="form-control"
 													min="0"
 													step="1"
@@ -153,7 +152,7 @@
 										<td>
 											<input
 													type="number"
-													th:field="*{listBarang[__${iterationStatus.index}__].diskonSatuan}"
+													th:field="*{listPengadaanBarang[__${iterationStatus.index}__].diskonSatuan}"
 													class="form-control"
 													min="0"
 													max="100"
@@ -168,6 +167,7 @@
 													class="btn btn-danger"
 													type="submit"
 													name="deleteRow"
+													onclick="deleteRowAndSubmit(this)"
 											>
 												Hapus
 											</button>
@@ -201,106 +201,135 @@
 									>Batal</a
 									>
 									<!-- me-4 untuk memberikan margin kanan sebesar 20px -->
-									<button class="btn btn-primary btn-lg px-5" type="submit">
+									<button class="btn btn-primary btn-lg px-5" type="submit" >
 										Simpan
 									</button>
 								</div>
+								<input type="hidden" id="vendorKode" name="kodeVendor" />
 							</form>
 							<script>
-									// Function to validate each kuantitas field
-									function validateTambahBarang() {
-										var inputs = document.querySelectorAll('.jumlahBarang');
-										var isValid = true;
-										inputs.forEach(function(input) {
-											if (input.value === "") {
-												isValid = false;
-											}
-										});
-										if (!isValid) {
-											alert("Jumlah barang wajib diisi.");
-										}
-										return isValid;
+							function validateTambahBarang() {
+								var selectedVendor = document.getElementById("kodeVendor");
+								var kodeVendor = selectedVendor.options[selectedVendor.selectedIndex].value;
+								console.log("Selected kodeVendor:", kodeVendor);
+								document.getElementById("vendorKode").value = kodeVendor;
+
+								var inputs = document.querySelectorAll('.jumlahBarang');
+								var isValid = true;
+								inputs.forEach(function(input) {
+									if (input.value === "") {
+										isValid = false;
 									}
-
-									// Function to validate the whole form before submission
-									function validateForm() {
-										var inputs = document.querySelectorAll('.jumlahBarang');
-										var isValid = true;
-										inputs.forEach(function(input) {
-											if (input.value === "") {
-												isValid = false;
-											}
-										});
-										if (!isValid) {
-											alert("jumlah barang wajib diisi.");
-										} else {
-											document.getElementById("form-pengadaan").submit();
-										}
-									}
-									function addRow() {
-									  document.getElementById("idRencana").value = "${idRencana}";
-									  // Dapatkan div kontainer untuk baris-baris barang
-									  var barangRows = document.getElementById("barangRows");
-
-									  // Buat elemen div baru untuk baris barang
-									  var newBarangRow = document.createElement("div");
-									  newBarangRow.className = "barangRow";
-
-									  // Tambahkan input namaBarang pada baris baru
-									  var inputNamaBarang = document.createElement("input");
-									  inputNamaBarang.type = "text";
-									  inputNamaBarang.placeholder = "Nama Barang";
-									  inputNamaBarang.name =
-										"listBarang[" + barangRows.childElementCount + "].namaBarang"; // Sesuaikan dengan atribut lain yang dibutuhkan
-									  newBarangRow.appendChild(inputNamaBarang);
-
-									  // Tambahkan tombol untuk menghapus baris
-									  var deleteButton = document.createElement("button");
-									  deleteButton.type = "button";
-									  deleteButton.textContent = "Hapus Baris";
-									  deleteButton.onclick = function () {
-										removeRow(this);
-									  };
-									  newBarangRow.appendChild(deleteButton);
-
-									  // Tambahkan baris baru ke dalam kontainer
-									  barangRows.appendChild(newBarangRow);
-									}
-
-									function removeRow(button) {
-									  document.getElementById("idRencana").value = "${idRencana}";
-									  // Dapatkan elemen div baris yang berisi tombol yang diklik
-									  var rowToRemove = button.parentNode;
-
-									  // Dapatkan elemen div kontainer untuk baris-baris barang
-									  var barangRows = document.getElementById("barangRows");
-
-									  // Hapus baris dari kontainer
-									  barangRows.removeChild(rowToRemove);
-									}
-
-									function validateForm() {
-									// Ambil semua input dalam form
-									var inputs = document.querySelectorAll('input, select');
-									var isValid = true;
-
-									// Loop melalui setiap input
-									inputs.forEach(function(input) {
-										// Jika input kosong dan required, tandai sebagai tidak valid
-										if (input.required && !input.value.trim()) {
-											isValid = false;
-											// Tambahkan class 'is-invalid' untuk menandai input yang tidak valid
-											input.classList.add('is-invalid');
-										}
-									});
-
-									// Jika ada field yang tidak diisi, tampilkan pesan kesalahan
-									if (!isValid) {
-										alert("Mohon lengkapi semua field yang dibutuhkan.");
-									}
-
-									return isValid;
+								});
+								if (!isValid) {
+									alert("Kuantitas barang wajib diisi.");
 								}
+								return isValid;
+							  }
+
+							  function validateForm() {
+											// Ambil semua input dalam form
+											var inputs = document.querySelectorAll("input, select");
+											var isValid = true;
+
+											// Loop melalui setiap input
+											inputs.forEach(function (input) {
+												// Jika input kosong dan required, tandai sebagai tidak valid
+												if (input.required && !input.value.trim()) {
+													isValid = false;
+													// Tambahkan class 'is-invalid' untuk menandai input yang tidak valid
+													input.classList.add("is-invalid");
+												}
+											});
+
+											// Jika ada field yang tidak diisi, tampilkan pesan kesalahan
+											if (!isValid) {
+												alert("Mohon lengkapi semua field yang dibutuhkan.");
+											}
+
+											return isValid;
+										}
+
+
+								function addRow() {
+											document.getElementById("idRencana").value =
+												"${idRencana}";
+											// Dapatkan div kontainer untuk baris-baris barang
+											var barangRows = document.getElementById("barangRows");
+
+											// Buat elemen div baru untuk baris barang
+											var newBarangRow = document.createElement("div");
+											newBarangRow.className = "barangRow";
+
+											// Tambahkan input namaBarang pada baris baru
+											var inputNamaBarang = document.createElement("input");
+											inputNamaBarang.type = "text";
+											inputNamaBarang.placeholder = "Nama Barang";
+											inputNamaBarang.name =
+												"listBarang[" +
+												barangRows.childElementCount +
+												"].namaBarang"; // Sesuaikan dengan atribut lain yang dibutuhkan
+											newBarangRow.appendChild(inputNamaBarang);
+
+											// Tambahkan tombol untuk menghapus baris
+											var deleteButton = document.createElement("button");
+											deleteButton.type = "button";
+											deleteButton.textContent = "Hapus Baris";
+											deleteButton.onclick = function () {
+												removeRow(this);
+											};
+											newBarangRow.appendChild(deleteButton);
+
+											// Tambahkan baris baru ke dalam kontainer
+											barangRows.appendChild(newBarangRow);
+										}
+
+										function removeRow(button) {
+											document.getElementById("idRencana").value =
+												"${idRencana}";
+											// Dapatkan elemen div baris yang berisi tombol yang diklik
+											var rowToRemove = button.parentNode;
+
+											// Dapatkan elemen div kontainer untuk baris-baris barang
+											var barangRows = document.getElementById("barangRows");
+
+											// Hapus baris dari kontainer
+											barangRows.removeChild(rowToRemove);
+										}
+
+
+										// Function to validate the whole form before submission
+										function validateForm() {
+											var inputs = document.querySelectorAll(".jumlahBarang");
+											var isValid = true;
+											inputs.forEach(function (input) {
+												if (input.value === "") {
+													isValid = false;
+												}
+											});
+											if (!isValid) {
+												alert("jumlah barang wajib diisi.");
+											} else {
+												document.getElementById("form-pengadaan").submit();
+											}
+										}
+
+
+
+								document.addEventListener("DOMContentLoaded", function() {
+									var kodeVendorSelect = document.getElementById("kodeVendor");
+
+									kodeVendorSelect.addEventListener("change", function() {
+										var container = document.getElementById("container");
+
+										while (container.firstChild) {
+											container.removeChild(container.firstChild);
+										}
+
+										var vendorKodeInput = document.getElementById("vendorKode");
+										vendorKodeInput.value = "";
+									});
+								});
 
                   </script>
 

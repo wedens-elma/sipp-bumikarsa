@@ -73,18 +73,25 @@ public class PengadaanServiceImpl implements PengadaanService {
         pengadaan.setDiskonKeseluruhan(pengadaanDto.getDiskonKeseluruhan());
         pengadaanDb.save(pengadaan);
 
-        for (PengadaanBarang pengadaanBarangDTO : pengadaanDto.getListBarang()){
-            PengadaanBarang pengadaanBarang = new PengadaanBarang();
-            var barang = barangService.getBarangById(pengadaanBarangDTO.getBarang().getKodeBarang());
+        for (PengadaanBarang pengadaanBarangDTO : pengadaanDto.getListPengadaanBarang()){
+            PengadaanBarang pbarangexisted = pengadaanBarangDb.findByPengadaanAndBarang(pengadaan, pengadaanBarangDTO.getBarang());
+            if(pbarangexisted != null){
+                pbarangexisted.setJumlahBarang(pbarangexisted.getJumlahBarang()+pengadaanBarangDTO.getJumlahBarang());
+                pengadaanBarangDb.save(pbarangexisted);
+            } else{
+                PengadaanBarang pengadaanBarang = new PengadaanBarang();
+                var barang = barangService.getBarangById(pengadaanBarangDTO.getBarang().getKodeBarang());
+                pengadaanBarang.setJumlahBarang(pengadaanBarangDTO.getJumlahBarang());
+                pengadaanBarang.setHargaBarang(pengadaanBarangDTO.getHargaBarang());
+                pengadaanBarang.setDiskonSatuan(pengadaanBarangDTO.getDiskonSatuan());
+                pengadaanBarang.setBarang (pengadaanBarangDTO.getBarang());
+                pengadaanBarang.setPengadaan(pengadaan);
+                pengadaanBarang.setNamaBarang(barang.getNamaBarang());
 
-            pengadaanBarang.setJumlahBarang(pengadaanBarangDTO.getJumlahBarang());
-            pengadaanBarang.setHargaBarang(pengadaanBarangDTO.getHargaBarang());
-            pengadaanBarang.setDiskonSatuan(pengadaanBarangDTO.getDiskonSatuan());
-            pengadaanBarang.setBarang (pengadaanBarangDTO.getBarang());
-            pengadaanBarang.setPengadaan(pengadaan);
-            pengadaanBarang.setNamaBarang(barang.getNamaBarang());
+                pengadaanBarangDb.save(pengadaanBarang);
+            }
 
-            pengadaanBarangDb.save(pengadaanBarang);
+
         }
 
         return pengadaan;
@@ -218,12 +225,73 @@ public class PengadaanServiceImpl implements PengadaanService {
         pengadaanDb.save(pengadaan);
     }
 
-    @Override
-    public Pengadaan updatePengadaan(UpdatePengadaanRequestDTO pengadaanFromDto) {
-        Pengadaan pengadaan = getPengadaanDetail(pengadaanFromDto.getIdPengadaan());
+//    @Override
+//    public Pengadaan updatePengadaan(UpdatePengadaanRequestDTO pengadaanFromDto) {
+//        Pengadaan pengadaan = getPengadaanDetail(pengadaanFromDto.getIdPengadaan());
+//
+//        pengadaan.setNamaPengadaan(pengadaanFromDto.getNamaPengadaan());
+//        pengadaan.setTanggalPengadaan(LocalDate.parse(pengadaanFromDto.getTanggalPengadaan()));
+//        pengadaan.setVendor(pengadaanFromDto.getVendor());
+//        pengadaan.setDiskonKeseluruhan(pengadaanFromDto.getDiskonKeseluruhan());
+//        pengadaanDb.save(pengadaan);
+//
+//
+//        List<PengadaanBarang> existingPengadaanBarangs = pengadaan.getListPengadaanBarang();
+//        List<PengadaanBarang> updatedPengadaanBarangs = new ArrayList<>();
+//
+//        for (PengadaanBarang pengadaanBarangDTO : pengadaanFromDto.getListBarang()) {
+//            PengadaanBarang pengadaanBarang = new PengadaanBarang();
+//            Barang barang = barangService.getBarangById(pengadaanBarangDTO.getBarang().getKodeBarang());
+//
+//            pengadaanBarang.setJumlahBarang(pengadaanBarangDTO.getJumlahBarang());
+//            pengadaanBarang.setHargaBarang(pengadaanBarangDTO.getHargaBarang());
+//            pengadaanBarang.setDiskonSatuan(pengadaanBarangDTO.getDiskonSatuan());
+//            pengadaanBarang.setBarang(barang);
+//            pengadaanBarang.setPengadaan(pengadaan);
+//            pengadaanBarang.setNamaBarang(barang.getNamaBarang());
+//
+//            boolean isExisting = false;
+//            for (int i = 0; i < existingPengadaanBarangs.size(); i++) {
+//                PengadaanBarang existingPengadaanBarang = existingPengadaanBarangs.get(i);
+//                if (existingPengadaanBarang.getIdPengadaanBarang().equals(pengadaanBarangDTO.getIdPengadaanBarang())) {
+//                    existingPengadaanBarang.setJumlahBarang(pengadaanBarangDTO.getJumlahBarang());
+//                    existingPengadaanBarang.setHargaBarang(pengadaanBarangDTO.getHargaBarang());
+//                    existingPengadaanBarang.setDiskonSatuan(pengadaanBarangDTO.getDiskonSatuan());
+//                    existingPengadaanBarang.setBarang(barang);
+//                    existingPengadaanBarang.setNamaBarang(barang.getNamaBarang());
+//
+//                    updatedPengadaanBarangs.add(existingPengadaanBarang);
+//                    isExisting = true;
+//                    break;
+//                }
+//            }
+//
+//            if (!isExisting) {
+//                updatedPengadaanBarangs.add(pengadaanBarang);
+//            }
+//        }
+//
+//        for (PengadaanBarang existingPengadaanBarang : existingPengadaanBarangs) {
+//            if (!updatedPengadaanBarangs.contains(existingPengadaanBarang)) {
+//                pengadaanBarangDb.delete(existingPengadaanBarang);
+//            }
+//        }
+//
+//        pengadaan.setListPengadaanBarang(new ArrayList<>());
+//
+//        pengadaan.setListPengadaanBarang(updatedPengadaanBarangs);
+//        pengadaanDb.save(pengadaan);
+//
+//        return pengadaan;
+//    }
 
+    @Override
+    public Pengadaan updatePengadaan(Pengadaan pengadaanFromDto) {
+        Pengadaan pengadaan = getPengadaanDetail(pengadaanFromDto.getIdPengadaan());
+        System.out.println("id nyaaa ini" + pengadaanFromDto.getIdPengadaan());
+        //pengadaan.setIdPengadaan(pengadaanFromDto.getIdPengadaan());
         pengadaan.setNamaPengadaan(pengadaanFromDto.getNamaPengadaan());
-        pengadaan.setTanggalPengadaan(LocalDate.parse(pengadaanFromDto.getTanggalPengadaan()));
+        pengadaan.setTanggalPengadaan(pengadaanFromDto.getTanggalPengadaan());
         pengadaan.setVendor(pengadaanFromDto.getVendor());
         pengadaan.setDiskonKeseluruhan(pengadaanFromDto.getDiskonKeseluruhan());
         pengadaanDb.save(pengadaan);
@@ -232,7 +300,7 @@ public class PengadaanServiceImpl implements PengadaanService {
         List<PengadaanBarang> existingPengadaanBarangs = pengadaan.getListPengadaanBarang();
         List<PengadaanBarang> updatedPengadaanBarangs = new ArrayList<>();
 
-        for (PengadaanBarang pengadaanBarangDTO : pengadaanFromDto.getListBarang()) {
+        for (PengadaanBarang pengadaanBarangDTO : pengadaanFromDto.getListPengadaanBarang()) {
             PengadaanBarang pengadaanBarang = new PengadaanBarang();
             Barang barang = barangService.getBarangById(pengadaanBarangDTO.getBarang().getKodeBarang());
 
