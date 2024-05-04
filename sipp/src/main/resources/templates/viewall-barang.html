@@ -61,7 +61,7 @@
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <table id="table" class="table table-bordered text-center">
+                                            <table id="tableModal" class="table table-bordered text-center">
                                                 <thead style="background-color: #ffc023">
                                                     <tr>
                                                         <th scope="col">#</th>
@@ -116,7 +116,7 @@
                                 </div>
                             </div>
 
-                            <table id="table" class="table table-bordered text-center">
+                            <table id="tableBarang" class="table table-bordered text-center">
                                 <thead style="background-color: #ffc023">
                                     <tr>
                                         <th scope="col">#</th>
@@ -152,6 +152,74 @@
                                 </tbody>
                             </table>
 
+                            <br><br><br>
+
+                            <div class="text-center">
+                                <h2> Log Perubahan Stok Barang</h2>
+                            </div>
+
+                            <table id="tableLogPerubahanStokBarang" class="table table-bordered text-center">
+                                <thead style="background-color: #ffc023">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Nama Barang</th>
+                                        <th scope="col">Action</th>
+                                        <!-- <th scope="col">Jumlah Barang</th> -->
+                                        <th scope="col">Description</th>
+                                        <!-- <th scope="col">Tanggal Rencana</th> -->
+                                        <th scope="col">Pengubah</th>
+                                        <th scope="col">Waktu Diubah</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Gunakan Thymeleaf untuk mengulang melalui daftar log barang -->
+                                    <tr th:each="log, iterStat : ${listLogBarang}">
+                                        <td th:text="${iterStat.index + 1}"></td>
+                                        <td style="text-transform: capitalize;">
+                                            <a th:if="${log.barang.logBarang[log.barang.logBarang.size() - 1].action != 'Delete'}" th:href="'/barang/' + ${log.barang.kodeBarang}" th:text="${log.barang.namaBarang}"></a>
+                                            <span th:if="${log.barang.logBarang[log.barang.logBarang.size() - 1].action == 'Delete'}" th:text="${log.barang.namaBarang}"></span>
+                                        </td>         
+                                        <td style="text-transform: capitalize;" th:text="${log.action}"></td>                               
+                                        <!-- <td style="text-transform: capitalize;" th:text="${log.rencana.listBarangRencana.size()}"></td> -->
+
+                                        <td th:if="${log.action == 'Create'}">
+                                            <span th:text="${log.deskripsi}"></span><br>
+                                            <span  style="color: green" th:text="${log.oldValue}"></span>
+                                        </td>
+                                        
+                                        <td th:if="${log.action == 'Update'}">
+                                            <span th:text="${log.deskripsi}"></span><br>
+
+                                            <span th:if="${log.oldValue < log.newValue}">
+                                                <span style="color: red; margin-right: 5px;" th:text="${log.oldValue} "></span>
+                                                <i class="fas fa-arrow-right"></i>
+                                                <span style="color: green; margin-left: 5px;" th:text="${log.newValue}"></span>
+                                            </span>
+
+                                            <span th:if="${log.oldValue > log.newValue}">
+                                                <span style="color: green; margin-right: 5px;" th:text="${log.oldValue}"></span>
+                                                <i class="fas fa-arrow-right"></i>
+                                                <span style="color: red; margin-left: 5px;" th:text="${log.newValue}"></span>
+                                            </span>
+                                        </td>
+
+                                        <td th:if="${log.action == 'Delete'}">
+                                            <span th:text="${log.deskripsi}"></span><br>
+                                            <span style="color: red; margin-right: 5px;" th:text="0"></span>
+                                            <i class="fas fa-arrow-right"></i>
+                                            <i class="fas fa-times" style="margin-left: 5px;"></i>
+                                        </td>
+                                        
+                                        <td style="text-transform: capitalize;" th:text="${log.changedBy}"></td>
+                                        <td style="text-transform: capitalize;" th:text="${#dates.format(#dates.create(log.tanggalWaktu.year, log.tanggalWaktu.monthValue, log.tanggalWaktu.dayOfMonth), 'dd/MM/yyyy') + ', ' + #dates.format(#dates.create(log.tanggalWaktu.year, log.tanggalWaktu.monthValue, log.tanggalWaktu.dayOfMonth, log.tanggalWaktu.hour, log.tanggalWaktu.minute, log.tanggalWaktu.second), 'HH:mm')}"></td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -165,9 +233,18 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
 <script>
     $(document).ready(function () {
-        $("#table").DataTable();
+        $("#tableModal").DataTable();
+    });
+
+    $(document).ready(function () {
+        $("#tableBarang").DataTable();
+    });
+
+    $(document).ready(function () {
+        $("#tableLogPerubahanStokBarang").DataTable();
     });
 </script>
 

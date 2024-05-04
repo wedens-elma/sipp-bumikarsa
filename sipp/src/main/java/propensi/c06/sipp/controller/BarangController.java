@@ -26,9 +26,12 @@ import propensi.c06.sipp.dto.BarangMapper;
 import propensi.c06.sipp.dto.request.CreateTambahBarangRequestDTO;
 import propensi.c06.sipp.dto.request.UpdateBarangRequestDTO;
 import propensi.c06.sipp.model.Barang;
+import propensi.c06.sipp.model.LogBarang;
+import propensi.c06.sipp.model.LogRencana;
 import propensi.c06.sipp.model.UserModel;
 import propensi.c06.sipp.repository.BarangDb;
 import propensi.c06.sipp.service.BarangService;
+import propensi.c06.sipp.service.LogRencanaService;
 import propensi.c06.sipp.service.UserService;
 
 @Controller
@@ -45,8 +48,14 @@ public class BarangController {
     @Autowired
     private UserService userService;
 
+
     @GetMapping("/barang")
     public String daftarBarang(Model model) {
+
+        List<LogBarang> listLogBarang = barangService.getAllLogBarang();
+        model.addAttribute("listLogBarang", listLogBarang);
+
+
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("username", user.getName());
         
@@ -64,11 +73,9 @@ public class BarangController {
         boolean adaBarangDenganStokKurangDariStandar = listBarang.stream()
                 .anyMatch(barang -> (barang.getStokBarang() < barang.getStandarStokBarang()));
 
-        // Mengecek apakah ada barang dengan stok kurang dari standar
-        boolean isDeleted = listBarang.stream()
-                .anyMatch(barang -> barang.getIsDeleted() == true);
-
         String role = userService.getCurrentUserRole();
+
+        
 
         model.addAttribute("listBarang", listBarang);
 
@@ -118,6 +125,8 @@ public class BarangController {
         barang.setImage(imageContent);
 
         barangService.addBarang(barang);
+
+        model.addAttribute("listLogBarang", barangService.getAllLogBarang());
 
         model.addAttribute("kodeBarang", barang.getKodeBarang());
         UserModel user = userService.getLoggedInUser();
