@@ -83,6 +83,22 @@
                         </div>
                         
                         <br><br>
+
+                        <div class="row" th:if="${rencana.pengadaan != null}">
+                            <div class="col-3">
+                                <h6 style="text-align: left;" class="card-text m-0"><b>ID Pengadaan</b></h6>
+                            </div>
+                            <div class="col-9">
+                                <h6 style="text-align: left;" class="card-text m-0">
+                                    <a th:href="@{'/pengadaan/' + ${rencana.pengadaan.idPengadaan}}">
+                                        <span th:text="' : ' + ${rencana.pengadaan.idPengadaan}"></span>
+                                    </a>
+                                </h6>
+                            </div>
+                        </div>
+
+                        <br>
+                        
                         <div class="row">
                             <div class="col-3">
                                 <h6 style="text-align: left;" class="card-text m-0"><b>Nama Vendor</b></h6>

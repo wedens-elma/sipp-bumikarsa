@@ -271,9 +271,11 @@ public class PengadaanController {
         if (idRencana != null) {
             Rencana rencana = rencanaService.getRencanaById(idRencana);
             rencanaService.ubahStatusRencana(rencana, "direalisasikan", rencana.getLogRencana().get(rencana.getLogRencana().size()-1).getFeedback());
+            Pengadaan pengadaan = pengadaanService.addPengadaan(dto, rencana);
+        } else {
+            Pengadaan pengadaan = pengadaanService.addPengadaan(dto, null);
         }
-
-        Pengadaan pengadaan = pengadaanService.addPengadaan(dto);
+        
         model.addAttribute("idPengadaan", id);
 //        model.addAttribute("totalHargaAwal", totalHargaAwal);
 //        model.addAttribute("totalHargaSetelahDiskon", totalHargaSetelahDiskon);

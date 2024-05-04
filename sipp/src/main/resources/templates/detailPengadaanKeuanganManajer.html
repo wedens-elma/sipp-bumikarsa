@@ -36,6 +36,21 @@
                     <h4 style="color: #999;" th:text="${pengadaan.idPengadaan}"></h4>
                     <br>
                     <div class="container-detail" style="text-align: left;">
+                        <div class="row" th:if="${pengadaan.rencana != null}">
+                            <div class="col-3">
+                                <h6 style="text-align: left;" class="card-text m-0"><b>ID rencana</b></h6>
+                            </div>
+                            <div class="col-9">
+                                <h6 style="text-align: left;" class="card-text m-0">
+                                    <a th:href="@{'/rencana/detail/' + ${pengadaan.rencana.idRencana}}">
+                                        <span th:text="' : ' + ${pengadaan.rencana.idRencana}"></span>
+                                    </a>
+                                </h6>
+                            </div>
+                        </div>
+
+                        <br>
+
                         <div class="row">
                             <div class="col-2">
                                 <b>Tanggal Pengadaan</b>

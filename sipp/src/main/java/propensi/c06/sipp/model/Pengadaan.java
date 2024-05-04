@@ -67,5 +67,7 @@ public class Pengadaan {
     @Column(name="isDeleted", nullable=false)
     private Boolean isDeleted = false;
 
-
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rencana_id")
+    private Rencana rencana;
 }

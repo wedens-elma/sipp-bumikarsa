@@ -6,10 +6,11 @@ import java.util.Map;
 import propensi.c06.sipp.dto.PengadaanRequestDTO;
 import propensi.c06.sipp.dto.request.UpdatePengadaanRequestDTO;
 import propensi.c06.sipp.model.Pengadaan;
+import propensi.c06.sipp.model.Rencana;
 
 public interface PengadaanService {
     List<Pengadaan> getAllPengadaan();
-    Pengadaan addPengadaan(PengadaanRequestDTO pengadaanDto);
+    Pengadaan addPengadaan(PengadaanRequestDTO pengadaanDto, Rencana rencana);
     Pengadaan getPengadaanDetail(String id);
     Map<String, Float> hitungTotalHarga(Pengadaan dto);
     Long countPaymentStatus(String status);

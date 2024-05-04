@@ -53,6 +53,33 @@
             text-decoration: none;
             cursor: auto;
         }
+
+        .legend-item {
+            display: flex;
+            align-items: baseline;
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .inner-circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: white;
+        }
+
+        .legend-text {
+            text-align: left;
+            margin-top: 5px;
+        }
     </style>
 </head>
 
@@ -65,6 +92,34 @@
                 <div class="card m-4 p-4">
                     <div class="card-body text-center">
                         <h2 class="card-title"><b>Jadwal Rencana Pengadaan</b></h2>
+                        <div class="container mt-3">
+                            <div class="d-inline-flex justify-content-around">
+                                <div class="legend-item" style="margin-right: 20px;">
+                                    <div class="legend-color" style="background-color: #88bb64;">
+                                        <div class="inner-circle" style="background-color: #88bb64;"></div>
+                                    </div>
+                                    <div class="legend-text">Disetujui</div>
+                                </div>
+                                <div class="legend-item" style="margin-right: 20px;">
+                                    <div class="legend-color" style="background-color: #fb5b44;">
+                                        <div class="inner-circle" style="background-color: #fb5b44;"></div>
+                                    </div>
+                                    <div class="legend-text">Dibatalkan</div>
+                                </div>
+                                <div class="legend-item" style="margin-right: 20px;">
+                                    <div class="legend-color" style="background-color: #0491d0;">
+                                        <div class="inner-circle" style="background-color: #0491d0;"></div>
+                                    </div>
+                                    <div class="legend-text">Dibuat</div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #f2ce3f;">
+                                        <div class="inner-circle" style="background-color: #f2ce3f;"></div>
+                                    </div>
+                                    <div class="legend-text">Direalisasikan</div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="card-body">
                             <div id='calendar'></div>
                         </div>
@@ -106,7 +161,7 @@
                             </thead>
                             <tbody>
                                 <tr th:each="log, iterStat : ${listLogRencana}">
-                                    <td th:text="${iterStat.index + 1}"></td>
+                                    <td th:text="${log.idLogRencana}"></td>
                                     <td style="text-transform: capitalize;">
                                         <a th:if="${log.rencana.logRencana[log.rencana.logRencana.size() - 1].status != 'dihapus'}" th:href="'/rencana/detail/' + ${log.rencana.idRencana}" th:text="${log.rencana.namaRencana}"></a>
                                         <span th:if="${log.rencana.logRencana[log.rencana.logRencana.size() - 1].status == 'dihapus'}" th:text="${log.rencana.namaRencana}"></span>
@@ -204,9 +259,9 @@
                 searching: true,
                 ordering: true,
                 info: true,
-                // columnDefs: [
-                //     { type: 'num', targets: [0] } // Change 0 to the index of the column containing numeric values
-                // ]
+                order: [
+                    [0, 'desc'],
+                ]
             });
     
             $('#statusFilter').on('change', function() {
