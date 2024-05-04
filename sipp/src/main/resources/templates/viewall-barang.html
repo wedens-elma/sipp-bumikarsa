@@ -165,7 +165,7 @@
                                         <th scope="col">Nama Barang</th>
                                         <th scope="col">Action</th>
                                         <!-- <th scope="col">Jumlah Barang</th> -->
-                                        <th scope="col">Description</th>
+                                        <th scope="col">Keterangan</th>
                                         <!-- <th scope="col">Tanggal Rencana</th> -->
                                         <th scope="col">Pengubah</th>
                                         <th scope="col">Waktu Diubah</th>
@@ -182,12 +182,12 @@
                                         <td style="text-transform: capitalize;" th:text="${log.action}"></td>                               
                                         <!-- <td style="text-transform: capitalize;" th:text="${log.rencana.listBarangRencana.size()}"></td> -->
 
-                                        <td th:if="${log.action == 'Create'}">
+                                        <td th:if="${log.action == 'Tambah'}">
                                             <span th:text="${log.deskripsi}"></span><br>
                                             <span  style="color: green" th:text="${log.oldValue}"></span>
                                         </td>
                                         
-                                        <td th:if="${log.action == 'Update'}">
+                                        <td th:if="${log.action == 'Ubah'}">
                                             <span th:text="${log.deskripsi}"></span><br>
 
                                             <span th:if="${log.oldValue < log.newValue}">
@@ -203,7 +203,7 @@
                                             </span>
                                         </td>
 
-                                        <td th:if="${log.action == 'Delete'}">
+                                        <td th:if="${log.action == 'Hapus'}">
                                             <span th:text="${log.deskripsi}"></span><br>
                                             <span style="color: red; margin-right: 5px;" th:text="0"></span>
                                             <i class="fas fa-arrow-right"></i>
@@ -243,9 +243,21 @@
         $("#tableBarang").DataTable();
     });
 
-    $(document).ready(function () {
-        $("#tableLogPerubahanStokBarang").DataTable();
-    });
+    $(document).ready(function() {
+            var table = $('#tableLogPerubahanStokBarang').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                order: [
+                    [0, 'desc'],
+                ]
+            });
+        });
+
+    // $(document).ready(function () {
+    //     $("#tableLogPerubahanStokBarang").DataTable();
+    // });
 </script>
 
 

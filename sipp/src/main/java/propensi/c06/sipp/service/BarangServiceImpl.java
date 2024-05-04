@@ -55,8 +55,8 @@ public class BarangServiceImpl implements BarangService {
 
         LogBarang logBarang = new LogBarang();
         logBarang.setBarang(barang);
-        logBarang.setAction("Create");
-        logBarang.setDeskripsi("Create barang");
+        logBarang.setAction("Tambah");
+        logBarang.setDeskripsi("Tambah barang");
         logBarang.setTanggalWaktu(LocalDateTime.now());
         logBarang.setChangedBy(userService.getCurrentUserName());
         logBarang.setOldValue(barang.getStokBarang());
@@ -117,7 +117,7 @@ public class BarangServiceImpl implements BarangService {
     public void softDeleteBarang(String kodeBarang) {
         Barang barang = barangDb.findById(kodeBarang).orElse(null);
 
-        LogBarang logBarang = createLogBarang(barang, "Delete", "Delete barang");
+        LogBarang logBarang = createLogBarang(barang, "Hapus", "Hapus barang");
 
         if (barang != null) {
             barang.setIsDeleted(true);
@@ -130,7 +130,7 @@ public class BarangServiceImpl implements BarangService {
         
         Barang barang = getBarangById(barangFromDto.getKodeBarang());
 
-        LogBarang logBarang = createLogBarang(barang, "Update", "Update barang");
+        LogBarang logBarang = createLogBarang(barang, "Ubah", "Ubah barang");
         logBarang.setOldValue(barang.getStokBarang());
 
         if (barang != null) {
