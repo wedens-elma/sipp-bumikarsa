@@ -22,6 +22,7 @@
             flex: 1; 
             text-align: right;
         }
+        
         .bg-warning {
             background-color: rgb(249, 222, 20);
         }
@@ -57,7 +58,8 @@
                 <div class="card m-4 p-4">
                     <div class="card-body text-center">
                         <h1 th:text="${rencana.namaRencana}" style="font-weight: bold;"></h1>
-                        <h5 style="font-style: italic; text-transform: capitalize; font-weight: bold;" th:text="${rencana.logRencana[rencana.logRencana.size() - 1].status}"></h5>
+                        <h5 style="font-style: italic; text-transform: capitalize; font-weight: bold;" th:text="'Status: ' + ${rencana.logRencana[rencana.logRencana.size() - 1].status}"></h5>                      
+                        
                         <h6 th:text="'Dibuat oleh ' + ${rencana.createdBy}"></h6>
                         <br>
 
@@ -80,13 +82,12 @@
                                     <span th:text="${#dates.format(#dates.create(rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.year, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.monthValue, rencana.logRencana[rencana.logRencana.size() - 1].tanggalWaktu.dayOfMonth), 'dd MMMM yyyy')}"></span>
                                 </div>
                             </div>
-                        </div>
-                        
+                        </div>                 
                         <br><br>
 
                         <div class="row" th:if="${rencana.pengadaan != null}">
                             <div class="col-3">
-                                <h6 style="text-align: left;" class="card-text m-0"><b>ID Pengadaan</b></h6>
+                                <h6 style="text-align: left;" class="card-text m-0"><b>ID Pengadaan Realisasi</b></h6>
                             </div>
                             <div class="col-9">
                                 <h6 style="text-align: left;" class="card-text m-0">
@@ -150,7 +151,6 @@
                         </div>
 
                     </div>
-                    <br>
                 </div>
                 
                 <div class="d-flex justify-content-end mt-3" th:if="${rencana.logRencana.size() > 0}">
