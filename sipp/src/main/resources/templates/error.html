@@ -14,14 +14,24 @@
 	<body>
 		<div class="container-fluid">
 			<div class="row">
-				<div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+				<div
+					th:replace="~{fragments/error-sidebar}"
+					class="col-lg-3 col-md-4"
+				></div>
 				<div class="col">
 					<div id="pengadaan">
 						<div class="card m-4 p-4">
 							<div class="card-body">
 								<div class="text-center">
 									<div class="text-center">
-										<h2 th:text="${errorMessage}"></h2>
+										<h2
+											th:if="${errorMessage != null and errorMessage != ''}"
+											th:text="${errorMessage}"
+										></h2>
+										<!-- If errorMessage is empty, show "halaman tidak dapat dimuat" -->
+										<h2 th:if="${errorMessage == null or errorMessage == ''}">
+											Halaman tidak dapat dimuat
+										</h2>
 									</div>
 								</div>
 								<div class="text-center m-3">

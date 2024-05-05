@@ -44,21 +44,12 @@ public class BarangController {
     private UserService userService;
 
     @GetMapping("/barang")
-    public String daftarBarang(@RequestParam(value = "tipeBarang", required = false) Integer tipeBarang, Model model) {
+    public String daftarBarang(Model model) {
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("username", user.getName());
         
-        List<Barang> listBarang;
-        if (tipeBarang == null) {
-            listBarang = barangService.getAllBarang();
-        } else {
-            listBarang = barangService.getAllBarangByType(tipeBarang);
-        }
+        List<Barang> listBarang = barangService.getAllBarang();
 
-        System.out.println("berhasil ambil!!!!!!!!!!!!!");
-
-        System.out.println(tipeBarang);
-        System.out.println(listBarang);
         for (int i = 0; i < listBarang.size(); i++) {
             System.out.println(listBarang.get(i));
         }

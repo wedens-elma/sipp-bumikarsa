@@ -163,12 +163,7 @@
 									<th:block th:each="pengadaan : ${top5LatestPengadaan}">
 										<tr>
 											<!-- <td th:text="${pengadaan.idPengadaan}"></td> -->
-											<td>
-												<a
-													th:text="${pengadaan.namaPengadaan}"
-													th:href="@{'/pengadaan/' + ${pengadaan.idPengadaan}}"
-												></a>
-											</td>
+											<td th:text="${pengadaan.namaPengadaan}"></td>
 											<td th:text="${pengadaan.tanggalPengadaan}"></td>
 											<td th:text="${pengadaan.vendor.namaVendor}"></td>
 											<td>

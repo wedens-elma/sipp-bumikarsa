@@ -16,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import jakarta.servlet.http.HttpServletResponse;
 import propensi.c06.sipp.security.jwt.JwtTokenFilter;
 
 @Configuration
@@ -26,7 +27,6 @@ public class WebSecurityConfig {
 
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
-
 
     @Bean
     @Order(1)
@@ -85,6 +85,20 @@ public class WebSecurityConfig {
                 .logout((logout) -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/login")
                 )
+                .exceptionHandling((exceptionHandling) -> exceptionHandling
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                        // Handle error 403 and redirect to GlobalExceptionHandler
+                        request.setAttribute("javax.servlet.error.status_code", HttpServletResponse.SC_FORBIDDEN);
+                        try {
+                                throw new Exception("Maaf, anda tidak memiliki akses ke halaman ini"); // Trigger GlobalExceptionHandler
+                        } catch (Exception e) {
+                                // Log the exception
+                                e.printStackTrace();
+                                response.setStatus(403);
+                                // Redirect to the error page
+                                response.sendRedirect("error"); // Change "/error" to your desired error page URL
+                        }
+                }));
                 // .exceptionHandling((error) -> error.accessDeniedPage("/error"))
                 
         ;
