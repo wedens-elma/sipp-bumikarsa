@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @AllArgsConstructor
 @Entity
 @Table(name="rencana")
-@JsonIgnoreProperties(value={"id_vendor", "vendor", "createdBy", "feedback", "listBarangRencana", "logRencana", "isDeleted"}, allowSetters = true)
+@JsonIgnoreProperties(value={"id_vendor", "vendor", "createdBy", "feedback", "listBarangRencana", "logRencana", "isDeleted", "pengadaan"}, allowSetters = true)
 public class Rencana {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,4 +50,7 @@ public class Rencana {
 
     @Column(name = "latestStatus")
     private String latestStatus;
+
+    @OneToOne(mappedBy = "rencana", cascade = CascadeType.ALL)
+    private Pengadaan pengadaan;
 }

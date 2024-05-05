@@ -64,6 +64,12 @@ public class RencanaController {
         model.addAttribute("rencana", rencana);
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("username", user.getName());
+
+        if (rencana == null) {
+            model.addAttribute("errorMessage", "Maaf, rencana tidak dapat diakses karena sudah dihapus.");
+            return "error-view";
+        } 
+
         if (userService.getCurrentUserRole().equalsIgnoreCase("manajer")) {
             model.addAttribute("statusDTO", statusDTO);
             return "view-detail-rencana-manajer";

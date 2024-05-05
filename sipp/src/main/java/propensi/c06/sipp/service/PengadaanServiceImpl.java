@@ -17,9 +17,11 @@ import propensi.c06.sipp.dto.request.UpdatePengadaanRequestDTO;
 import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.model.Pengadaan;
 import propensi.c06.sipp.model.PengadaanBarang;
+import propensi.c06.sipp.model.Rencana;
 import propensi.c06.sipp.repository.BarangDb;
 import propensi.c06.sipp.repository.PengadaanBarangDb;
 import propensi.c06.sipp.repository.PengadaanDb;
+import propensi.c06.sipp.repository.RencanaDb;
 import propensi.c06.sipp.repository.VendorDb;
 
 @Service
@@ -39,13 +41,16 @@ public class PengadaanServiceImpl implements PengadaanService {
     @Autowired
     private BarangService barangService;
 
+    @Autowired
+    private RencanaDb rencanaDb;
+
     @Override
     public List<Pengadaan> getAllPengadaan(){
         return pengadaanDb.findAll();
     }
 
     @Override
-    public Pengadaan addPengadaan(PengadaanRequestDTO pengadaanDto){
+    public Pengadaan addPengadaan(PengadaanRequestDTO pengadaanDto, Rencana rencana){
         Pengadaan pengadaan = new Pengadaan();
 
 
@@ -71,6 +76,15 @@ public class PengadaanServiceImpl implements PengadaanService {
         pengadaan.setPaymentStatus(pengadaanDto.getPaymentStatus());
         pengadaan.setShipmentStatus(pengadaanDto.getShipmentStatus());
         pengadaan.setDiskonKeseluruhan(pengadaanDto.getDiskonKeseluruhan());
+
+        if (rencana != null) {
+            pengadaan.setRencana(rencana);
+            rencana.setPengadaan(pengadaan);
+            rencanaDb.save(rencana);
+        } else {
+            pengadaan.setRencana(null);
+        }
+
         pengadaanDb.save(pengadaan);
 
         for (PengadaanBarang pengadaanBarangDTO : pengadaanDto.getListBarang()){
