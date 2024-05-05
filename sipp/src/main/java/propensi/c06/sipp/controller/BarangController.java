@@ -134,6 +134,14 @@ public class BarangController {
 
         var barang = barangService.getBarangById(kodeBarang);
 
+        if (barang.getIsDeleted() == true){
+            var errorMessage = "Barang yang anda cari tidak terdaftar dalam sistem.";
+
+            model.addAttribute("errorMessage", errorMessage);
+
+            return "error-view";
+        }
+
         // Encode byte array image to Base64 string
         String base64Image = Base64.getEncoder().encodeToString(barang.getImage());
 
