@@ -1,244 +1,257 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
-	<head>
-		<title>Buat Pengadaan</title>
-		<object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
-		<object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
-	</head>
-	<body>
-		<!--<nav th:replace="~{fragments/fragment :: navbar('permintaan-pengiriman')}"></nav>-->
-		<div class="container-fluid">
-			<div class="row">
-				<!--        <div th:replace=~{"fragments/sidebarf :: sidebar}" class="col-lg-3 col-md-4" ></div>-->
-				<div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
-				<div class="col">
-					<div id="addpengadaan">
-						<div class="card mx-lg-5 m-4 p-4">
-							<h2 class="card-header text-center p-3">Buat Pengadaan</h2>
-							<div class="card-body">
-								<div class="justify-content-center">
-									<form
-										id="form-pengadaan"
-										th:action="@{/pengadaan/tambah}"
-										th:object="${dto}"
-										method="POST"
-										class="mx-4"
-									>
+<head>
+	<title>Buat Pengadaan</title>
+	<object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
+	<object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
+</head>
+<body>
+<!--<nav th:replace="~{fragments/fragment :: navbar('permintaan-pengiriman')}"></nav>-->
+<div class="container-fluid">
+	<div class="row">
+		<!--        <div th:replace=~{"fragments/sidebarf :: sidebar}" class="col-lg-3 col-md-4" ></div>-->
+		<div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+		<div class="col">
+			<div id="addpengadaan">
+				<div class="card mx-lg-5 m-4 p-4">
+					<h2 class="card-header text-center p-3">Buat Pengadaan</h2>
+					<div class="card-body">
+						<div class="justify-content-center">
+							<form
+									id="form-pengadaan"
+									th:action="@{/pengadaan/tambah}"
+									th:object="${dto}"
+									method="POST"
+									class="mx-4"
+							>
+								<input
+										type="hidden"
+										name="idRencana"
+										th:value="${idRencana}"
+								/>
+								<div class="row">
+									<div class="col">
+										<label>
+											<b style="font-size: 24px"> Nama Pengadaan: </b
+											><span style="color: red">*</span>
+										</label>
 										<input
-											type="hidden"
-											name="idRencana"
-											th:value="${idRencana}"
+												class="form-control"
+												type="text"
+												required="required"
+												th:field="*{namaPengadaan}"
+												th:value="${dto != null} ? ${dto.namaPengadaan} : ''"
 										/>
-										<div class="row">
-											<div class="col">
-												<label>
-													<b style="font-size: 24px"> Nama Pengadaan: </b
-													><span style="color: red">*</span>
-												</label>
-												<input
-													class="form-control"
-													type="text"
-													required="required"
-													th:field="*{namaPengadaan}"
-													th:value="${dto != null} ? ${dto.namaPengadaan} : ''"
-												/>
-												<br /><br />
-
-												<label>
-													<b style="font-size: 24px"> Tanggal Pengadaan: </b
-													><span style="color: red">*</span></label
-												>
-												<input
-													class="form-control"
-													type="date"
-													required="required"
-													th:field="*{tanggalPengadaan}"
-													th:value="${dto != null ? dto.tanggalPengadaan : ''}"
-												/>
-												<br /><br />
-
-												<label>
-													<b style="font-size: 24px"> Nama Vendor: </b
-													><span style="color: red">*</span></label
-												>
-												<table class="table">
-													<tbody>
-														<tr>
-															<select
-																class="form-control"
-																name="kodeVendor"
-																id="kodeVendor"
-																th:field="*{vendor.kodeVendor}"
-															>
-																<option
-																	th:each="vendor: ${listVendor}"
-																	th:value="${vendor.kodeVendor}"
-																	th:text="${vendor.namaVendor}"
-																	th:selected="${dto != null && dto.vendor != null && dto.vendor.kodeVendor == vendor.kodeVendor}"
-																></option>
-															</select>
-														</tr>
-													</tbody>
-												</table>
-												<br /><br />
-											</div>
-										</div>
-
-										<div class="text-right">
-											<!--                        <button type="submit" class="my-4 ml-2 btn btn-primary" id="add-row" name="addRow">+ Tambah Row</button>-->
-											<button
-												type="submit"
-												class="btn btn-primary btn-lg px-5"
-												name="addRow"
-											>
-												+ Tambah Barang
-											</button>
-										</div>
 										<br /><br />
 
-										<table class="table table-bordered">
-											<thead class="thead-dark">
-												<tr>
-													<th scope="col">No</th>
-													<th scope="col">Barang</th>
-													<th scope="col">Jumlah Barang</th>
-													<th scope="col">Harga Satuan</th>
-													<th scope="col">Diskon Satuan (%)</th>
-													<th scope="col">Action</th>
-												</tr>
-											</thead>
+										<label>
+											<b style="font-size: 24px"> Tanggal Pengadaan: </b
+											><span style="color: red">*</span></label
+										>
+										<input
+												class="form-control"
+												type="date"
+												required="required"
+												th:field="*{tanggalPengadaan}"
+												th:value="${dto != null ? dto.tanggalPengadaan : ''}"
+										/>
+										<br /><br />
 
+										<label>
+											<b style="font-size: 24px"> Nama Vendor: </b
+											><span style="color: red">*</span></label
+										>
+										<table class="table">
 											<tbody>
-												<tr th:each="barang, iterationStatus : *{listBarang}">
-													<td th:text="${iterationStatus.count}"></td>
-													<td>
-														<select
-															th:field="*{listBarang[__${iterationStatus.index}__].barang.kodeBarang}"
-															class="form-control"
-															required="required"
-														>
-															<option value="">Pilih Barang</option>
-															<th:block
-																th:each="barangExisting : ${listBarang}"
-																th:remove="tag"
-															>
-																<option
-																	th:value="${barangExisting.kodeBarang}"
-																	th:text="${barangExisting.namaBarang}"
-																	th:selected="${dto != null && dto.listBarang != null && dto.listBarang[__${iterationStatus.index}__].barang != null && dto.listBarang[__${iterationStatus.index}__].barang.kodeBarang == barangExisting.kodeBarang}"
-																></option>
-															</th:block>
-														</select>
-													</td>
-
-													<td>
-														<input
-															type="number"
-															th:field="*{listBarang[__${iterationStatus.index}__].jumlahBarang}"
-															class="form-control jumlahBarang"
-															min="1"
-															step="1"
-															placeholder="Jumlah Barang"
-														/>
-													</td>
-													<td>
-														<input
-															type="number"
-															th:field="*{listBarang[__${iterationStatus.index}__].hargaBarang}"
-															class="form-control"
-															min="0"
-															step="1"
-															placeholder="Harga Barang"
-														/>
-													</td>
-													<td>
-														<input
-															type="number"
-															th:field="*{listBarang[__${iterationStatus.index}__].diskonSatuan}"
-															class="form-control"
-															min="0"
-															max="100"
-															step="1"
-															required="required"
-															placeholder="Diskon Satuan (%)"
-														/>
-													</td>
-													<td>
-														<button
-															th:value="${iterationStatus.index}"
-															class="btn btn-danger"
-															type="submit"
-															name="deleteRow"
-														>
-															Hapus
-														</button>
-													</td>
-												</tr>
+											<tr>
+												<select
+														class="form-control"
+														name="kodeVendor"
+														id="kodeVendor"
+														th:field="*{vendor.kodeVendor}"
+												>
+													<option
+															th:each="vendor: ${listVendor}"
+															th:value="${vendor.kodeVendor}"
+															th:text="${vendor.namaVendor}"
+															th:selected="${dto != null && dto.vendor != null && dto.vendor.kodeVendor == vendor.kodeVendor}"
+													></option>
+												</select>
+											</tr>
 											</tbody>
 										</table>
+										<br /><br />
+									</div>
+								</div>
 
-										<div class="row">
-											<div class="col">
-												<label>
-													<b style="font-size: 24px">
-														Diskon Keseluruhan (%): </b
-													><span style="color: red">*</span></label
-												>
-												<input
-													class="form-control"
+								<div class="text-right">
+									<!--                        <button type="submit" class="my-4 ml-2 btn btn-primary" id="add-row" name="addRow">+ Tambah Row</button>-->
+									<button
+											type="submit"
+											class="btn btn-primary btn-lg px-5"
+											name="addRow"
+											onclick="return validateTambahBarang()"
+									>
+										+ Tambah Barang
+									</button>
+								</div>
+								<br /><br />
+
+								<table class="table table-bordered">
+									<thead class="thead-dark">
+									<tr>
+										<th scope="col">No</th>
+										<th scope="col">Barang</th>
+										<th scope="col">Jumlah Barang</th>
+										<th scope="col">Harga Satuan</th>
+										<th scope="col">Diskon Satuan (%)</th>
+										<th scope="col">Action</th>
+									</tr>
+									</thead>
+
+									<tbody id="container">
+									<tr th:each="barang, iterationStatus : *{listPengadaanBarang}">
+										<td th:text="${iterationStatus.count}"></td>
+										<td>
+											<select
+													th:field="*{listPengadaanBarang[__${iterationStatus.index}__].barang}"
+													class="form-control custom-select gap-2" required="required"
+											>
+												<option value="">Pilih Barang</option>
+												<th:block th:each="barangExisting : ${listBarang}">
+													<option
+															th:if="${barangExisting.vendorList.![kodeVendor].contains(dto.vendor.kodeVendor)}"
+															th:value="${barangExisting.kodeBarang}"
+															th:text="${barangExisting.namaBarang}"
+															th:selected="${dto != null && dto.listPengadaanBarang != null && dto.listPengadaanBarang[__${iterationStatus.index}__].barang != null && dto.listPengadaanBarang[__${iterationStatus.index}__].barang.kodeBarang == barangExisting.kodeBarang}"
+													></option>
+												</th:block>
+											</select>
+										</td>
+
+										<td>
+											<input
 													type="number"
-													required="required"
+													th:field="*{listPengadaanBarang[__${iterationStatus.index}__].jumlahBarang}"
+													class="form-control jumlahBarang"
+													min="1"
+													step="1"
+													placeholder="Jumlah Barang"
+											/>
+										</td>
+										<td>
+											<input
+													type="number"
+													th:field="*{listPengadaanBarang[__${iterationStatus.index}__].hargaBarang}"
+													class="form-control"
+													min="0"
+													step="1"
+													placeholder="Harga Barang"
+											/>
+										</td>
+										<td>
+											<input
+													type="number"
+													th:field="*{listPengadaanBarang[__${iterationStatus.index}__].diskonSatuan}"
+													class="form-control"
 													min="0"
 													max="100"
 													step="1"
-													th:field="*{diskonKeseluruhan}"
-												/>
-												<br /><br />
-											</div>
-										</div>
-
-										<div class="d-flex justify-content-center">
-											<a class="btn btn-danger btn-lg me-4 px-5" href="/"
-												>Batal</a
+													required="required"
+													placeholder="Diskon Satuan (%)"
+											/>
+										</td>
+										<td>
+											<button
+													th:value="${iterationStatus.index}"
+													class="btn btn-danger"
+													type="submit"
+													name="deleteRow"
+													onclick="deleteRowAndSubmit(this)"
 											>
-											<!-- me-4 untuk memberikan margin kanan sebesar 20px -->
-											<button class="btn btn-primary btn-lg px-5" type="submit">
-												Simpan
+												Hapus
 											</button>
-										</div>
-									</form>
-									<script>
-										// Function to validate each kuantitas field
-										function validateTambahBarang() {
-											var inputs = document.querySelectorAll(".jumlahBarang");
+										</td>
+									</tr>
+									</tbody>
+								</table>
+
+								<div class="row">
+									<div class="col">
+										<label>
+											<b style="font-size: 24px">
+												Diskon Keseluruhan (%): </b
+											><span style="color: red">*</span></label
+										>
+										<input
+												class="form-control"
+												type="number"
+												required="required"
+												min="0"
+												max="100"
+												step="1"
+												th:field="*{diskonKeseluruhan}"
+										/>
+										<br /><br />
+									</div>
+								</div>
+
+								<div class="d-flex justify-content-center">
+									<a class="btn btn-danger btn-lg me-4 px-5" href="/"
+									>Batal</a
+									>
+									<!-- me-4 untuk memberikan margin kanan sebesar 20px -->
+									<button class="btn btn-primary btn-lg px-5" type="submit" >
+										Simpan
+									</button>
+								</div>
+								<input type="hidden" id="vendorKode" name="kodeVendor" />
+							</form>
+							<script>
+							function validateTambahBarang() {
+								var selectedVendor = document.getElementById("kodeVendor");
+								var kodeVendor = selectedVendor.options[selectedVendor.selectedIndex].value;
+								console.log("Selected kodeVendor:", kodeVendor);
+								document.getElementById("vendorKode").value = kodeVendor;
+
+								var inputs = document.querySelectorAll('.jumlahBarang');
+								var isValid = true;
+								inputs.forEach(function(input) {
+									if (input.value === "") {
+										isValid = false;
+									}
+								});
+								if (!isValid) {
+									alert("Kuantitas barang wajib diisi.");
+								}
+								return isValid;
+							  }
+
+							  function validateForm() {
+											// Ambil semua input dalam form
+											var inputs = document.querySelectorAll("input, select");
 											var isValid = true;
+
+											// Loop melalui setiap input
 											inputs.forEach(function (input) {
-												if (input.value === "") {
+												// Jika input kosong dan required, tandai sebagai tidak valid
+												if (input.required && !input.value.trim()) {
 													isValid = false;
+													// Tambahkan class 'is-invalid' untuk menandai input yang tidak valid
+													input.classList.add("is-invalid");
 												}
 											});
+
+											// Jika ada field yang tidak diisi, tampilkan pesan kesalahan
 											if (!isValid) {
-												alert("Jumlah barang wajib diisi.");
+												alert("Mohon lengkapi semua field yang dibutuhkan.");
 											}
+
 											return isValid;
 										}
 
-										// Function to validate the whole form before submission
-										function validateForm() {
-											var inputs = document.querySelectorAll(".jumlahBarang");
-											var isValid = true;
-											inputs.forEach(function (input) {
-												if (input.value === "") {
-													isValid = false;
-												}
-											});
-											if (!isValid) {
-												alert("jumlah barang wajib diisi.");
-											} else {
-												document.getElementById("form-pengadaan").submit();
-											}
-										}
-										function addRow() {
+
+								function addRow() {
 											document.getElementById("idRencana").value =
 												"${idRencana}";
 											// Dapatkan div kontainer untuk baris-baris barang
@@ -284,35 +297,49 @@
 											barangRows.removeChild(rowToRemove);
 										}
 
-										function validateForm() {
-											// Ambil semua input dalam form
-											var inputs = document.querySelectorAll("input, select");
-											var isValid = true;
 
-											// Loop melalui setiap input
+										// Function to validate the whole form before submission
+										function validateForm() {
+											var inputs = document.querySelectorAll(".jumlahBarang");
+											var isValid = true;
 											inputs.forEach(function (input) {
-												// Jika input kosong dan required, tandai sebagai tidak valid
-												if (input.required && !input.value.trim()) {
+												if (input.value === "") {
 													isValid = false;
-													// Tambahkan class 'is-invalid' untuk menandai input yang tidak valid
-													input.classList.add("is-invalid");
 												}
 											});
-
-											// Jika ada field yang tidak diisi, tampilkan pesan kesalahan
 											if (!isValid) {
-												alert("Mohon lengkapi semua field yang dibutuhkan.");
+												alert("jumlah barang wajib diisi.");
+											} else {
+												document.getElementById("form-pengadaan").submit();
 											}
-
-											return isValid;
 										}
-									</script>
-								</div>
-							</div>
+
+
+
+								document.addEventListener("DOMContentLoaded", function() {
+									var kodeVendorSelect = document.getElementById("kodeVendor");
+
+									kodeVendorSelect.addEventListener("change", function() {
+										var container = document.getElementById("container");
+
+										while (container.firstChild) {
+											container.removeChild(container.firstChild);
+										}
+
+										var vendorKodeInput = document.getElementById("vendorKode");
+										vendorKodeInput.value = "";
+									});
+								});
+
+                  </script>
+
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</body>
+	</div>
+</div>
+</body>
+
 </html>

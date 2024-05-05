@@ -1,16 +1,23 @@
 package propensi.c06.sipp.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -70,4 +77,9 @@ public class Pengadaan {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rencana_id")
     private Rencana rencana;
+    
+    @OneToMany(mappedBy = "pengadaan", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<LogPengadaan> logPengadan;
+
+
 }

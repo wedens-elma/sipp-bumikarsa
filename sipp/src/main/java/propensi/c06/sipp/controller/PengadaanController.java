@@ -20,16 +20,9 @@ import jakarta.validation.Valid;
 import propensi.c06.sipp.dto.PengadaanMapper;
 import propensi.c06.sipp.dto.PengadaanRequestDTO;
 import propensi.c06.sipp.dto.request.UpdatePengadaanRequestDTO;
-import propensi.c06.sipp.model.BarangRencana;
-import propensi.c06.sipp.model.Pengadaan;
-import propensi.c06.sipp.model.PengadaanBarang;
-import propensi.c06.sipp.model.Rencana;
+import propensi.c06.sipp.model.*;
 import propensi.c06.sipp.repository.PengadaanDb;
-import propensi.c06.sipp.service.BarangService;
-import propensi.c06.sipp.service.PengadaanService;
-import propensi.c06.sipp.service.RencanaService;
-import propensi.c06.sipp.service.UserService;
-import propensi.c06.sipp.service.VendorService;
+import propensi.c06.sipp.service.*;
 
 
 @Controller
@@ -57,11 +50,17 @@ public class PengadaanController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private LogPengadaanService logPengadaanService;
+
     @GetMapping("/pengadaan")
     public String listPengadaan(Model model){
         //List<Pengadaan> listPengadaan = pengadaanService.getAllPengadaan();
         List<Pengadaan> listPengadaan = pengadaanService.getAllPengadaan();
         model.addAttribute("listPengadaan", listPengadaan);
+        List<LogPengadaan> listLogPengadaan = logPengadaanService.getAllLogPengadaan();
+        model.addAttribute("listLogPengadaan", listLogPengadaan);
+        model.addAttribute("listVendor", vendorService.getAllVendors());
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
         if(userService.getCurrentUserRole().equalsIgnoreCase("manajer") || userService.getCurrentUserRole().equalsIgnoreCase("keuangan")){
@@ -105,10 +104,13 @@ public class PengadaanController {
     }
 
     @PostMapping("/pengadaan/{id}/updateShipmentStatus")
-    public String updateStatusShipmentPengadaan(@PathVariable String id, @RequestParam("shipmentStatus") int shipmentStatus){
+    public String updateStatusShipmentPengadaan(@PathVariable String id, @RequestParam("shipmentStatus") int shipmentStatus, @RequestParam("feedback") String feedback, Model model){
         Pengadaan pengadaan = pengadaanService.getPengadaanDetail(id);
         pengadaan.setShipmentStatus(shipmentStatus);
         //pengadaan.setPaymentStatus(paymentStatus);
+        List<LogPengadaan> listLogPengadaan = logPengadaanService.getAllLogPengadaan();
+        model.addAttribute("listLogPengadaan", listLogPengadaan);
+        logPengadaanService.createLogPengadaan(pengadaan, "Shipment Status", feedback);
         pengadaanService.updateStatusPengadaan(pengadaan); // Buat method ini di PengadaanService
         return "redirect:/pengadaan";
     }
@@ -124,10 +126,13 @@ public class PengadaanController {
     }
 
     @PostMapping("/pengadaan/{id}/updatePaymentStatus")
-    public String updateStatusPengadaan(@PathVariable String id, @RequestParam("paymentStatus") int paymentStatus){
+    public String updateStatusPengadaan(@PathVariable String id, @RequestParam("paymentStatus") int paymentStatus, @RequestParam("feedback") String feedback, Model model){
         Pengadaan pengadaan = pengadaanService.getPengadaanDetail(id);
         //pengadaan.setShipmentStatus(shipmentStatus);
         pengadaan.setPaymentStatus(paymentStatus);
+        List<LogPengadaan> listLogPengadaan = logPengadaanService.getAllLogPengadaan();
+        model.addAttribute("listLogPengadaan", listLogPengadaan);
+        logPengadaanService.createLogPengadaan(pengadaan, "Payment Status", feedback);
         pengadaanService.updateStatusPengadaan(pengadaan); // Buat method ini di PengadaanService
         return "redirect:/pengadaan";
     }
@@ -144,45 +149,86 @@ public class PengadaanController {
             pengadaanDTO.setIdPengadaan(id);
             model.addAttribute("pengadaanDTO", pengadaanDTO);
             model.addAttribute("listVendor", vendorService.getAllVendors());
-            model.addAttribute("listbarang", barangService.getAllBarang());
+            model.addAttribute("listBarang", barangService.getAllBarang());
             return "updateForm";
         } else {
             // Tampilkan pesan bahwa pengadaan tidak dapat diperbarui
-            model.addAttribute("errorMessage", "Pengadaan tidak memenuhi syarat untuk diperbarui.");
+            model.addAttribute("errorMessage", "Pengadaan tidak memnuhi syarat untuk diupdate. Pengadaan hanya dapat diupdate jika Shipment Status = In Progress dan Payment Status = Not Paid");
             return "error-view"; // Ganti dengan halaman atau tindakan yang sesuai
         }
     }
 
     ///hampirrrrrr//
+//    @PostMapping("pengadaan/{id}/update")
+//    public String updatePengadaan(@Valid @ModelAttribute UpdatePengadaanRequestDTO dto, BindingResult bindingResult,
+//                                  Model model, HttpServletRequest request) {
+//
+//        if(request.getParameter("tambahRow") != null){
+//            if (dto.getListBarang() == null || dto.getListBarang().size() == 0) {
+//                dto.setListBarang(new ArrayList<>());
+//            }
+//            dto.getListBarang().add(new PengadaanBarang());
+//            model.addAttribute("pengadaanDTO", dto);
+//            model.addAttribute("listBarang", barangService.getAllBarang());
+//            model.addAttribute("listVendor", vendorService.getAllVendors());
+//            // ... add other attributes if needed ...
+//            return "updateForm";
+//        } else if(request.getParameter("hapusRow") != null){
+//            int rowIndex = Integer.parseInt(request.getParameter("hapusRow"));
+//            // ... remove row logic ...
+//            dto.getListBarang().remove(rowIndex);
+//            model.addAttribute("listBarang", barangService.getAllBarang());
+//            model.addAttribute("listVendor", vendorService.getAllVendors());
+//            model.addAttribute("pengadaanDTO", dto);
+//            // ... add other attributes if needed ...
+//            return "updateForm";
+//
+//        } else{
+//            //var pengadaanFromDto = pengadaanMapper.updatePengadaanRequestDTOToPengadaan(dto);
+//            var pengadaan = pengadaanService.updatePengadaan(dto);
+//            model.addAttribute("idPengadaan", pengadaan.getIdPengadaan());
+//            //System.out.println("ini idnyaa"+pengadaan.getIdPengadaan());
+//            String username = userService.getCurrentUserName();
+//            model.addAttribute("username", username);
+//
+//            return "success-update-pengadaan";
+//        }
+//    }
+
     @PostMapping("pengadaan/{id}/update")
-    public String updatePengadaan(@Valid @ModelAttribute UpdatePengadaanRequestDTO dto, BindingResult bindingResult,
+    public String updatePengadaan(@Valid @ModelAttribute UpdatePengadaanRequestDTO dto,@RequestParam("kodeVendor") String kodeVendor, @RequestParam("feedback") String feedback, BindingResult bindingResult,
                                   Model model, HttpServletRequest request) {
 
-        if(request.getParameter("tambahRow") != null){
-            if (dto.getListBarang() == null || dto.getListBarang().size() == 0) {
-                dto.setListBarang(new ArrayList<>());
+        if(request.getParameter("addRow") != null){
+            if (dto.getListPengadaanBarang() == null || dto.getListPengadaanBarang().size() == 0) {
+                dto.setListPengadaanBarang(new ArrayList<>());
             }
-            dto.getListBarang().add(new PengadaanBarang());
+            dto.getListPengadaanBarang().add(new PengadaanBarang());
             model.addAttribute("pengadaanDTO", dto);
             model.addAttribute("listBarang", barangService.getAllBarang());
+            model.addAttribute("kodeVendor", kodeVendor);
             model.addAttribute("listVendor", vendorService.getAllVendors());
             // ... add other attributes if needed ...
             return "updateForm";
-        } else if(request.getParameter("hapusRow") != null){
-            int rowIndex = Integer.parseInt(request.getParameter("hapusRow"));
+        } else if(request.getParameter("deleteRow") != null){
+            int rowIndex = Integer.parseInt(request.getParameter("deleteRow"));
             // ... remove row logic ...
-            dto.getListBarang().remove(rowIndex);
+            dto.getListPengadaanBarang().remove(rowIndex);
             model.addAttribute("listBarang", barangService.getAllBarang());
             model.addAttribute("listVendor", vendorService.getAllVendors());
+            model.addAttribute("kodeVendor", kodeVendor);
             model.addAttribute("pengadaanDTO", dto);
             // ... add other attributes if needed ...
             return "updateForm";
 
         } else{
-            //var pengadaanFromDto = pengadaanMapper.updatePengadaanRequestDTOToPengadaan(dto);
-            var pengadaan = pengadaanService.updatePengadaan(dto);
+            var pengadaanFromDto = pengadaanMapper.updatePengadaanRequestDTOToPengadaan(dto);
+            var pengadaan = pengadaanService.updatePengadaan(pengadaanFromDto);
             model.addAttribute("idPengadaan", pengadaan.getIdPengadaan());
             System.out.println("ini idnyaa"+pengadaan.getIdPengadaan());
+            List<LogPengadaan> listLogPengadaan = logPengadaanService.getAllLogPengadaan();
+            model.addAttribute("listLogPengadaan", listLogPengadaan);
+            logPengadaanService.createLogPengadaan(pengadaan, "Detail Pengadaan", feedback);
             String username = userService.getCurrentUserName();
             model.addAttribute("username", username);
 
@@ -203,12 +249,16 @@ public class PengadaanController {
             dtoPengadaan.setNamaPengadaan(rencana.getNamaRencana());
             dtoPengadaan.setVendor(rencana.getVendor());
             dtoPengadaan.setTanggalPengadaan(rencana.getExpectedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            dtoPengadaan.setListBarang(new ArrayList<>());
+            dtoPengadaan.setListPengadaanBarang(new ArrayList<>());
             for (BarangRencana barangRencana : rencana.getListBarangRencana()) {
                 PengadaanBarang barangPengadaan = new PengadaanBarang();
+                //var barang = barangService.getBarangById(barangRencana.getBarang().getKodeBarang());
+                //var pengadaan = pengadaanService.getPengadaanDetail(dtoPengadaan.getIdPengadaan());
                 barangPengadaan.setBarang(barangRencana.getBarang());
                 barangPengadaan.setJumlahBarang(barangRencana.getKuantitas());
-                dtoPengadaan.getListBarang().add(barangPengadaan);
+                //barangPengadaan.setNamaBarang(barangPengadaan.getNamaBarang());
+               // barangPengadaan.getPengadaan(pengadaan);
+                dtoPengadaan.getListPengadaanBarang().add(barangPengadaan);
             }
             model.addAttribute("idRencana", idRencana);
         }
@@ -225,12 +275,13 @@ public class PengadaanController {
 
 
     @PostMapping(value = "/pengadaan/tambah", params = {"addRow"})
-    public String addRowTambahBarang(@ModelAttribute PengadaanRequestDTO dto, Model model, @RequestParam(required = false) Long idRencana) {
+    public String addRowTambahBarang(@ModelAttribute PengadaanRequestDTO dto, Model model, @RequestParam("kodeVendor") String kodeVendor,@RequestParam(required = false) Long idRencana) {
 
-        if (dto.getListBarang() == null || dto.getListBarang().size() == 0) {
-            dto.setListBarang(new ArrayList<>());
+        if (dto.getListPengadaanBarang() == null || dto.getListPengadaanBarang().size() == 0) {
+            dto.setListPengadaanBarang(new ArrayList<>());
         }
-        dto.getListBarang().add(new PengadaanBarang());
+        dto.getListPengadaanBarang().add(new PengadaanBarang());
+        model.addAttribute("kodeVendor", kodeVendor);
         model.addAttribute("dto", dto);
         model.addAttribute("idRencana", idRencana);
         model.addAttribute("listVendor", vendorService.getAllVendors());
@@ -243,9 +294,10 @@ public class PengadaanController {
 
 
     @PostMapping(value = "/pengadaan/tambah", params = {"deleteRow"})
-    public String deleteRowTambahBarang(Model model, @ModelAttribute PengadaanRequestDTO dto, @RequestParam("deleteRow") int row, @RequestParam(required = false) Long idRencana){
+    public String deleteRowTambahBarang(Model model, @ModelAttribute PengadaanRequestDTO dto,@RequestParam("kodeVendor") String kodeVendor, @RequestParam("deleteRow") int row, @RequestParam(required = false) Long idRencana){
 
-        dto.getListBarang().remove(row);
+        dto.getListPengadaanBarang().remove(row);
+        model.addAttribute("kodeVendor", kodeVendor);
         model.addAttribute("dto", dto);
         model.addAttribute("idRencana", idRencana);
         model.addAttribute("listBarang", barangService.getAllBarang());
@@ -288,11 +340,18 @@ public class PengadaanController {
 
     @GetMapping("/pengadaan/{id}/delete")
     public String deletePengadaanBarang(@PathVariable("id") String id, Model model){
-        pengadaanService.deletePengadaan(id);
-        model.addAttribute("id", id);
+        Pengadaan pengadaan = pengadaanDb.getReferenceById(id);
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
-        return "successDeletePengadaan";
+        if(pengadaan.getShipmentStatus()==0 && pengadaan.getPaymentStatus()==0){
+            pengadaanService.deletePengadaan(id);
+            model.addAttribute("id", id);
+            return "successDeletePengadaan";
+        } else{
+            model.addAttribute("errorMessage", "Pengadaan gagal di hapus. Pengadaan hanya dapat dihapus jika Shipment Status = In Progress dan Payment Status = Not Paid");
+            return "error-view";
+        }
+
     }
 
 }

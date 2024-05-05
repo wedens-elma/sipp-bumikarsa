@@ -33,16 +33,51 @@
 
                         <br>
 
+                        <div class="form-group row mb-5">
+                            <label class="col-sm-3 col-form-label">Filter:</label>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label for="shipmentFilter">Status Pengiriman:</label>
+                                        <select id="shipmentFilter" class="form-select">
+                                            <option value="">All</option>
+                                            <option value="0">Sedang diproses</option>
+                                            <option value="1">Sudah sampai</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="paymentFilter">Status Pembayaran:</label>
+                                        <select id="paymentFilter" class="form-select">
+                                            <option value="">All</option>
+                                            <option value="0">Belum dibayar</option>
+                                            <option value="1">Sedang diproses</option>
+                                            <option value="2">Sudah dibayar</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-12">
+                                        <label for="vendorFilter">Vendor:</label>
+                                        <select id="vendorFilter" class="form-select">
+                                            <option value="">All</option>
+                                            <!-- Tambahkan opsi untuk setiap vendor -->
+                                            <option th:each="vendor : ${listVendor}" th:value="${vendor.namaVendor}" th:text="${vendor.namaVendor}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <table id="pengadaanTable" class="table table-bordered text-center">
                             <thead style="background-color: #ffc023">
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Code Pengadaan</th>
+                                <th scope="col">ID</th>
+                                <th scope="col">Kode Pengadaan</th>
                                 <th scope="col">Nama Pengadaan</th>
                                 <th scope="col">Vendor</th>
-                                <th scope="col">Shipment Status</th>
-                                <th scope="col">Payment Status</th>
-                                <th scope="col">Action</th>
+                                <th scope="col">Status Pengiriman</th>
+                                <th scope="col">Status Pembayaran</th>
+                                <th scope="col">Aksi</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -53,13 +88,13 @@
                                 <td th:text="${pengadaan.namaPengadaan}"></td>
                                 <td th:text="${pengadaan.vendor.namaVendor}"></td>
                                 <td>
-                                    <span th:if="${pengadaan.shipmentStatus == 0}">In Progress</span>
-                                    <span th:if="${pengadaan.shipmentStatus == 1}">Arrived</span>
+                                    <span th:if="${pengadaan.shipmentStatus == 0}">Sedang diproses</span>
+                                    <span th:if="${pengadaan.shipmentStatus == 1}">Sudah sampai</span>
                                 </td>
                                 <td>
-                                    <span th:if="${pengadaan.paymentStatus == 0}">Not Paid</span>
-                                    <span th:if="${pengadaan.paymentStatus == 1}">In Progress</span>
-                                    <span th:if="${pengadaan.paymentStatus == 2}">Paid</span>
+                                    <span th:if="${pengadaan.paymentStatus == 0}">Belum dibayar</span>
+                                    <span th:if="${pengadaan.paymentStatus == 1}">Sedang diproses</span>
+                                    <span th:if="${pengadaan.paymentStatus == 2}">Sudah dibayar</span>
                                 </td>
                                 <td>
                                     <a type="button" class="btn btn-sm btn-info" th:href="@{/pengadaan/{idPengadaan}(idPengadaan=${pengadaan.idPengadaan})}"style="display: block; margin-bottom: 5px; background-color: #407BFF">Detail</a>
@@ -69,9 +104,53 @@
                             </tr>
                             </tbody>
                         </table>
+
+                        <br><br>
+
+
                     </div>
                 </div>
-            </div>
+                <div class="card m-4 p-4 shadow-lg p-3 mb-5 bg-white rounded">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <h2> Daftar Log Pengadaan</h2>
+                        </div>
+
+                        <br>
+
+                        <table id="logPengadaanTable" class="table table-bordered text-center">
+                            <thead style="background-color: #ffc023">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Kode Pengadaan</th>
+                                <th scope="col">Diubah Oleh</th>
+                                <th scope="col">Perubahan</th>
+                                <th scope="col">Komentar</th>
+                                <th scope="col">Waktu diubah</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- Thymeleaf untuk iterasi daftar pengadaan -->
+                            <tr th:each="logPengadaan, iterStat : ${listLogPengadaan}">
+                                <td th:text="${iterStat.index + 1}"></td>
+                                <td>
+                                    <a th:href="@{'/pengadaan/' + ${logPengadaan.pengadaan.idPengadaan}}">
+                                        <span th:text="${logPengadaan.pengadaan.idPengadaan}"></span>
+                                    </a>
+                                </td>
+                                <td th:text="${logPengadaan.changedBy}"></td>
+                                <td th:text="${logPengadaan.status}"></td>
+                                <td th:text="${logPengadaan.feedback}"></td>
+                                <td th:text="${#dates.format(#dates.create(logPengadaan.tanggalWaktu.year, logPengadaan.tanggalWaktu.monthValue, logPengadaan.tanggalWaktu.dayOfMonth), 'dd/MM/yyyy') + ', ' + #dates.format(#dates.create(logPengadaan.tanggalWaktu.year, logPengadaan.tanggalWaktu.monthValue, logPengadaan.tanggalWaktu.dayOfMonth, logPengadaan.tanggalWaktu.hour, logPengadaan.tanggalWaktu.minute, logPengadaan.tanggalWaktu.second), 'HH:mm')}"></td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                    </div>
         </div>
     </div>
 </div>
@@ -84,9 +163,71 @@
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('#pengadaanTable').DataTable();
+    $(document).ready(function() {
+        var table = $('#pengadaanTable').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true,
+            order: [
+                [0, 'desc'],
+            ]
+        });
+
+        $('#shipmentFilter').on('change', function() {
+            var selectedValue = $(this).val();
+
+            var shipmentStatus = '';
+            if (selectedValue === '0') {
+                shipmentStatus = 'Sedang diproses';
+            } else if (selectedValue === '1') {
+                shipmentStatus = 'Sudah sampai';
+            }
+
+            table.column(4).search(shipmentStatus).draw();
+        });
+
+        $('#paymentFilter').on('change', function() {
+            var selectedValue = $(this).val();
+
+            // Ubah nilai sesuai dengan nilai yang dipilih dalam dropdown
+            var paymentStatus = '';
+            if (selectedValue === '0') {
+                paymentStatus = 'Belum dibayar';
+            } else if (selectedValue === '1') {
+                paymentStatus = 'Sedang diproses';
+            } else if (selectedValue === '2') {
+                paymentStatus = 'Sudah dibayar';
+            }
+
+            table.columns(5).search(paymentStatus).draw();
+
+        });
+
+        $('#vendorFilter').on('change', function() {
+            var selectedValue = $(this).val();
+
+            table.column(3).search(selectedValue).draw();
+        });
+
     });
+
+
+    $(document).ready(function() {
+            var table = $('#logPengadaanTable').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                order: [
+                    [0, 'desc'],
+                ]
+            });
+        });
+
+
+
+
 </script>
 
 

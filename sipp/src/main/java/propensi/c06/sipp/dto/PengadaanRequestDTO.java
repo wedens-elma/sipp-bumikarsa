@@ -33,7 +33,7 @@ public class PengadaanRequestDTO {
 
     private int paymentStatus = 0;
 
-    private List<PengadaanBarang> listBarang;
+    private List<PengadaanBarang> listPengadaanBarang;
 
     @AllArgsConstructor
     @NoArgsConstructor
