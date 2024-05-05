@@ -60,6 +60,7 @@ public class PengadaanController {
         model.addAttribute("listPengadaan", listPengadaan);
         List<LogPengadaan> listLogPengadaan = logPengadaanService.getAllLogPengadaan();
         model.addAttribute("listLogPengadaan", listLogPengadaan);
+        model.addAttribute("listVendor", vendorService.getAllVendors());
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
         if(userService.getCurrentUserRole().equalsIgnoreCase("manajer") || userService.getCurrentUserRole().equalsIgnoreCase("keuangan")){
@@ -109,7 +110,7 @@ public class PengadaanController {
         //pengadaan.setPaymentStatus(paymentStatus);
         List<LogPengadaan> listLogPengadaan = logPengadaanService.getAllLogPengadaan();
         model.addAttribute("listLogPengadaan", listLogPengadaan);
-        logPengadaanService.createLogPengadaan(pengadaan, "shipment Status", feedback);
+        logPengadaanService.createLogPengadaan(pengadaan, "Shipment Status", feedback);
         pengadaanService.updateStatusPengadaan(pengadaan); // Buat method ini di PengadaanService
         return "redirect:/pengadaan";
     }
@@ -131,7 +132,7 @@ public class PengadaanController {
         pengadaan.setPaymentStatus(paymentStatus);
         List<LogPengadaan> listLogPengadaan = logPengadaanService.getAllLogPengadaan();
         model.addAttribute("listLogPengadaan", listLogPengadaan);
-        logPengadaanService.createLogPengadaan(pengadaan, "shipment Status", feedback);
+        logPengadaanService.createLogPengadaan(pengadaan, "Payment Status", feedback);
         pengadaanService.updateStatusPengadaan(pengadaan); // Buat method ini di PengadaanService
         return "redirect:/pengadaan";
     }
@@ -195,7 +196,7 @@ public class PengadaanController {
 //    }
 
     @PostMapping("pengadaan/{id}/update")
-    public String updatePengadaan(@Valid @ModelAttribute UpdatePengadaanRequestDTO dto,@RequestParam("kodeVendor") String kodeVendor,  BindingResult bindingResult,
+    public String updatePengadaan(@Valid @ModelAttribute UpdatePengadaanRequestDTO dto,@RequestParam("kodeVendor") String kodeVendor, @RequestParam("feedback") String feedback, BindingResult bindingResult,
                                   Model model, HttpServletRequest request) {
 
         if(request.getParameter("addRow") != null){
@@ -225,6 +226,9 @@ public class PengadaanController {
             var pengadaan = pengadaanService.updatePengadaan(pengadaanFromDto);
             model.addAttribute("idPengadaan", pengadaan.getIdPengadaan());
             System.out.println("ini idnyaa"+pengadaan.getIdPengadaan());
+            List<LogPengadaan> listLogPengadaan = logPengadaanService.getAllLogPengadaan();
+            model.addAttribute("listLogPengadaan", listLogPengadaan);
+            logPengadaanService.createLogPengadaan(pengadaan, "Detail Pengadaan", feedback);
             String username = userService.getCurrentUserName();
             model.addAttribute("username", username);
 

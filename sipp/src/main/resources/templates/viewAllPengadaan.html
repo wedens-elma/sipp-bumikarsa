@@ -33,6 +33,41 @@
 
                         <br>
 
+                        <div class="form-group row mb-5">
+                            <label class="col-sm-3 col-form-label">Filtered by:</label>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label for="shipmentFilter">Shipment Status:</label>
+                                        <select id="shipmentFilter" class="form-select">
+                                            <option value="">All</option>
+                                            <option value="0">In Progress</option>
+                                            <option value="1">Arrived</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="paymentFilter">Payment Status:</label>
+                                        <select id="paymentFilter" class="form-select">
+                                            <option value="">All</option>
+                                            <option value="0">Not Paid</option>
+                                            <option value="1">In Progress</option>
+                                            <option value="2">Paid</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-12">
+                                        <label for="vendorFilter">Vendor:</label>
+                                        <select id="vendorFilter" class="form-select">
+                                            <option value="">All</option>
+                                            <!-- Tambahkan opsi untuk setiap vendor -->
+                                            <option th:each="vendor : ${listVendor}" th:value="${vendor.namaVendor}" th:text="${vendor.namaVendor}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <table id="pengadaanTable" class="table table-bordered text-center">
                             <thead style="background-color: #ffc023">
                             <tr>
@@ -70,6 +105,7 @@
                             </tbody>
                         </table>
 
+                        <br><br>
                         <div class="text-center">
                             <h2> Daftar Log Pengadaan</h2>
                         </div>
@@ -80,9 +116,9 @@
                             <thead style="background-color: #ffc023">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Code Pengadaan</th>
+                                <th scope="col">Kode Pengadaan</th>
                                 <th scope="col">Diubah Oleh</th>
-                                <th scope="col">Status yang diubah</th>
+                                <th scope="col">Perubahan</th>
                                 <th scope="col">Feedback</th>
                                 <th scope="col">Tanggal dan Waktu</th>
                             </tr>
@@ -91,7 +127,11 @@
                             <!-- Thymeleaf untuk iterasi daftar pengadaan -->
                             <tr th:each="logPengadaan, iterStat : ${listLogPengadaan}">
                                 <td th:text="${iterStat.index + 1}"></td>
-                                <td th:text="${logPengadaan.pengadaan.idPengadaan}"></td>
+                                <td>
+                                    <a th:href="@{'/pengadaan/' + ${logPengadaan.pengadaan.idPengadaan}}">
+                                        <span th:text="${logPengadaan.pengadaan.idPengadaan}"></span>
+                                    </a>
+                                </td>
                                 <td th:text="${logPengadaan.changedBy}"></td>
                                 <td th:text="${logPengadaan.status}"></td>
                                 <td th:text="${logPengadaan.feedback}"></td>
@@ -116,10 +156,74 @@
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('#pengadaanTable').DataTable();
-        $('#logPengadaanTable').DataTable();
+    $(document).ready(function() {
+        var table = $('#pengadaanTable').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true,
+            order: [
+                [0, 'desc'],
+            ]
+        });
+
+        $('#shipmentFilter').on('change', function() {
+            var selectedValue = $(this).val();
+
+            var shipmentStatus = '';
+            if (selectedValue === '0') {
+                shipmentStatus = 'In Progress';
+            } else if (selectedValue === '1') {
+                shipmentStatus = 'Arrived';
+            }
+
+            table.column(4).search(shipmentStatus).draw();
+        });
+
+        $('#paymentFilter').on('change', function() {
+            var selectedValue = $(this).val();
+
+            // Ubah nilai sesuai dengan nilai yang dipilih dalam dropdown
+            var paymentStatus = '';
+            if (selectedValue === '0') {
+                paymentStatus = 'Not Paid';
+            } else if (selectedValue === '1') {
+                paymentStatus = 'In Progress';
+            } else if (selectedValue === '2') {
+                paymentStatus = 'Paid';
+            }
+
+            if (paymentStatus === 'Not Paid') {
+                table.columns(5).search(paymentStatus).draw();
+            } else {
+                table.column(5).search('^' + paymentStatus + '$', true, false).draw();
+            }
+        });
+
+        $('#vendorFilter').on('change', function() {
+            var selectedValue = $(this).val();
+
+            table.column(3).search(selectedValue).draw();
+        });
+
     });
+
+
+    $(document).ready(function() {
+            var table = $('#logPengadaanTable').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                order: [
+                    [0, 'desc'],
+                ]
+            });
+        });
+
+
+
+
 </script>
 
 
