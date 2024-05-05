@@ -234,14 +234,14 @@ public class UserController {
         System.out.println("!!!!!!!!!!!!!!!!!!!UDAH SAVED");
         System.out.println(user.getEmail());
 
-        model.addAttribute("username", user.getName());
-        model.addAttribute("user", user);
+        // model.addAttribute("username", user.getName());
+        // model.addAttribute("user", user);
 
-        if (userService.getCurrentUserRole().equalsIgnoreCase("admin")) {
-            return "success-update-email-admin.html";
-        }
+        // if (userService.getCurrentUserRole().equalsIgnoreCase("admin")) {
+        //     return "redirect:/logout";
+        // }
         
-        return "success-update-email";
+        return "redirect:/logout";
     }
 
     // @GetMapping("/logout-successful")

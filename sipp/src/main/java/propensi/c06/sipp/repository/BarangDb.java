@@ -1,5 +1,7 @@
 package propensi.c06.sipp.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,4 +13,6 @@ public interface BarangDb extends JpaRepository<Barang, String>{
     String findNextNumericIdByType(@Param("code") String code);
 
     boolean existsByNamaBarangAndIsDeleted(String namaBarang, Boolean isDeleted);
+
+    List<Barang> findByTipeBarang(Integer tipeBarang);
 }

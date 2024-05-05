@@ -114,7 +114,14 @@ public class BarangServiceImpl implements BarangService {
         return barang;
     }
 
-
+    @Override
+    public List<Barang> getAllBarangByType(Integer tipeBarang) {
+        if (tipeBarang == null) {
+            return barangDb.findAll();
+        } else {
+            return barangDb.findByTipeBarang(tipeBarang);
+        }
+    }
 
 }
 

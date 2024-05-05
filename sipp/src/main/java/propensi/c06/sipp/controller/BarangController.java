@@ -1,10 +1,9 @@
 package propensi.c06.sipp.controller;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -46,11 +44,24 @@ public class BarangController {
     private UserService userService;
 
     @GetMapping("/barang")
-    public String daftarBarang(Model model) {
+    public String daftarBarang(@RequestParam(value = "tipeBarang", required = false) Integer tipeBarang, Model model) {
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("username", user.getName());
         
-        List<Barang> listBarang = barangService.getAllBarang();
+        List<Barang> listBarang;
+        if (tipeBarang == null) {
+            listBarang = barangService.getAllBarang();
+        } else {
+            listBarang = barangService.getAllBarangByType(tipeBarang);
+        }
+
+        System.out.println("berhasil ambil!!!!!!!!!!!!!");
+
+        System.out.println(tipeBarang);
+        System.out.println(listBarang);
+        for (int i = 0; i < listBarang.size(); i++) {
+            System.out.println(listBarang.get(i));
+        }
 
         // Membuat daftar barang yang stokBarang-nya kurang dari standarStokBarang
         List<Barang> listBarangStokKurang = new ArrayList<>();
