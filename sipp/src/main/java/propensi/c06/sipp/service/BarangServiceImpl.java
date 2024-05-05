@@ -104,6 +104,9 @@ public class BarangServiceImpl implements BarangService {
     public Barang updateBarang(Barang barangFromDto) {
         Barang barang = getBarangById(barangFromDto.getKodeBarang());
         if (barang != null) {
+
+            barang.setBeratBarang(barangFromDto.getBeratBarang());
+            barang.setDimensiBarang(barangFromDto.getDimensiBarang());
             barang.setStokBarang(barangFromDto.getStokBarang());
             barang.setStandarStokBarang(barangFromDto.getStandarStokBarang());
             barangDb.save(barang);
