@@ -117,11 +117,7 @@
 											class="btn btn-primary"
 											>Update Vendor</a
 										>
-										<a
-											class="btn btn-md btn-danger"
-											th:href="@{/vendor/{kodeVendor}/delete(kodeVendor=${vendor.kodeVendor})}"
-											>Hapus Vendor</a
-										>
+										<a class="btn btn-md btn-danger" th:href="@{/vendor/{kodeVendor}/delete(kodeVendor=${vendor.kodeVendor})}" onclick="return confirmDeletion()">Hapus Vendor</a>
 									</div>
 								</div>
 							</div>
@@ -143,6 +139,9 @@
 					info: true,
 				});
 			});
+			function confirmDeletion() {
+				return confirm('Apakah kamu yakin untuk menghapus vendor ini?');
+			}
 		</script>
 	</body>
 </html>

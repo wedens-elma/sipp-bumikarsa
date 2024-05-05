@@ -1,9 +1,6 @@
 package propensi.c06.sipp.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -115,8 +112,6 @@ public class VendorServiceImpl implements VendorService {
     }
 
 
-
-
     @Override
     public Vendor addVendor(CreateVendorRequestDTO vendorDto) {
         Optional<Vendor> existingVendor = vendorDb.findByNamaVendorOrEmailVendor(vendorDto.getNamaVendor(), vendorDto.getEmailVendor());
@@ -168,8 +163,18 @@ public class VendorServiceImpl implements VendorService {
         }
     }
 
+
+
     @Override
     public boolean isVendorExistsAndNotDeleted(String namaVendor) {
         return vendorDb.existsByNamaVendorAndIsDeleted(namaVendor, false);
+    }
+
+    public List<Vendor> searchVendors(String keyword) {
+        List<Vendor> vendorsByName = vendorDb.findByNamaVendorContainingIgnoreCase(keyword);
+        List<Vendor> vendorsByCode = vendorDb.findByKodeVendorContainingIgnoreCase(keyword);
+        Set<Vendor> combinedResults = new HashSet<>(vendorsByName);
+        combinedResults.addAll(vendorsByCode);
+        return new ArrayList<>(combinedResults);
     }
 }

@@ -19,4 +19,6 @@ public interface VendorService {
 
     boolean isVendorExistsAndNotDeleted(String namaVendor);
 
+    List<Vendor> searchVendors(String keyword);
+
 }

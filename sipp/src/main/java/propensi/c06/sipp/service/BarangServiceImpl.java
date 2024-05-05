@@ -173,7 +173,10 @@ public class BarangServiceImpl implements BarangService {
         logBarangDb.save(logBarang);
 
         return logBarang;
+    }
 
+    public List<Barang> searchBarangByName(String name) {
+        return barangDb.findByNamaBarangContainingIgnoreCase(name);
     }
 
 }

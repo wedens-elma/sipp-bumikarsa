@@ -27,4 +27,6 @@ public interface BarangService {
     List<LogBarang> getAllLogBarang();
 
     LogBarang createLogBarang(Barang barang, String action, String deskripsi);
+    List<Barang> searchBarangByName(String name);
+
 }
