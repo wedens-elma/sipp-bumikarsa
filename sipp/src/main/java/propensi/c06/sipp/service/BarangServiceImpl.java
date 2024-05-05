@@ -1,6 +1,8 @@
 package propensi.c06.sipp.service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +10,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import propensi.c06.sipp.model.Barang;
+import propensi.c06.sipp.model.LogBarang;
 import propensi.c06.sipp.repository.BarangDb;
+import propensi.c06.sipp.repository.LogBarangDb;
 
 @Service
 public class BarangServiceImpl implements BarangService {
     @Autowired
+    private UserService userService;
+
+    @Autowired
     BarangDb barangDb;
+
+    @Autowired
+    LogBarangDb logBarangDb;
 
     @Override
     public void addBarang(Barang barang) {
-
         String kodeBarang = "ALAT001";
         if (barang.getTipeBarang() == 1) {
             kodeBarang = "ALAT";
@@ -42,6 +51,18 @@ public class BarangServiceImpl implements BarangService {
 
         barang.setKodeBarang(kodeBarang);
         barangDb.save(barang);
+
+        LogBarang logBarang = new LogBarang();
+        logBarang.setBarang(barang);
+        logBarang.setAction("Tambah");
+        logBarang.setDeskripsi("Tambah barang");
+        logBarang.setTanggalWaktu(LocalDateTime.now());
+        logBarang.setChangedBy(userService.getCurrentUserName());
+        logBarang.setOldValue(barang.getStokBarang());
+        barang.setLogBarang(new ArrayList<LogBarang>());
+        barang.getLogBarang().add(logBarang);
+
+        logBarangDb.save(logBarang);
     }
 
     @Override
@@ -86,14 +107,17 @@ public class BarangServiceImpl implements BarangService {
 
     @Override
     public boolean isBarangExistsAndNotDeleted(String namaBarang) {
-        // Menggunakan repository atau method lainnya untuk memeriksa apakah barang ada dan isDeleted-nya false
+        // Menggunakan repository atau method lainnya untuk memeriksa apakah barang ada
+        // dan isDeleted-nya false
         return barangDb.existsByNamaBarangAndIsDeleted(namaBarang, false);
     }
-    
 
     @Override
     public void softDeleteBarang(String kodeBarang) {
         Barang barang = barangDb.findById(kodeBarang).orElse(null);
+
+        LogBarang logBarang = createLogBarang(barang, "Hapus", "Hapus barang");
+
         if (barang != null) {
             barang.setIsDeleted(true);
             barangDb.save(barang);
@@ -102,7 +126,12 @@ public class BarangServiceImpl implements BarangService {
 
     @Override
     public Barang updateBarang(Barang barangFromDto) {
+        
         Barang barang = getBarangById(barangFromDto.getKodeBarang());
+
+        LogBarang logBarang = createLogBarang(barang, "Ubah", "Ubah barang");
+        logBarang.setOldValue(barang.getStokBarang());
+
         if (barang != null) {
 
             barang.setBeratBarang(barangFromDto.getBeratBarang());
@@ -111,6 +140,12 @@ public class BarangServiceImpl implements BarangService {
             barang.setStandarStokBarang(barangFromDto.getStandarStokBarang());
             barangDb.save(barang);
         }
+
+        logBarang.setNewValue(barang.getStokBarang());
+
+        logBarangDb.save(logBarang);
+
+
         return barang;
     }
 
@@ -122,6 +157,23 @@ public class BarangServiceImpl implements BarangService {
             return barangDb.findByTipeBarang(tipeBarang);
         }
     }
+    public List<LogBarang> getAllLogBarang() {
+        return logBarangDb.findAll();
+    }
+
+    @Override
+    public LogBarang createLogBarang(Barang barang, String action, String deskripsi) {
+        LogBarang logBarang = new LogBarang();
+        logBarang.setBarang(barang);
+        logBarang.setChangedBy(userService.getCurrentUserName());
+        logBarang.setAction(action);
+        logBarang.setDeskripsi(deskripsi);
+        logBarang.setTanggalWaktu(LocalDateTime.now());
+        barang.getLogBarang().add(logBarang);
+        logBarangDb.save(logBarang);
+
+        return logBarang;
+
+    }
 
 }
-

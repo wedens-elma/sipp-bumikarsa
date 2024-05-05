@@ -66,4 +66,7 @@ public class Barang {
 
     @ManyToMany(mappedBy = "barangList")
     private List<Vendor> vendorList;
+
+    @OneToMany(mappedBy = "barang", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<LogBarang> logBarang;
 }
