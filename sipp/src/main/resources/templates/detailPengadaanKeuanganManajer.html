@@ -34,23 +34,16 @@
                 <div class="card-body text-center">
                     <h1 style="font-weight: bold;" th:text="${pengadaan.namaPengadaan}"></h1>
                     <h4 style="color: #999;" th:text="${pengadaan.idPengadaan}"></h4>
-                    <br>
+
+                    <div th:if="${pengadaan.rencana != null}">
+                        <h6 class="card-text m-0">
+                            Dibuat dari rencana dengan ID 
+                            <a th:href="@{'/rencana/detail/' + ${pengadaan.rencana.idRencana}}" th:text="${pengadaan.rencana.idRencana}"></a>
+                        </h6>
+                    </div>                    
+
                     <div class="container-detail" style="text-align: left;">
-                        <div class="row" th:if="${pengadaan.rencana != null}">
-                            <div class="col-3">
-                                <h6 style="text-align: left;" class="card-text m-0"><b>ID rencana</b></h6>
-                            </div>
-                            <div class="col-9">
-                                <h6 style="text-align: left;" class="card-text m-0">
-                                    <a th:href="@{'/rencana/detail/' + ${pengadaan.rencana.idRencana}}">
-                                        <span th:text="' : ' + ${pengadaan.rencana.idRencana}"></span>
-                                    </a>
-                                </h6>
-                            </div>
-                        </div>
-
                         <br>
-
                         <div class="row">
                             <div class="col-2">
                                 <b>Tanggal Pengadaan</b>
