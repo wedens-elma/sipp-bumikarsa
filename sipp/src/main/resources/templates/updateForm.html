@@ -800,7 +800,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <title>Buat Pengadaan</title>
+    <title>Update Pengadaan</title>
     <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
     <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
 </head>
@@ -814,7 +814,7 @@
         <div class="col">
             <div id="updatepengadaan">
                 <div class="card mx-lg-5 m-4 p-4">
-                    <h2 class="card-header text-center p-3">Buat Pengadaan</h2>
+                    <h2 class="card-header text-center p-3">Update Pengadaan</h2>
                     <div class="card-body">
                         <div class="justify-content-center">
                             <form id="form-pengadaan-update"
@@ -977,7 +977,7 @@
 
                                         <div class="mb-3">
                                             <label for="feedback" class="form-label">Komentar perubahan:</label>
-                                            <input type="text" class="form-control" id="feedback" name="feedback">
+                                            <input type="text" class="form-control" id="feedback" name="feedback" required="required">
                                         </div>
 
                                     </div>
