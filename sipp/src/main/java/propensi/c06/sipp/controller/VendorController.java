@@ -70,7 +70,7 @@ public class VendorController {
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Error adding vendor: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Error menambah vendor: " + e.getMessage());
         }
         return "redirect:/vendor";
     }
@@ -93,7 +93,7 @@ public class VendorController {
     public String detailVendor(@PathVariable("kodeVendor") String kodeVendor, Model model, RedirectAttributes redirectAttributes, @RequestParam(value = "search", required = false) String search) {
         Vendor vendor = vendorService.getVendorDetail(kodeVendor);
         if (vendor == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Vendor not found.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Vendor tidak ditemukan.");
             return "redirect:/vendor";
         }
         List<Barang> barangList = (search == null || search.isEmpty()) ? vendor.getBarangList() : barangService.searchBarangByName(search);
@@ -109,7 +109,7 @@ public class VendorController {
     public String formUpdateVendor(@PathVariable String kodeVendor, Model model, RedirectAttributes redirectAttributes) {
         Vendor vendor = vendorService.getVendorDetail(kodeVendor);
         if (vendor == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Vendor not found.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Vendor tidak ditemukan.");
             return "redirect:/vendor";
         }
         UpdateVendorRequestDTO vendorDTO = vendorMapper.vendorToUpdateVendorRequestDTO(vendor);
@@ -125,7 +125,7 @@ public class VendorController {
     public String updateVendor(@PathVariable String kodeVendor, @Valid @ModelAttribute("vendorDTO") UpdateVendorRequestDTO vendorDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addAttribute("allBarang", barangService.getAllBarang());
-            redirectAttributes.addFlashAttribute("errorMessage", "Please correct the form fields.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Please tulis input yang benar.");
             return "redirect:/vendor/" + kodeVendor + "/update";
         }
 

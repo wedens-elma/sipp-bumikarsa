@@ -51,7 +51,7 @@ public class VendorServiceImpl implements VendorService {
             logger.info("Fetched vendor: {}", vendor.getNamaVendor());
             logger.info("Barang list size: {}", vendor.getBarangList().size());
         } else {
-            logger.warn("Vendor not found for kodeVendor: {}", kodeVendor);
+            logger.warn("Vendor tidak ditemukan dengan kode vendor: {}", kodeVendor);
         }
 
         return vendor;
@@ -89,11 +89,11 @@ public class VendorServiceImpl implements VendorService {
     @Override
     public Vendor updateVendor(UpdateVendorRequestDTO dto) throws IllegalArgumentException {
         Vendor existingVendor = vendorDb.findByKodeVendor(dto.getKodeVendor())
-                .orElseThrow(() -> new IllegalArgumentException("Vendor not found with kodeVendor: " + dto.getKodeVendor()));
+                .orElseThrow(() -> new IllegalArgumentException("Vendor tidak ditemukan dengan kode vendor: " + dto.getKodeVendor()));
 
         boolean exists = vendorDb.existsByEmailOrPhoneExcludingVendor(dto.getEmailVendor(), dto.getNomorHandphoneVendor(), dto.getKodeVendor());
         if (exists) {
-            throw new IllegalArgumentException("Another active vendor with the same email or phone number already exists.");
+            throw new IllegalArgumentException("Terdapat vendor yang sudah memiliki nama atau email yang sama.");
         }
 
         existingVendor.setEmailVendor(dto.getEmailVendor());
