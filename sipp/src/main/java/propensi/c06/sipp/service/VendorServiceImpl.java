@@ -12,8 +12,10 @@ import propensi.c06.sipp.dto.VendorMapper;
 import propensi.c06.sipp.dto.request.CreateVendorRequestDTO;
 import propensi.c06.sipp.dto.request.UpdateVendorRequestDTO;
 import propensi.c06.sipp.model.Barang;
+import propensi.c06.sipp.model.Rencana;
 import propensi.c06.sipp.model.Vendor;
 import propensi.c06.sipp.repository.BarangDb;
+import propensi.c06.sipp.repository.RencanaDb;
 import propensi.c06.sipp.repository.VendorDb;
 
 @Service
@@ -24,6 +26,8 @@ public class VendorServiceImpl implements VendorService {
     @Autowired
     private  VendorDb vendorDb;
 
+    @Autowired
+    private RencanaDb rencanaDb;
     @Autowired
     private VendorMapper vendorMapper;
 
@@ -101,15 +105,28 @@ public class VendorServiceImpl implements VendorService {
         return vendorDb.save(existingVendor);
     }
 
+//    private void updateVendorBarangList(Vendor vendor, List<String> newBarangListCodes) {
+//        List<Barang> updatedBarangList = newBarangListCodes.stream()
+//                .map(barangDb::findById)
+//                .filter(Optional::isPresent)
+//                .map(Optional::get)
+//                .collect(Collectors.toList());
+//        vendor.getBarangList().clear();
+//        vendor.getBarangList().addAll(updatedBarangList);
+//    }
+
     private void updateVendorBarangList(Vendor vendor, List<String> newBarangListCodes) {
         List<Barang> updatedBarangList = newBarangListCodes.stream()
-                .map(barangDb::findById)
+                .map(kodeBarang -> barangDb.findByIdAndIsDeletedFalse(kodeBarang))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
         vendor.getBarangList().clear();
         vendor.getBarangList().addAll(updatedBarangList);
     }
+
+
+
 
 
     @Override
@@ -154,14 +171,46 @@ public class VendorServiceImpl implements VendorService {
         return prefix + String.format("%03d", nextId);
     }
 
+//    @Override
+//    public void softDeleteVendor(String kodeVendor) {
+//        Vendor vendor = vendorDb.findByKodeVendor(kodeVendor).orElse(null);
+//        if (vendor != null){
+//            vendor.setIsDeleted(true);
+//            vendorDb.save(vendor);
+//        }
+//    }
+
     @Override
-    public void softDeleteVendor(String kodeVendor) {
-        Vendor vendor = vendorDb.findByKodeVendor(kodeVendor).orElse(null);
-        if (vendor != null){
-            vendor.setIsDeleted(true);
-            vendorDb.save(vendor);
+    public void softDeleteVendor(String kodeVendor) throws IllegalArgumentException {
+        Vendor vendor = vendorDb.findByKodeVendor(kodeVendor)
+                .orElseThrow(() -> new IllegalArgumentException("Vendor not found with kodeVendor: " + kodeVendor));
+
+        // Periksa Pengadaan
+        boolean validPengadaan = vendor.getListPengadaan().stream()
+                .allMatch(p -> p.getShipmentStatus() == 1 && p.getPaymentStatus() == 2);
+
+        if (!validPengadaan) {
+            throw new IllegalArgumentException("Vendor cannot be deleted due to active/unpaid pengadaan.");
         }
+
+        // Periksa Rencana
+        boolean validRencana = true;
+        for (Rencana rencana : rencanaDb.findAllByVendor(vendor)) {
+            if (!Arrays.asList("direalisasikan", "dibatalkan", "dihapus").contains(rencana.getLatestStatus())) {
+                validRencana = false;
+                break;
+            }
+        }
+
+        if (!validRencana) {
+            throw new IllegalArgumentException("Vendor cannot be deleted due to active rencana.");
+        }
+
+        // Jika semua syarat terpenuhi
+        vendor.setIsDeleted(true);
+        vendorDb.save(vendor);
     }
+
 
 
 
