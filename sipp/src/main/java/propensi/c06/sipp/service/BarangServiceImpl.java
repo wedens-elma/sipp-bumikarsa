@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.model.LogBarang;
+import propensi.c06.sipp.model.Rencana;
 import propensi.c06.sipp.repository.BarangDb;
 import propensi.c06.sipp.repository.LogBarangDb;
 
@@ -177,6 +178,17 @@ public class BarangServiceImpl implements BarangService {
 
     public List<Barang> searchBarangByName(String name) {
         return barangDb.findByNamaBarangContainingIgnoreCase(name);
+    }
+
+    @Override
+    public List<Barang> getAllBarangNotDeleted() {
+        List<Barang> listBarangAvail = new ArrayList<>();
+        for (Barang barang : getAllBarang()) {
+            if (!barang.getIsDeleted()) {
+                listBarangAvail.add(barang);
+            }
+        }
+        return listBarangAvail;
     }
 
 }

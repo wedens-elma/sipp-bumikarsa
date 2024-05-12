@@ -45,8 +45,10 @@ public class HomeController {
         model.addAttribute("countShipmentSudahSampai", pengadaanService.countShipmentStatus("sudah sampai"));
         model.addAttribute("countAllPengadaan", pengadaanService.countAllPengadaan());
         if (userService.getCurrentUserRole().equalsIgnoreCase("admin")) {
+            model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
             return "index-admin.html";
         } else {
+            model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
             return "index.html";
         }
     }

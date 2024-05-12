@@ -150,9 +150,9 @@
                         <table id="table" class="table table-bordered text-center">
                             <thead style="background-color: #ffc023">
                                 <tr>
-                                    <th scope="col">ID</th>
+                                    <th scope="col">No.</th>
                                     <th scope="col">Nama Pengadaan</th>
-                                    <th scope="col">Vendor</th>
+                                    <!-- <th scope="col">Vendor</th> -->
                                     <th scope="col">Status</th>
                                     <th scope="col">Tanggal Rencana</th>
                                     <th scope="col">Pengubah</th>
@@ -166,7 +166,7 @@
                                         <a th:if="${log.rencana.logRencana[log.rencana.logRencana.size() - 1].status != 'dihapus'}" th:href="'/rencana/detail/' + ${log.rencana.idRencana}" th:text="${log.rencana.namaRencana}"></a>
                                         <span th:if="${log.rencana.logRencana[log.rencana.logRencana.size() - 1].status == 'dihapus'}" th:text="${log.rencana.namaRencana}"></span>
                                     </td>                                        
-                                    <td style="text-transform: capitalize;" th:text="${log.rencana.vendor.namaVendor}"></td>
+                                    <!-- <td style="text-transform: capitalize;" th:text="${log.rencana.vendor.namaVendor}"></td> -->
                                     <td style="text-transform: capitalize;" th:text="${log.status}"></td>
                                     <td th:text="${#dates.format(#dates.create(log.rencana.expectedDate.year, log.rencana.expectedDate.monthValue, log.rencana.expectedDate.dayOfMonth), 'dd/MM/yyyy')}"></td>
                                     <td style="text-transform: capitalize;" th:text="${log.changedBy}"></td>
