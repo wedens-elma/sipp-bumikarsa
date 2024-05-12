@@ -114,18 +114,15 @@ public class VendorServiceImpl implements VendorService {
 //        vendor.getBarangList().clear();
 //        vendor.getBarangList().addAll(updatedBarangList);
 //    }
-
     private void updateVendorBarangList(Vendor vendor, List<String> newBarangListCodes) {
         List<Barang> updatedBarangList = newBarangListCodes.stream()
-                .map(kodeBarang -> barangDb.findByIdAndIsDeletedFalse(kodeBarang))
+                .map(kodeBarang -> barangDb.findByIdAndIsNotDeleted(kodeBarang))  // Use the new repository method
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
         vendor.getBarangList().clear();
         vendor.getBarangList().addAll(updatedBarangList);
     }
-
-
 
 
 
@@ -171,26 +168,18 @@ public class VendorServiceImpl implements VendorService {
         return prefix + String.format("%03d", nextId);
     }
 
-//    @Override
-//    public void softDeleteVendor(String kodeVendor) {
-//        Vendor vendor = vendorDb.findByKodeVendor(kodeVendor).orElse(null);
-//        if (vendor != null){
-//            vendor.setIsDeleted(true);
-//            vendorDb.save(vendor);
-//        }
-//    }
 
     @Override
     public void softDeleteVendor(String kodeVendor) throws IllegalArgumentException {
         Vendor vendor = vendorDb.findByKodeVendor(kodeVendor)
-                .orElseThrow(() -> new IllegalArgumentException("Vendor not found with kodeVendor: " + kodeVendor));
+                .orElseThrow(() -> new IllegalArgumentException("Vendor tidak ditemukan dengan Kode Vendor: " + kodeVendor));
 
         // Periksa Pengadaan
         boolean validPengadaan = vendor.getListPengadaan().stream()
                 .allMatch(p -> p.getShipmentStatus() == 1 && p.getPaymentStatus() == 2);
 
         if (!validPengadaan) {
-            throw new IllegalArgumentException("Vendor cannot be deleted due to active/unpaid pengadaan.");
+            throw new IllegalArgumentException("Vendor tidak bisa dihapus: Terdapat Pengadaan yang belum dibayar atau masih aktif");
         }
 
         // Periksa Rencana
@@ -203,7 +192,7 @@ public class VendorServiceImpl implements VendorService {
         }
 
         if (!validRencana) {
-            throw new IllegalArgumentException("Vendor cannot be deleted due to active rencana.");
+            throw new IllegalArgumentException("Vendor tidak bisa dihapus: Masih ada rencana yang aktif");
         }
 
         // Jika semua syarat terpenuhi

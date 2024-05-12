@@ -9,8 +9,23 @@
 <body>
 <div class="container-fluid">
   <div class="row">
-    <!-- Sidebar placeholder -->
-    <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+    <!-- Sidebar utk Manajer -->
+    <div th:if="${userRole == 'manajer'}"
+         th:replace="~{fragments/sidebar-manajer}"
+         class="col-lg-3 col-md-4">
+    </div>
+
+    <!-- Sidebar utk Operasional -->
+    <div th:if="${userRole == 'operasional' and errorMessage != ''}"
+         th:replace="~{fragments/sidebar-operasional}"
+         class="col-lg-3 col-md-4">
+    </div>
+
+    <div th:if="${userRole != 'manajer' and !(userRole == 'operasional' and errorMessage != '')}"
+         th:replace="~{fragments/sidebarf}"
+         class="col-lg-3 col-md-4">
+    </div>
+<!--    <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>-->
 
     <!-- Main content area -->
     <div class="col">

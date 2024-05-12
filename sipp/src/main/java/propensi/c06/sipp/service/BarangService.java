@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import propensi.c06.sipp.model.Barang;
+import propensi.c06.sipp.repository.BarangInfo;
 
 public interface BarangService {
     public void addBarang(Barang barang);
@@ -23,5 +24,7 @@ public interface BarangService {
     Barang updateBarang(Barang barang);
 
     List<Barang> searchBarangByName(String name);
+
+    List<BarangInfo> getActiveBarangInfo();
 
 }

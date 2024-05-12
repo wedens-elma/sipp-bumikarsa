@@ -20,4 +20,9 @@ public interface BarangDb extends JpaRepository<Barang, String>{
     @Query("SELECT b FROM Barang b WHERE b.kodeBarang = :kodeBarang AND b.isDeleted = false")
     Optional<Barang> findByIdAndIsDeletedFalse(@Param("kodeBarang") String kodeBarang);
 
+    @Query("SELECT b FROM Barang b WHERE b.isDeleted = false AND b.kodeBarang = :kodeBarang")
+    Optional<Barang> findByIdAndIsNotDeleted(@Param("kodeBarang") String kodeBarang);
+
+    @Query("SELECT b.kodeBarang as kodeBarang, b.namaBarang as namaBarang FROM Barang b WHERE b.isDeleted = false")
+    List<BarangInfo> findAllActiveBarangInfo();
 }
