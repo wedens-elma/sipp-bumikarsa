@@ -53,6 +53,8 @@ public class BarangController {
         List<LogBarang> listLogBarang = barangService.getAllLogBarang();
         model.addAttribute("listLogBarang", listLogBarang);
 
+        System.out.println("Test");
+
 
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("username", user.getName());
