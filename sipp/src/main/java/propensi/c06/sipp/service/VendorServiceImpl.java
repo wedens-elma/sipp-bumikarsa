@@ -37,6 +37,10 @@ public class VendorServiceImpl implements VendorService {
         return vendorDb.findAllActiveVendors();
     }
 
+    @Override
+    public List<Vendor> getAllVendorforPengadaanFilter(){
+        return vendorDb.findAll();
+    }
 
     @Override
     public Vendor getVendorDetail(String kodeVendor) {

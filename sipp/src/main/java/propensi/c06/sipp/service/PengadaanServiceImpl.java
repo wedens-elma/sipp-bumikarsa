@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import propensi.c06.sipp.dto.PengadaanRequestDTO;
 import propensi.c06.sipp.dto.request.UpdatePengadaanRequestDTO;
-import propensi.c06.sipp.model.Barang;
-import propensi.c06.sipp.model.Pengadaan;
-import propensi.c06.sipp.model.PengadaanBarang;
-import propensi.c06.sipp.model.Rencana;
+import propensi.c06.sipp.model.*;
 import propensi.c06.sipp.repository.BarangDb;
 import propensi.c06.sipp.repository.PengadaanBarangDb;
 import propensi.c06.sipp.repository.PengadaanDb;
@@ -43,6 +40,9 @@ public class PengadaanServiceImpl implements PengadaanService {
 
     @Autowired
     private RencanaDb rencanaDb;
+
+    @Autowired
+    private LogPengadaanService logPengadaanService;
 
     @Override
     public List<Pengadaan> getAllPengadaan(){
@@ -213,6 +213,7 @@ public class PengadaanServiceImpl implements PengadaanService {
     @Override
     public void updateStatusPengadaan(Pengadaan pengadaan) {
         // Periksa apakah paymentStatus baru adalah 1
+
         if (pengadaan.getShipmentStatus() == 1) {
             List<PengadaanBarang> listPengadaanBarang = pengadaan.getListPengadaanBarang();
             // Iterasi melalui setiap PengadaanBarang dalam daftar
@@ -238,6 +239,8 @@ public class PengadaanServiceImpl implements PengadaanService {
         }
         pengadaanDb.save(pengadaan);
     }
+
+
 
 //    @Override
 //    public Pengadaan updatePengadaan(UpdatePengadaanRequestDTO pengadaanFromDto) {

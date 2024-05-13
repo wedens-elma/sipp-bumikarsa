@@ -21,4 +21,6 @@ public interface VendorService {
 
     List<Vendor> searchVendors(String keyword);
 
+    List<Vendor> getAllVendorforPengadaanFilter();
+
 }

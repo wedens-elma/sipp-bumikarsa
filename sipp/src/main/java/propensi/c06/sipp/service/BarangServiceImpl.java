@@ -179,4 +179,15 @@ public class BarangServiceImpl implements BarangService {
         return barangDb.findByNamaBarangContainingIgnoreCase(name);
     }
 
+    @Override
+    public List<Barang> getAllBarangNotDeleted() {
+        List<Barang> listBarangAvail = new ArrayList<>();
+        for (Barang barang : getAllBarang()) {
+            if (!barang.getIsDeleted()) {
+                listBarangAvail.add(barang);
+            }
+        }
+        return listBarangAvail;
+    }
+
 }

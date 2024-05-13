@@ -62,7 +62,6 @@ public class Pengadaan {
     //payment status 1 = in progress
     //payment status 2 = paid
 
-
     @OneToMany(mappedBy = "pengadaan", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PengadaanBarang> listPengadaanBarang;
 

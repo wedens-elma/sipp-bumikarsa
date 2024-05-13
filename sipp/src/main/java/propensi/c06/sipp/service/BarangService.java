@@ -29,4 +29,6 @@ public interface BarangService {
     LogBarang createLogBarang(Barang barang, String action, String deskripsi);
     List<Barang> searchBarangByName(String name);
 
+    List<Barang> getAllBarangNotDeleted();
+
 }

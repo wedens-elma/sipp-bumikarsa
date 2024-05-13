@@ -72,7 +72,7 @@
                         <table id="pengadaanTable" class="table table-bordered text-center">
                             <thead style="background-color: #ffc023">
                             <tr>
-                                <th scope="col">ID</th>
+                                <th scope="col">No</th>
                                 <th scope="col">Kode Pengadaan</th>
                                 <th scope="col">Nama Pengadaan</th>
                                 <th scope="col">Vendor</th>
@@ -122,11 +122,12 @@
                         <table id="logPengadaanTable" class="table table-bordered text-center">
                             <thead style="background-color: #ffc023">
                             <tr>
-                                <th scope="col">ID</th>
+                                <th scope="col">No</th>
                                 <th scope="col">Kode Pengadaan</th>
-                                <th scope="col">Diubah Oleh</th>
+                                <th scope="col">Nama Pengadaan</th>
                                 <th scope="col">Perubahan</th>
                                 <th scope="col">Komentar</th>
+                                <th scope="col">Pengubah</th>
                                 <th scope="col">Waktu diubah</th>
                             </tr>
                             </thead>
@@ -139,9 +140,40 @@
                                         <span th:text="${logPengadaan.pengadaan.idPengadaan}"></span>
                                     </a>
                                 </td>
-                                <td th:text="${logPengadaan.changedBy}"></td>
-                                <td th:text="${logPengadaan.status}"></td>
+                                <td>
+                                    <a th:href="@{'/pengadaan/' + ${logPengadaan.pengadaan.idPengadaan}}">
+                                        <span th:text="${logPengadaan.pengadaan.namaPengadaan}"></span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <span th:if="${logPengadaan.status == 'Status Pengiriman'}">
+                                        <span><b>Status Pengiriman</b></span><br>
+                                        <span>diubah menjadi</span><br>
+<!--                                        <span th:text="'&quot;'+${oldStatus == 0 ? 'Sedang diproses ' : 'Sudah sampai '} + '&quot;'"></span>-->
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span th:if="${logPengadaan.pengadaan.shipmentStatus == 0}">&nbsp;<b>"Sedang diproses"</b></span>
+                                        <span th:if="${logPengadaan.pengadaan.shipmentStatus == 1}">&nbsp;<b>"Sudah sampai"</b></span>
+
+                                    </span>
+                                    <span th:if="${logPengadaan.status == 'Status Pembayaran'}">
+                                        <span><b>Status Pembayaran</b></span><br>
+<!--                                        <span th:text="'&quot;'+${oldStatus == 0 ? 'Belum dibayar' : (oldStatus == 1 ? 'Sedang diproses' : 'Sudah dibayar')} + '&quot;'"></span>-->
+                                        <span>diubah menjadi</span><br>
+<!--                                        <span th:if="${oldStatus == 0}" th:text="'Belum dibayar'"></span>-->
+<!--&lt;!&ndash;                                        <p th:text="'ini ada adalah old status:' + ${oldStatus} + '.'"></p>&ndash;&gt;-->
+<!--                                        <span th:if="${oldStatus == 1}" th:text="'Sedang diproses'"></span>-->
+<!--                                        <span th:if="${oldStatus == 2}" th:text="'Sudah dibayar'"></span>-->
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span th:if="${logPengadaan.pengadaan.paymentStatus == 0}">&nbsp;<b>"Belum dibayar"</b></span>
+                                        <span th:if="${logPengadaan.pengadaan.paymentStatus == 1}">&nbsp;<b>"Sedang diproses"</b></span>
+                                        <span th:if="${logPengadaan.pengadaan.paymentStatus == 2}">&nbsp;<b>"Sudah dibayar"</b></span>
+                                    </span>
+                                    <span th:if="${logPengadaan.status == 'Detail Pengadaan'}"><b>Detail Pengadaan</b> <br>telah diubah</span>
+
+                                </td>
+
                                 <td th:text="${logPengadaan.feedback}"></td>
+                                <td th:text="${logPengadaan.changedBy}"></td>
                                 <td th:text="${#dates.format(#dates.create(logPengadaan.tanggalWaktu.year, logPengadaan.tanggalWaktu.monthValue, logPengadaan.tanggalWaktu.dayOfMonth), 'dd/MM/yyyy') + ', ' + #dates.format(#dates.create(logPengadaan.tanggalWaktu.year, logPengadaan.tanggalWaktu.monthValue, logPengadaan.tanggalWaktu.dayOfMonth, logPengadaan.tanggalWaktu.hour, logPengadaan.tanggalWaktu.minute, logPengadaan.tanggalWaktu.second), 'HH:mm')}"></td>
 
                             </tr>
@@ -207,7 +239,7 @@
         $('#vendorFilter').on('change', function() {
             var selectedValue = $(this).val();
 
-            table.column(3).search(selectedValue).draw();
+            table.column(3).search('^' + selectedValue + '$', true, false, true).draw();
         });
 
     });

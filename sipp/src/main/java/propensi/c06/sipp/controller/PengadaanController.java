@@ -60,9 +60,10 @@ public class PengadaanController {
         model.addAttribute("listPengadaan", listPengadaan);
         List<LogPengadaan> listLogPengadaan = logPengadaanService.getAllLogPengadaan();
         model.addAttribute("listLogPengadaan", listLogPengadaan);
-        model.addAttribute("listVendor", vendorService.getAllVendors());
+        model.addAttribute("listVendor", vendorService.getAllVendorforPengadaanFilter());
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
         if(userService.getCurrentUserRole().equalsIgnoreCase("manajer") || userService.getCurrentUserRole().equalsIgnoreCase("keuangan")){
             return "viewAllPengadaanKeuanganManajer.html";
         } else{
@@ -84,7 +85,7 @@ public class PengadaanController {
         model.addAttribute("totalHargaAkhir", totalHargaAkhir);
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
-
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
         if(userService.getCurrentUserRole().equalsIgnoreCase("manajer") || userService.getCurrentUserRole().equalsIgnoreCase("keuangan")){
             return "detailPengadaanKeuanganManajer.html";
         } else{
@@ -99,18 +100,24 @@ public class PengadaanController {
         model.addAttribute("pengadaan", pengadaan);
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
-
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
         return "formUpdateShipmentStatusPengadaan";
     }
 
     @PostMapping("/pengadaan/{id}/updateShipmentStatus")
     public String updateStatusShipmentPengadaan(@PathVariable String id, @RequestParam("shipmentStatus") int shipmentStatus, @RequestParam("feedback") String feedback, Model model){
         Pengadaan pengadaan = pengadaanService.getPengadaanDetail(id);
+        int oldStatus = pengadaan.getShipmentStatus();
+        System.out.println("oldstatus" + oldStatus);
+        model.addAttribute("oldStatus", pengadaan.getShipmentStatus());
         pengadaan.setShipmentStatus(shipmentStatus);
+        //int stat = shipmentStatus;
         //pengadaan.setPaymentStatus(paymentStatus);
         List<LogPengadaan> listLogPengadaan = logPengadaanService.getAllLogPengadaan();
+
         model.addAttribute("listLogPengadaan", listLogPengadaan);
-        logPengadaanService.createLogPengadaan(pengadaan, "Shipment Status", feedback);
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
+        logPengadaanService.createLogPengadaan(pengadaan, "Status Pengiriman", feedback);
         pengadaanService.updateStatusPengadaan(pengadaan); // Buat method ini di PengadaanService
         return "redirect:/pengadaan";
     }
@@ -121,7 +128,7 @@ public class PengadaanController {
         model.addAttribute("pengadaan", pengadaan);
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
-
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
         return "formUpdatePaymentStatusPengadaan";
     }
 
@@ -129,10 +136,15 @@ public class PengadaanController {
     public String updateStatusPengadaan(@PathVariable String id, @RequestParam("paymentStatus") int paymentStatus, @RequestParam("feedback") String feedback, Model model){
         Pengadaan pengadaan = pengadaanService.getPengadaanDetail(id);
         //pengadaan.setShipmentStatus(shipmentStatus);
+        int oldStatus = pengadaan.getPaymentStatus();
+        model.addAttribute("oldStatus", pengadaan.getPaymentStatus());
+        System.out.println(oldStatus);
         pengadaan.setPaymentStatus(paymentStatus);
         List<LogPengadaan> listLogPengadaan = logPengadaanService.getAllLogPengadaan();
+
         model.addAttribute("listLogPengadaan", listLogPengadaan);
-        logPengadaanService.createLogPengadaan(pengadaan, "Payment Status", feedback);
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
+        logPengadaanService.createLogPengadaan(pengadaan, "Status Pembayaran", feedback);
         pengadaanService.updateStatusPengadaan(pengadaan); // Buat method ini di PengadaanService
         return "redirect:/pengadaan";
     }
@@ -144,17 +156,18 @@ public class PengadaanController {
         // Periksa apakah pengadaan memenuhi syarat untuk diperbarui
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
         if (pengadaan.getShipmentStatus() == 0 && pengadaan.getPaymentStatus() == 0) {
             var pengadaanDTO = pengadaanMapper.pengadaanToUpdatePengadaanRequestDTO(pengadaan);
             pengadaanDTO.setIdPengadaan(id);
             model.addAttribute("pengadaanDTO", pengadaanDTO);
             model.addAttribute("listVendor", vendorService.getAllVendors());
-            model.addAttribute("listBarang", barangService.getAllBarang());
+            model.addAttribute("listBarang", barangService.getAllBarangNotDeleted());
             return "updateForm";
         } else {
             // Tampilkan pesan bahwa pengadaan tidak dapat diperbarui
-            model.addAttribute("errorMessage", "Pengadaan tidak memnuhi syarat untuk diupdate. Pengadaan hanya dapat diupdate jika Shipment Status = In Progress dan Payment Status = Not Paid");
-            return "error-view"; // Ganti dengan halaman atau tindakan yang sesuai
+            model.addAttribute("errorMessage", "Pengadaan tidak memenuhi syarat untuk diupdate. Pengadaan hanya dapat diupdate jika Shipment Status = In Progress dan Payment Status = Not Paid");
+            return "error"; // Ganti dengan halaman atau tindakan yang sesuai
         }
     }
 
@@ -198,14 +211,14 @@ public class PengadaanController {
     @PostMapping("pengadaan/{id}/update")
     public String updatePengadaan(@Valid @ModelAttribute UpdatePengadaanRequestDTO dto,@RequestParam("kodeVendor") String kodeVendor, @RequestParam("feedback") String feedback, BindingResult bindingResult,
                                   Model model, HttpServletRequest request) {
-
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
         if(request.getParameter("addRow") != null){
             if (dto.getListPengadaanBarang() == null || dto.getListPengadaanBarang().size() == 0) {
                 dto.setListPengadaanBarang(new ArrayList<>());
             }
             dto.getListPengadaanBarang().add(new PengadaanBarang());
             model.addAttribute("pengadaanDTO", dto);
-            model.addAttribute("listBarang", barangService.getAllBarang());
+            model.addAttribute("listBarang", barangService.getAllBarangNotDeleted());
             model.addAttribute("kodeVendor", kodeVendor);
             model.addAttribute("listVendor", vendorService.getAllVendors());
             // ... add other attributes if needed ...
@@ -214,7 +227,7 @@ public class PengadaanController {
             int rowIndex = Integer.parseInt(request.getParameter("deleteRow"));
             // ... remove row logic ...
             dto.getListPengadaanBarang().remove(rowIndex);
-            model.addAttribute("listBarang", barangService.getAllBarang());
+            model.addAttribute("listBarang", barangService.getAllBarangNotDeleted());
             model.addAttribute("listVendor", vendorService.getAllVendors());
             model.addAttribute("kodeVendor", kodeVendor);
             model.addAttribute("pengadaanDTO", dto);
@@ -265,10 +278,11 @@ public class PengadaanController {
 
         model.addAttribute("dto", dtoPengadaan);
         model.addAttribute("listVendor", vendorService.getAllVendors());
-        model.addAttribute("listBarang", barangService.getAllBarang());
+        model.addAttribute("listBarang", barangService.getAllBarangNotDeleted());
 
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
         return "formAddPengadaan";
     }
 
@@ -285,9 +299,10 @@ public class PengadaanController {
         model.addAttribute("dto", dto);
         model.addAttribute("idRencana", idRencana);
         model.addAttribute("listVendor", vendorService.getAllVendors());
-        model.addAttribute("listBarang", barangService.getAllBarang());
+        model.addAttribute("listBarang", barangService.getAllBarangNotDeleted());
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
 
         return "formAddPengadaan";
     }
@@ -300,10 +315,11 @@ public class PengadaanController {
         model.addAttribute("kodeVendor", kodeVendor);
         model.addAttribute("dto", dto);
         model.addAttribute("idRencana", idRencana);
-        model.addAttribute("listBarang", barangService.getAllBarang());
+        model.addAttribute("listBarang", barangService.getAllBarangNotDeleted());
         model.addAttribute("listVendor", vendorService.getAllVendors());
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
 
         return "formAddPengadaan";
 
@@ -333,6 +349,7 @@ public class PengadaanController {
 //        model.addAttribute("totalHargaSetelahDiskon", totalHargaSetelahDiskon);
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
 
         return "successAddPengadaan";
     }
@@ -343,13 +360,14 @@ public class PengadaanController {
         Pengadaan pengadaan = pengadaanDb.getReferenceById(id);
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
         if(pengadaan.getShipmentStatus()==0 && pengadaan.getPaymentStatus()==0){
             pengadaanService.deletePengadaan(id);
             model.addAttribute("id", id);
             return "successDeletePengadaan";
         } else{
             model.addAttribute("errorMessage", "Pengadaan gagal di hapus. Pengadaan hanya dapat dihapus jika Shipment Status = In Progress dan Payment Status = Not Paid");
-            return "error-view";
+            return "error";
         }
 
     }
