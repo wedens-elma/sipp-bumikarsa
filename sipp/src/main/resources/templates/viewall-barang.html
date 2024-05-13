@@ -41,7 +41,7 @@
 
 								<!-- Penambahan card jika ada barang dengan stok kurang dari standar -->
 								<div
-									th:if="${adaBarangDenganStokKurangDariStandar && (role == 'Manajer' || role == 'Keuangan') && listBarangStokKurang.size() != 0}"
+									th:if="${adaBarangDenganStokKurangDariStandar && listBarangStokKurang.size() != 0}"
 								>
 									<div
 										class="card border-warning mb-3"
@@ -94,7 +94,7 @@
 												>
 													<thead style="background-color: #ffc023">
 														<tr>
-															<th scope="col">#</th>
+															<th scope="col">No.</th>
 															<th scope="col">Code Barang</th>
 															<th scope="col">Nama</th>
 															<th scope="col">Tipe Barang</th>
@@ -140,11 +140,13 @@
 																			>Lihat Detail Barang</a
 																		>
 																		<a
+																			th:if="${role == 'Manajer' || role == 'Keuangan'}"
 																			class="dropdown-item"
 																			href="/rencana/create"
 																			>Buat Rencana Pengadaan</a
 																		>
 																		<a
+																			th:if="${role == 'Manajer' || role == 'Keuangan'}"
 																			class="dropdown-item"
 																			href="/pengadaan/tambah"
 																			>Buat Pengadaan</a
@@ -183,7 +185,7 @@
 								>
 									<thead style="background-color: #ffc023">
 										<tr>
-											<th scope="col">#</th>
+											<th scope="col">No.</th>
 											<th scope="col">Code Barang</th>
 											<th scope="col">Nama</th>
 											<th scope="col">Tipe Barang</th>
@@ -215,10 +217,14 @@
 											</td>
 										</tr>
 									</tbody>
-								</table>
+								</table>							
+							</div>
+						</div>
 
-								<br /><br /><br />
 
+
+						<div class="card m-4 p-4 shadow-lg p-3 mb-5 bg-white rounded">
+							<div class="card-body">
 								<div class="text-center">
 									<h2>Log Perubahan Stok Barang</h2>
 								</div>
@@ -229,7 +235,7 @@
 								>
 									<thead style="background-color: #ffc023">
 										<tr>
-											<th scope="col">#</th>
+											<th scope="col">No.</th>
 											<th scope="col">Nama Barang</th>
 											<th scope="col">Action</th>
 											<!-- <th scope="col">Jumlah Barang</th> -->
@@ -319,6 +325,8 @@
 								</table>
 							</div>
 						</div>
+
+
 					</div>
 				</div>
 			</div>

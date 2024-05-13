@@ -15,7 +15,6 @@
 			href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css"
 			rel="stylesheet"
 		/>
-		<object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
 		<style>
 			body {
 				font-family: "Plus Jakarta Sans", sans-serif;
@@ -61,11 +60,12 @@
 			}
 		</style>
 		<title>Log Perubahan Barang</title>
+		<object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
 	</head>
 	<body>
 		<div class="container mt-5">
 			<div class="shadow-lg p-3 mb-5 bg-white rounded">
-				<h1 class="header-title">Log Perubahan Barang</h1>
+				<h1 class="header-title">Log Perubahan Stok Barang</h1>
 				<div class="table-responsive">
 					<table
 						id="logTable"
