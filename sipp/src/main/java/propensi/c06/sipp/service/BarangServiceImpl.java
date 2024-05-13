@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.model.LogBarang;
 import propensi.c06.sipp.repository.BarangDb;
+import propensi.c06.sipp.repository.BarangInfo;
 import propensi.c06.sipp.repository.LogBarangDb;
 
 @Service
@@ -179,4 +180,10 @@ public class BarangServiceImpl implements BarangService {
         return barangDb.findByNamaBarangContainingIgnoreCase(name);
     }
 
+    public List<BarangInfo> getActiveBarangInfo() {
+        return barangDb.findAllActiveBarangInfo();
+    }
+
+
 }
+
