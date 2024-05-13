@@ -43,6 +43,9 @@ public class PengadaanServiceImpl implements PengadaanService {
     @Autowired
     private RencanaDb rencanaDb;
 
+    @Autowired
+    private LogPengadaanService logPengadaanService;
+
     @Override
     public List<Pengadaan> getAllPengadaan(){
         return pengadaanDb.findAll();
@@ -212,6 +215,7 @@ public class PengadaanServiceImpl implements PengadaanService {
     @Override
     public void updateStatusPengadaan(Pengadaan pengadaan) {
         // Periksa apakah paymentStatus baru adalah 1
+
         if (pengadaan.getShipmentStatus() == 1) {
             List<PengadaanBarang> listPengadaanBarang = pengadaan.getListPengadaanBarang();
             // Iterasi melalui setiap PengadaanBarang dalam daftar
@@ -237,6 +241,8 @@ public class PengadaanServiceImpl implements PengadaanService {
         }
         pengadaanDb.save(pengadaan);
     }
+
+
 
 //    @Override
 //    public Pengadaan updatePengadaan(UpdatePengadaanRequestDTO pengadaanFromDto) {

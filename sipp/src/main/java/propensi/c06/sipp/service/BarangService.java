@@ -33,4 +33,5 @@ public interface BarangService {
     List<BarangInfo> getActiveBarangInfo();
 
     List<Barang> getAllBarangNotDeleted();
+
 }
