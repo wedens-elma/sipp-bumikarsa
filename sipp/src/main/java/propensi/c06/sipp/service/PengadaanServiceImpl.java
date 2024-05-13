@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import propensi.c06.sipp.dto.PengadaanRequestDTO;
-import propensi.c06.sipp.dto.request.UpdatePengadaanRequestDTO;
 import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.model.Pengadaan;
 import propensi.c06.sipp.model.PengadaanBarang;

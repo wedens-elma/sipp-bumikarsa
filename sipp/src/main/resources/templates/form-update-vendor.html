@@ -1,73 +1,122 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Update Vendor</title>
-</head>
-<body>
-<div class="container-fluid">
-    <div class="row">
-        <div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
-        <div class="col">
-            <div class="container">
-                <div class="card m-4 p-4 shadow-lg bg-white rounded">
-                    <div class="card-body">
-                        <div class="justify-content-center">
-                            <h2 class="text-center"><b>Update Vendor</b></h2>
-                            <form id="form-update-vendor" th:action="@{/vendor/{kodeVendor}/update(kodeVendor=${vendorDTO.kodeVendor})}" th:object="${vendorDTO}" method="POST">
-                                <input type="hidden" th:field="*{kodeVendor}" />
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email Vendor<span style="color: red;">*</span></label>
-                                    <input type="email" class="form-control" id="email" th:field="*{emailVendor}" placeholder="Masukkan Email Vendor" required />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="noTelp" class="form-label">Nomor Handphone Vendor<span style="color: red;">*</span></label>
-                                    <input type="text" class="form-control" id="noTelp" th:field="*{nomorHandphoneVendor}" placeholder="Masukkan Nomor Handphone Vendor" required />
-                                </div>
-                                <div class="mb-3">
-                                    <div class="mb-3">
-                                        <label for="barangList" class="form-label">Pilih Barang</label>
-                                        <select multiple class="form-control select2" id="barangList" th:field="*{barangList}">
-                                            <th:block th:each="barang : ${allBarang}">
-                                                <option th:value="${barang.kodeBarang}" th:text="${barang.namaBarang}"></option>
-                                            </th:block>
-                                        </select>
-                                    </div>
-                                </div>
+	<head>
+		<meta charset="UTF-8" />
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+			rel="stylesheet"
+		/>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+		/>
+		<object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
+		<title>Update Vendor</title>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+				<div class="col">
+					<div class="container">
+						<div class="card m-4 p-4 shadow-lg bg-white rounded">
+							<div class="card-body">
+								<div class="justify-content-center">
+									<h2 class="text-center"><b>Update Vendor</b></h2>
+									<form
+										id="form-update-vendor"
+										th:action="@{/vendor/{kodeVendor}/update(kodeVendor=${vendorDTO.kodeVendor})}"
+										th:object="${vendorDTO}"
+										method="POST"
+									>
+										<input type="hidden" th:field="*{kodeVendor}" />
+										<div class="mb-3">
+											<label for="email" class="form-label"
+												>Email Vendor<span style="color: red">*</span></label
+											>
+											<input
+												type="email"
+												class="form-control"
+												id="email"
+												th:field="*{emailVendor}"
+												placeholder="Masukkan Email Vendor"
+												required
+											/>
+										</div>
+										<div class="mb-3">
+											<label for="noTelp" class="form-label"
+												>Nomor Handphone Vendor<span style="color: red"
+													>*</span
+												></label
+											>
+											<input
+												type="text"
+												class="form-control"
+												id="noTelp"
+												th:field="*{nomorHandphoneVendor}"
+												placeholder="Masukkan Nomor Handphone Vendor"
+												required
+											/>
+										</div>
+										<div class="mb-3">
+											<div class="mb-3">
+												<label for="barangList" class="form-label"
+													>Pilih Barang</label
+												>
+												<select
+													multiple
+													class="form-control select2"
+													id="barangList"
+													th:field="*{barangList}"
+												>
+													<th:block th:each="barang : ${allBarang}">
+														<option
+															th:value="${barang.kodeBarang}"
+															th:text="${barang.namaBarang}"
+														></option>
+													</th:block>
+												</select>
+											</div>
+										</div>
 
-                                <div class="d-flex justify-content-center">
-                                    <a class="btn btn-danger btn-lg me-4 px-5" href="/vendor">Cancel</a>
-                                    <button type="submit" class="btn btn-primary btn-lg px-5">Update</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+										<div class="d-flex justify-content-center">
+											<a class="btn btn-danger btn-lg me-4 px-5" href="/vendor"
+												>Cancel</a
+											>
+											<button type="submit" class="btn btn-primary btn-lg px-5">
+												Update
+											</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-<script>
-    document.getElementById('form-update-vendor').onsubmit = function validateForm() {
-        var phone = document.getElementById('noTelp').value;
-        var phoneRegex = /^[0-9]+$/;
-        if (!phoneRegex.test(phone) || phone.length < 10) {
-            alert('Phone number must contain only numbers and be at least 10 digits long.');
-            return false;
-        }
-        return true;
-    }
-        $(document).ready(function() {
-        $('.select2').select2({
-            placeholder: "Select barang...",
-            allowClear: true
-        });
-    });
-</script>
-</body>
+		<script>
+			document.getElementById("form-update-vendor").onsubmit =
+				function validateForm() {
+					var phone = document.getElementById("noTelp").value;
+					var phoneRegex = /^[0-9]+$/;
+					if (!phoneRegex.test(phone) || phone.length < 10) {
+						alert(
+							"Phone number must contain only numbers and be at least 10 digits long."
+						);
+						return false;
+					}
+					return true;
+				};
+			$(document).ready(function () {
+				$(".select2").select2({
+					placeholder: "Select barang...",
+					allowClear: true,
+				});
+			});
+		</script>
+	</body>
 </html>
