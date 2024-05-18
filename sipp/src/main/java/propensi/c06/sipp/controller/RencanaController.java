@@ -52,10 +52,8 @@ public class RencanaController {
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("username", user.getName());
         if (userService.getCurrentUserRole().equalsIgnoreCase("keuangan")) {
-            model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
             return "view-daftar-rencana-keuangan";
         } else {
-            model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
             return "view-daftar-rencana";
         }
     }
@@ -74,13 +72,10 @@ public class RencanaController {
 
         if (userService.getCurrentUserRole().equalsIgnoreCase("manajer")) {
             model.addAttribute("statusDTO", statusDTO);
-            model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
             return "view-detail-rencana-manajer";
         } else if (userService.getCurrentUserRole().equalsIgnoreCase("keuangan")) {
-            model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
             return "view-detail-rencana-keuangan";
         } else {
-            model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
             return "view-detail-rencana-operasional";
         }
     }
@@ -92,7 +87,6 @@ public class RencanaController {
         redirectAttributes.addFlashAttribute("deleteSuccessMessage", "Rencana pengadaan telah berhasil dihapus.");
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("username", user.getName());
-        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
         return "redirect:/rencana/";
     }
 
@@ -107,10 +101,8 @@ public class RencanaController {
             rencanaService.ubahStatusRencana(rencana, "disetujui", statusDTO.getFeedback());
             UserModel user = userService.getLoggedInUser();
             model.addAttribute("username", user.getName());
-            model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
             return ResponseEntity.ok("Status rencana berhasil diubah menjadi disetujui");
         } else {
-            model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
             return ResponseEntity.notFound().build();
         }
     }
@@ -126,10 +118,8 @@ public class RencanaController {
             rencanaService.ubahStatusRencana(rencana, "dibatalkan", statusDTO.getFeedback());
             UserModel user = userService.getLoggedInUser();
             model.addAttribute("username", user.getName());
-            model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
             return ResponseEntity.ok("Status rencana berhasil diubah menjadi dibatalkan");
         } else {
-            model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
             return ResponseEntity.notFound().build();
         }
     }
@@ -141,7 +131,6 @@ public class RencanaController {
         model.addAttribute("listBarangExisted", barangService.getAllBarangNotDeleted());
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("username", user.getName());
-        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
         return "form-create-rencana";
     }
 
@@ -158,7 +147,6 @@ public class RencanaController {
         model.addAttribute("listBarangExisted", barangService.getAllBarangNotDeleted());
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("username", user.getName());
-        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
         return "form-create-rencana";
     }
 
@@ -174,7 +162,6 @@ public class RencanaController {
         model.addAttribute("listBarangExisted", barangService.getAllBarangNotDeleted());
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("username", user.getName());
-        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
         return "form-create-rencana";
     }
 
@@ -190,19 +177,16 @@ public class RencanaController {
                 errorMessage.append(error.getDefaultMessage()).append("\n");
             }
             model.addAttribute("errorMessage", errorMessage.toString());
-            model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
-            return "error-view";
+            return "error";
         }
         Rencana rencana = rencanaService.saveRencana(rencanaDTO);
         model.addAttribute("listLogRencana", logRencanaService.getAllLogRencana());
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("username", user.getName());
         if (rencana == null) {
-            model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
             return "create-rencana-error-view";
         } else {
             redirectAttributes.addFlashAttribute("listLogRencana", logRencanaService.getAllLogRencana());
-            model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
             return "redirect:/rencana/";
         }
     }
