@@ -1,5 +1,6 @@
 package propensi.c06.sipp.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,13 +98,13 @@ public class RencanaController {
         Model model
     ) {
         Rencana rencana = rencanaService.getRencanaById(id);
-        if (rencana != null) {
+        if (rencana != null && rencana.getExpectedDate().isEqual(LocalDate.now()) || rencana.getExpectedDate().isAfter(LocalDate.now())) {
             rencanaService.ubahStatusRencana(rencana, "disetujui", statusDTO.getFeedback());
             UserModel user = userService.getLoggedInUser();
             model.addAttribute("username", user.getName());
             return ResponseEntity.ok("Status rencana berhasil diubah menjadi disetujui");
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok("Rencana lalu");
         }
     }
 
