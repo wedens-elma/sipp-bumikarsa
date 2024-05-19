@@ -255,21 +255,8 @@
                                 locale: 'id',
                                 events: events,
                                 eventClick: function(info) {
-                                    if (info.event.extendedProps.status === 'dibatalkan') {
-                                        alert('Item ini sudah dibatalkan.');
-                                    } else {
+                                    if (info.event.url) {
                                         window.location.href = info.event.url;
-                                    }
-                                },
-                                datesSet: function(info) {
-                                    var currentMonth = info.start.getMonth();
-                                    var tambahRencanaButton = document.getElementById('tambahRencanaButton');
-                                    if (currentMonth === 0 || currentMonth === 6) { // January or July
-                                        tambahRencanaButton.classList.add('disabled');
-                                        tambahRencanaButton.setAttribute('disabled', 'disabled');
-                                    } else {
-                                        tambahRencanaButton.classList.remove('disabled');
-                                        tambahRencanaButton.removeAttribute('disabled');
                                     }
                                 }
                             });
