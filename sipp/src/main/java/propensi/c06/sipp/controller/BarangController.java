@@ -53,6 +53,8 @@ public class BarangController {
         List<LogBarang> listLogBarang = barangService.getAllLogBarang();
         model.addAttribute("listLogBarang", listLogBarang);
 
+        System.out.println("Test");
+
 
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("username", user.getName());
@@ -91,7 +93,7 @@ public class BarangController {
     }
 
     @GetMapping("/barang/tambah")
-    public String formTambahBarang(Model model) {
+    public String formTambahBarang(Model model) {        
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("username", user.getName());
 
@@ -166,16 +168,13 @@ public class BarangController {
     }
 
     @GetMapping(value = "/barang/{kodeBarang}/update")
-    public String formUpdateBuku(@PathVariable(value = "kodeBarang") String kodeBarang, Model model) {
+    public String formUpdateBarang(@PathVariable(value = "kodeBarang") String kodeBarang, Model model) {
+        
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("username", user.getName());
 
 
-        // Mendapatkan buku dengan id tersebut
-
         var barang = barangService.getBarangById(kodeBarang);
-
-        // Memindahkan data buku ke DTO untuk selanjutnya diubah di form pengguna
 
         var barangDTO = barangMapper.barangToUpdateBarangRequestDTO(barang);
 
@@ -185,7 +184,7 @@ public class BarangController {
     }
 
     @PostMapping("barang/update")
-    public String updateBuku(@Valid @ModelAttribute UpdateBarangRequestDTO barangDTO, BindingResult bindingResult,
+    public String updateBarang(@Valid @ModelAttribute UpdateBarangRequestDTO barangDTO, BindingResult bindingResult,
             Model model) {
 
         if (bindingResult.hasErrors()) {
@@ -217,7 +216,7 @@ public class BarangController {
     }
 
     @GetMapping("/barang/{kodeBarang}/delete")
-    public String softDeleteBuku(@PathVariable("kodeBarang") String kodeBarang, Model model) {
+    public String softDeleteBarang(@PathVariable("kodeBarang") String kodeBarang, Model model) {
         UserModel user = userService.getLoggedInUser();
         model.addAttribute("username", user.getName());
 

@@ -246,7 +246,7 @@
 
     <aside id="sidebar" class="js-sidebar col-lg-3 px-0">
         <!-- Content For Sidebar -->
-        <div class="h-100 mx-0 mt-4">
+        <div class="h-100 mx-0 mt-2">
             <div class="sidebar-logo">
                 <a href="/">SIPP</a>
             </div>
@@ -273,7 +273,7 @@
                 </li>
             </ul>
             <div class="sidebar-footer">
-                <a href="/logout" class="sidebar-link">
+                <a href="/logout-confirm" class="sidebar-link">
                     <i class="fas fa-sign-out-alt pe-2"></i>
                     <span>Logout</span>
                 </a>
@@ -282,13 +282,13 @@
     </aside>
 
 
-    <div class="main" id="main" >
+    <div class="main pt-0" id="main" >
         <nav class="navbar navbar-expand px-3 mt-0 pt-0" style="border-bottom: 1px solid #ced4da;">
             <button class="btn" id="sidebar-toggle" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-brand" style="margin-left: 30px;">
-                <a class="navbar-brand-text" >Hello, [[${username}]]</a>
+                <a class="navbar-brand-text m-auto" >Hello, [[${username}]]</a>
             </div>
             <div class="navbar-collapse navbar" id="navbar-dropdown">
                 <ul class="navbar-nav">
@@ -298,7 +298,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <a href="/profile" class="dropdown-item">Profile</a>
-                            <a href="/logout" class="dropdown-item">Logout</a>
+                            <a href="/logout-confirm" class="dropdown-item">Logout</a>
                         </div>
                     </li>
 

@@ -10,7 +10,6 @@ import propensi.c06.sipp.dto.BarangMapper;
 import propensi.c06.sipp.dto.UserMapper;
 import propensi.c06.sipp.dto.VendorMapper;
 import propensi.c06.sipp.dto.request.CreateUserRequestDTO;
-import propensi.c06.sipp.dto.request.CreateVendorRequestDTO;
 import propensi.c06.sipp.model.Role;
 import propensi.c06.sipp.model.UserModel;
 import propensi.c06.sipp.repository.RoleDb;
@@ -100,13 +99,13 @@ public class SippApplication {
 			// 	barangService.addBarang(barangSave);
 			// }
 
-			if (vendorService.getAllVendors().isEmpty()) {
-				var vendor = new CreateVendorRequestDTO();
-				vendor.setEmailVendor("vendor1@gmail.com");
-				vendor.setNamaVendor("Vendor Pertama");
-				vendor.setNomorHandphoneVendor("081234567890");
-				vendorService.addVendor(vendor);
-			}
+			// if (vendorService.getAllVendors().isEmpty()) {
+			// 	var vendor = new CreateVendorRequestDTO();
+			// 	vendor.setEmailVendor("vendor1@gmail.com");
+			// 	vendor.setNamaVendor("Vendor Pertama");
+			// 	vendor.setNomorHandphoneVendor("081234567890");
+			// 	vendorService.addVendor(vendor);
+			// }
 
 		};
 

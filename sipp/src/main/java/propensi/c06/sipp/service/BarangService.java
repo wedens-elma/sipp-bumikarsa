@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import propensi.c06.sipp.model.Barang;
 import propensi.c06.sipp.model.LogBarang;
+import propensi.c06.sipp.repository.BarangInfo;
 
 public interface BarangService {
     public void addBarang(Barang barang);
@@ -29,5 +30,8 @@ public interface BarangService {
     LogBarang createLogBarang(Barang barang, String action, String deskripsi);
     List<Barang> searchBarangByName(String name);
 
+    List<BarangInfo> getActiveBarangInfo();
+
     List<Barang> getAllBarangNotDeleted();
+
 }

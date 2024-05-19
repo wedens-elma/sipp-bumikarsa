@@ -44,6 +44,7 @@ public class VendorController {
             listVendor = vendorService.getAllVendors();
         }
         model.addAttribute("vendors", listVendor);
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
         return "viewall-vendor";
@@ -54,7 +55,8 @@ public class VendorController {
     @GetMapping("/vendor/tambah")
     public String formTambahVendor(Model model) {
         model.addAttribute("vendorDTO", new CreateVendorRequestDTO());
-        model.addAttribute("listBarang", barangService.getAllBarang());
+        model.addAttribute("listBarang", barangService.getActiveBarangInfo());
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
         return "form-tambah-vendor";
@@ -68,7 +70,7 @@ public class VendorController {
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Error adding vendor: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Error menambah vendor: " + e.getMessage());
         }
         return "redirect:/vendor";
     }
@@ -91,11 +93,12 @@ public class VendorController {
     public String detailVendor(@PathVariable("kodeVendor") String kodeVendor, Model model, RedirectAttributes redirectAttributes, @RequestParam(value = "search", required = false) String search) {
         Vendor vendor = vendorService.getVendorDetail(kodeVendor);
         if (vendor == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Vendor not found.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Vendor tidak ditemukan.");
             return "redirect:/vendor";
         }
         List<Barang> barangList = (search == null || search.isEmpty()) ? vendor.getBarangList() : barangService.searchBarangByName(search);
         model.addAttribute("username", userService.getCurrentUserName());
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
         model.addAttribute("vendor", vendor);
         model.addAttribute("barangList", barangList);
         return "view-detail-vendor";
@@ -106,14 +109,15 @@ public class VendorController {
     public String formUpdateVendor(@PathVariable String kodeVendor, Model model, RedirectAttributes redirectAttributes) {
         Vendor vendor = vendorService.getVendorDetail(kodeVendor);
         if (vendor == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Vendor not found.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Vendor tidak ditemukan.");
             return "redirect:/vendor";
         }
         UpdateVendorRequestDTO vendorDTO = vendorMapper.vendorToUpdateVendorRequestDTO(vendor);
         String username = userService.getCurrentUserName();
         model.addAttribute("username", username);
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
         model.addAttribute("vendorDTO", vendorDTO);
-        model.addAttribute("allBarang", barangService.getAllBarang());
+        model.addAttribute("allBarang", barangService.getActiveBarangInfo());
         return "form-update-vendor";
     }
 
@@ -121,7 +125,7 @@ public class VendorController {
     public String updateVendor(@PathVariable String kodeVendor, @Valid @ModelAttribute("vendorDTO") UpdateVendorRequestDTO vendorDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addAttribute("allBarang", barangService.getAllBarang());
-            redirectAttributes.addFlashAttribute("errorMessage", "Please correct the form fields.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Please tulis input yang benar.");
             return "redirect:/vendor/" + kodeVendor + "/update";
         }
 
@@ -139,6 +143,9 @@ public class VendorController {
     @GetMapping("/success-update-vendor")
     public String showUpdateVendorSuccess(@RequestParam("kodeVendor") String kodeVendor, Model model) {
         model.addAttribute("kodeVendor", kodeVendor);
+        model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
+        String username = userService.getCurrentUserName();
+        model.addAttribute("username", username);
         return "success-update-vendor";
     }
 
@@ -174,6 +181,7 @@ public class VendorController {
             model.addAttribute("kodeVendor", kodeVendor);
             String username = userService.getCurrentUserName();
             model.addAttribute("username", username);
+            model.addAttribute("userRole", userService.getCurrentUserRole().toLowerCase());
             return "success-delete-vendor";
         } else {
             return "redirect:/vendor";
