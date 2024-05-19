@@ -3,6 +3,7 @@ package propensi.c06.sipp.controller;
 import java.security.Principal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +34,14 @@ public class HomeController {
         model.addAttribute("username", user.getName());
 
         List<Pengadaan> top5LatestPengadaan = pengadaanService.getTop5LatestPengadaan();
-        System.out.println(top5LatestPengadaan);
-        model.addAttribute("top5LatestPengadaan", top5LatestPengadaan);
+        List<Pengadaan> filteredTop5 = new ArrayList<>();
+        for (Pengadaan p : top5LatestPengadaan) {
+            if (p.getPaymentStatus() == 2 && p.getShipmentStatus() == 1) {
+                filteredTop5.add(p);
+            }
+        }
+        System.out.println(filteredTop5);
+        model.addAttribute("top5LatestPengadaan", filteredTop5);
 
         addDashboardDataToModel(model);
 
