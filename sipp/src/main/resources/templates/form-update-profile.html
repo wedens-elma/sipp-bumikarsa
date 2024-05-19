@@ -41,23 +41,41 @@
 										<div class="row">
 											<div class="col-md-4">
 												<h6 style="text-align: left" class="card-text m-0">
-													<b>Nama</b>
+													<b>Role</b>
 												</h6>
 											</div>
 											<div class="col-md-8">
-												<p th:text="' : ' + ${dto.name}"></p>
+												<p th:text="' : ' + ${dto.role}"></p>
 											</div>
 										</div>
 									</div>
 								</div>
-								<form
-									th:action="@{/profile/update-profile}"
-									th:object="${dto}"
-									method="post"
-								>
-									<div class="alert alert-warning" role="alert">
-										Perhatian: Anda akan logout setelah menyimpan email baru.
+								<div class="row">
+									<div class="col-md-12">
+										<form
+											th:action="@{/profile/update-profile}"
+											th:object="${dto}"
+											method="post"
+										>
+										<div class="row">
+											<div class="col-md-4">
+												<h6 style="text-align: left" class="card-text m-0">
+													<b>Nama</b>
+												</h6>
+											</div>
+											<div class="col-md-8">
+												<input
+														type="text"
+														class="form-control"
+														id="nama"
+														name="nama"
+														th:field="*{name}"
+													/>
+											</div>
+										</div>
 									</div>
+								</div>
+									
 									<div class="row">
 										<div class="col-md-12">
 											<div class="row">
@@ -72,32 +90,25 @@
 														class="form-control"
 														id="email"
 														name="email"
-														th:field="*{email}"
+														th:field="*{dto.email}"
 													/>
 												</div>
-												<div class="col-md-4">
-													<button type="submit" class="btn btn-primary">
-														Save
-													</button>
-												</div>
+												
 											</div>
+										</div>
+									</div>
+									<div class="alert alert-warning" role="alert">
+										Perhatian: Anda akan logout setelah menyimpan email baru.
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<button type="submit" class="btn btn-primary">
+												Save
+											</button>
 										</div>
 									</div>
 								</form>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="row">
-											<div class="col-md-4">
-												<h6 style="text-align: left" class="card-text m-0">
-													<b>Role</b>
-												</h6>
-											</div>
-											<div class="col-md-8">
-												<p th:text="' : ' + ${dto.role}"></p>
-											</div>
-										</div>
-									</div>
-								</div>
+								
 							</div>
 						</div>
 					</div>

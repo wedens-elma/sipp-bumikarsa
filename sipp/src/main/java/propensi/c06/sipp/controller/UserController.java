@@ -22,6 +22,7 @@ import propensi.c06.sipp.service.UserService;
 
 
 
+
 @Controller
 public class UserController {
     @Autowired
@@ -230,7 +231,7 @@ public class UserController {
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!MASUK CONTROLLER");
         UserModel user = userService.getLoggedInUser();
 
-        userService.updateProfile(user, profileDTO.getEmail());
+        userService.updateProfile(user, profileDTO.getEmail(), profileDTO.getName());
         System.out.println("!!!!!!!!!!!!!!!!!!!UDAH SAVED");
         System.out.println(user.getEmail());
 
@@ -244,6 +245,35 @@ public class UserController {
         return "redirect:/logout";
     }
 
+    @GetMapping("/user/edit-name/{email}")
+    public String getFormUpdateNama(Model model, @PathVariable String email) {
+
+        UserModel userEdit = userService.getUserByEmail(email);
+        UserModel user = userService.getLoggedInUser();
+
+        UpdateProfileRequestDTO profileDTO = new UpdateProfileRequestDTO();
+        profileDTO.setEmail(userEdit.getEmail());
+        profileDTO.setName(userEdit.getName());
+        profileDTO.setRole(userEdit.getRole().getRole());
+
+        model.addAttribute("username", user.getName());
+
+        model.addAttribute("user", user);
+        model.addAttribute("dto", profileDTO);
+        return "form-update-nama-admin.html";
+        
+    }
+
+    @PostMapping("/user/edit-name/{email}")
+    public String editName(Model model, UpdateProfileRequestDTO profileDTO, @PathVariable String email) {
+        UserModel user = userService.getUserByEmail(profileDTO.getEmail());
+        userService.updateProfile(user, profileDTO.getEmail(), profileDTO.getName());
+        System.out.println("!!!!!!!!!!!!!!!!!!!UDAH SAVED");
+        System.out.println(user.getEmail());
+        
+        return "redirect:/user";
+    }
+    
     // @GetMapping("/logout-successful")
     // public String logoutSuccessful() {
     //     return "logout-successful";

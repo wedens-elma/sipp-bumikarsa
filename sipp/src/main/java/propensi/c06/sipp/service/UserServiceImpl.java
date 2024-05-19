@@ -180,8 +180,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void updateProfile(UserModel user, String email) {
+    public void updateProfile(UserModel user, String email, String name) {
         user.setEmail(email);
+        user.setName(name);
         String newToken = jwtUtils.generateJwtToken(email);
         userDb.save(user);
     }

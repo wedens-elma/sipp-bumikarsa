@@ -21,90 +21,50 @@
 	<body>
 		<div class="container-fluid">
 			<div class="row">
-				<div th:replace="~{fragments/sidebarf}" class="col-lg-3 col-md-4"></div>
+				<div
+					th:replace="~{fragments/admin-sidebar}"
+					class="col-lg-3 col-md-4"
+				></div>
 				<div class="col">
 					<div id="user">
 						<div class="card m-3 p-2">
 							<div class="card-body">
 								<div class="text-center">
 									<h2>Profile</h2>
-									<div class="text-center m-3">
-										<h3 th:text="'Halo, ' + ${user.name} + '!'"></h3>
-									</div>
+									
 								</div>
 								<br />
 
 								<!-- data -->
 
-								<div class="row">
-									<div class="col-md-12">
-										<div class="row">
-											<div class="col-md-4">
-												<h6 style="text-align: left" class="card-text m-0">
-													<b>Role</b>
-												</h6>
-											</div>
-											<div class="col-md-8">
-												<p th:text="' : ' + ${dto.role}"></p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12">
-										<form
-											th:action="@{/profile/update-profile}"
-											th:object="${dto}"
-											method="post"
-										>
-										<div class="row">
-											<div class="col-md-4">
-												<h6 style="text-align: left" class="card-text m-0">
-													<b>Nama</b>
-												</h6>
-											</div>
-											<div class="col-md-8">
-												<input
-														type="text"
-														class="form-control"
-														id="nama"
-														name="nama"
-														th:field="*{name}"
-													/>
-											</div>
-										</div>
-									</div>
-								</div>
+								<form
+									th:action="@{/user/edit-name/} + ${dto.email}"
+									th:object="${dto}"
+									method="post"
+								>
 									
 									<div class="row">
 										<div class="col-md-12">
 											<div class="row">
 												<div class="col-md-4">
 													<h6 style="text-align: left" class="card-text m-0">
-														<b>Email</b>
+														<b>Nama</b>
 													</h6>
 												</div>
 												<div class="col-md-4">
 													<input
-														type="email"
 														class="form-control"
-														id="email"
-														name="email"
-														th:field="*{dto.email}"
+														id="name"
+														name="name"
+														th:field="*{name}"
 													/>
 												</div>
-												
+												<div class="col-md-4">
+													<button type="submit" class="btn btn-primary">
+														Save
+													</button>
+												</div>
 											</div>
-										</div>
-									</div>
-									<div class="alert alert-warning" role="alert">
-										Perhatian: Anda akan logout setelah menyimpan email baru.
-									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<button type="submit" class="btn btn-primary">
-												Save
-											</button>
 										</div>
 									</div>
 								</form>

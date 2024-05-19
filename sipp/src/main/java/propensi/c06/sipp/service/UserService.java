@@ -36,5 +36,5 @@ public interface UserService {
     
     void updatePass(UserModel user, String passBaruEncode);
 
-    void updateProfile(UserModel user, String email);
+    void updateProfile(UserModel user, String email, String name);
 }
