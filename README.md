@@ -2,11 +2,11 @@
 
 ## Authors
 
-* **Wedens Elma Malau** - *2106751165*  
-* **Rangga Yudhistira Brata** - *2106751051*
-* **Caroline Esther U. P.** - *2106751915*
-* **Sakinah Richas** - *2106751511*
-* **Amelia Putri Chaerani** - *2106751985*
+* **Wedens Elma Malau** - Lead Programmer
+* **Rangga Yudhistira Brata** - Project Manager
+* **Caroline Esther U. P.** - Scrum Master
+* **Sakinah Richas** - Lead System Analyst
+* **Amelia Putri Chaerani** - Lead Designer
 
 <a name="readme-top"></a><br>
 
@@ -27,8 +27,10 @@
 
   <p align="center">
     PT Bumi Karsa mengalami tantangan dalam pencatatan pengadaan barang (procurement) pada proyek. Oleh karena itu, dibutuhkan sebuah sistem informasi yang dapat mengelola pengadaan barang dari proyek yang dilakukan, secara spesifik untuk membantu proses pre-procurement yang mencakup penjadwalan procurement, pengelolaan procurement, dan pengelolaan barang yang dibeli melalui procurement. Sistem informasi pengelolaan pengadaan barang ini diharapkan dapat membuat rangkaian proses pengadaan yang dilakukan di perusahaan PT Bumi Karsa menjadi lebih efektif dan pengeluaran yang berkaitan dapat dimonitor dengan baik.
-    <br />
-    <a href="https://gitlab.cs.ui.ac.id/propensi-2023-2024-genap/kelas-c/c06-prororo"><strong>Explore the docs »</strong></a>
+    <br /><br />
+    Access the final product here: <br />
+    <a href="https://sipp-bumikarsa.up.railway.app/">https://sipp-bumikarsa.up.railway.app/</a>
+<!--     <a href="https://gitlab.cs.ui.ac.id/propensi-2023-2024-genap/kelas-c/c06-prororo"><strong>Explore the docs »</strong></a> -->
     <br />
     <br />
     <a href="https://gitlab.cs.ui.ac.id/propensi-2023-2024-genap/kelas-c/c06-prororo/issues">Report Bug</a>
@@ -38,7 +40,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<!-- [![Product Name Screen Shot][product-screenshot]](https://kalla.co.id/id/bisnis/bumi-karsa) -->
+![SIPP Screen Shot](https://res.cloudinary.com/duwjv8wuj/image/upload/v1716822760/Screenshot_6906_jjmjsm.png)
 
 
 ### Built With
@@ -46,14 +48,14 @@
 * [![springboot][spring.io]][springboot-url]
 * [![thymeleaf][thymeleaf]][thymeleaf-url]
 * [![postgresql][postgresql]][postgresql-url]
-* [![tailwind][tailwind]][tailwind-url]
+* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
 * [![railway][railway]][railway]
 <!-- * [![Next][Next.js]][Next-url]
 * [![React][React.js]][React-url]
 * [![Vue][Vue.js]][Vue-url]
 * [![Angular][Angular.io]][Angular-url]
 * [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+* [![tailwind][tailwind]][tailwind-url]
 * [![JQuery][JQuery.com]][JQuery-url] -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
